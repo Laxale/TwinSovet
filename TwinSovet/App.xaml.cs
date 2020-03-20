@@ -1,17 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
+using NLog;
+using TwinSovet.Helpers;
 
-namespace TwinSovet
+using Prism.Mvvm;
+
+
+namespace TwinSovet 
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
+        private readonly SingleInstancesCache instancesCache;
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+        private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();
+
+
+        /// <summary>
+        ///   Вызывает событие <see cref="E:System.Windows.Application.Startup" />.
+        /// </summary>
+        /// <param name="e">
+        ///   Объект <see cref="T:System.Windows.StartupEventArgs" />, содержащий данные события.
+        /// </param>
+        protected override void OnStartup(StartupEventArgs e) 
+        {
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+
+            base.OnStartup(e);
+
+            ViewModelLocationProvider.SetDefaultViewModelFactory(instancesCache.GetOrCreateInstance);
+            ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewMappingCache.GetViewModelType);
+        }
+
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e) 
+        {
+            string message = $"Произошла ошибка.{Environment.NewLine}{e.Exception.GetRootException().Message}";
+
+            logger.Error(message);
+
+            MessageBox.Show(message);
+
+            Environment.Exit(-6);
+        }
     }
 }

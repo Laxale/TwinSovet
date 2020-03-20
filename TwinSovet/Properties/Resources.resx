@@ -114,4 +114,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AppName" xml:space="preserve">
+      <value>Twin Sovet</value>
+  </data>
+  <data name="PlanOfHouse" xml:space="preserve">
+      <value>План дома</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+      <value>Пол</value>
+  </data>
+  <data name="He_IsNotDefined" xml:space="preserve">
+      <value>Не указан</value>
+  </data>
+  <data name="Man" xml:space="preserve">
+      <value>Мужичок</value>
+  </data>
+  <data name="Woman" xml:space="preserve">
+      <value>Дама</value>
+  </data>
+  <data name="Owner" xml:space="preserve">
+      <value>Владелец</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+      <value>Секция</value>
+  </data>
+  <data name="Mebelnaya" xml:space="preserve">
+      <value>Мебельная</value>
+  </data>
+  <data name="Hospital" xml:space="preserve">
+      <value>Больничная</value>
+  </data>
+  <data name="Area" xml:space="preserve">
+      <value>Площадь</value>
+  </data>
+  <data name="She_IsNotDefined" xml:space="preserve">
+      <value>Не указана</value>
+  </data>
+  <data name="Floor" xml:space="preserve">
+      <value>Этаж</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+      <value>Номер</value>
+  </data>
 </root>

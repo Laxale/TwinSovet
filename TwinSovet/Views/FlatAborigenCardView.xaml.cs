@@ -6,19 +6,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-using TwinSovet.Attributes;
-using TwinSovet.ViewModels;
 
-
-namespace TwinSovet.Views 
+namespace TwinSovet.Views
 {
     /// <summary>
-    /// Логика взаимодействия для MainView.xaml
+    /// Логика взаимодействия для FlatAborigenCardView.xaml
     /// </summary>
-    [HasViewModel(typeof(MainViewModel))]
-    public partial class MainView : UserControl 
+    public partial class FlatAborigenCardView : UserControl 
     {
-        public MainView() 
+        public FlatAborigenCardView()
         {
             InitializeComponent();
         }

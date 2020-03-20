@@ -3,7 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:TwinSovet"
              StartupUri="MainWindow.xaml">
+    
     <Application.Resources>
-         
+         <ResourceDictionary>
+             <ResourceDictionary.MergedDictionaries>
+                 <ResourceDictionary Source="./XamlResources/Brushes.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/Margins.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/Converters.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/GridStyles.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/BorderStyles.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/ButtonStyles.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/TextBoxStyles.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/TetxBlockStyles.xaml"/>
+                 <ResourceDictionary Source="./XamlResources/GeometryResources.xaml"/>
+             </ResourceDictionary.MergedDictionaries>
+         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Margins.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style TargetType="RowDefinition">
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="MinHeight" Value="{StaticResource InfoCardRowHeight}"/>
+    </Style>
+</ResourceDictionary>

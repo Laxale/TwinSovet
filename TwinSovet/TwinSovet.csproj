@@ -82,14 +82,42 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Attributes\HasViewModelAttribute.cs" />
+    <Compile Include="Attributes\SingleInstanceAttribute.cs" />
+    <Compile Include="Converters\GenderEnumToStringConverter.cs" />
+    <Compile Include="Converters\ReversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\SectionTypeToStringConverter.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\StaticsProvider.cs" />
+    <Compile Include="Helpers\MainContainer.cs" />
+    <Compile Include="Helpers\SingleInstancesCache.cs" />
+    <Compile Include="Helpers\ViewMappingCache.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
+    <Compile Include="ViewModels\FlatAborigenViewModel.cs" />
+    <Compile Include="ViewModels\FlatViewModel.cs" />
+    <Compile Include="ViewModels\FloorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\FirstSectionPlanView.xaml.cs">
+      <DependentUpon>FirstSectionPlanView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FlatAborigenCardView.xaml.cs">
+      <DependentUpon>FlatAborigenCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FlatCardView.xaml.cs">
+      <DependentUpon>FlatCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FloorView.xaml.cs">
+      <DependentUpon>FloorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimpleFlatView.xaml.cs">
+      <DependentUpon>SimpleFlatView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -103,7 +131,63 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\FirstSectionPlanView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FlatAborigenCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FlatCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FloorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimpleFlatView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\BorderStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\Brushes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\ButtonStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\GeometryResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\GridStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\Margins.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\TetxBlockStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\TextBoxStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -123,8 +207,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -143,7 +228,12 @@
       <Project>{C73D1486-C5C4-4BF0-AE0B-D0A214E2CCB9}</Project>
       <Name>PubSub</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TwinSovet.Data\TwinSovet.Data.csproj">
+      <Project>{0CBAF836-B3BA-4C85-B7B2-8B65C190E9AB}</Project>
+      <Name>TwinSovet.Data</Name>
+    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
