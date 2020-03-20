@@ -95,5 +95,12 @@ namespace TwinSovet.ViewModels
             MinFlatNumber = flatNumbers.Min();
             MaxFlatNumber = flatNumbers.Max();
         }
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString() 
+        {
+            return $"{FloorNumber} этаж секции {Section} | квартиры с {MinFlatNumber} по {MaxFlatNumber}";
+        }
     }
 }

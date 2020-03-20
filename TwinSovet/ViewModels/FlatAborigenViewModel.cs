@@ -49,6 +49,7 @@ namespace TwinSovet.ViewModels
                 name = value;
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FullNameInfo));
             }
         }
 
@@ -63,6 +64,7 @@ namespace TwinSovet.ViewModels
                 surname = value;
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FullNameInfo));
             }
         }
 
@@ -77,8 +79,11 @@ namespace TwinSovet.ViewModels
                 otchestvo = value;
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(FullNameInfo));
             }
         }
+
+        public string FullNameInfo => $"{Surname} {Name} {Otchestvo}";
 
         public string PhoneNumber 
         {

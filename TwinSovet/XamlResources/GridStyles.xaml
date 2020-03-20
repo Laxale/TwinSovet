@@ -5,7 +5,7 @@
         <ResourceDictionary Source="Margins.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <Style TargetType="RowDefinition">
+    <Style x:Key="CardRowStyle" TargetType="RowDefinition">
         <Setter Property="Height" Value="Auto"/>
         <Setter Property="MinHeight" Value="{StaticResource InfoCardRowHeight}"/>
     </Style>

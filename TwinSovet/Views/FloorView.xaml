@@ -9,46 +9,68 @@
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
 
              mc:Ignorable="d"
+             Background="{StaticResource AlmostTransparent}"
              d:DataContext="{d:DesignInstance viewModels:FloorViewModel}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="1" CornerRadius="{StaticResource InListBorderCornerRadius}">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:FloorView}, 
+                                                   Path=IsMouseOver, Mode=OneWay}"
+                                 Value="True">
+                        <Setter Property="BorderBrush" Value="{StaticResource GrayBrush}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
 
-        <!-- Заголовок этажа -->
-        <DockPanel Grid.Row="0">
-            <TextBlock DockPanel.Dock="Left">
+        <Grid Margin="{StaticResource All4Margin}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Заголовок этажа -->
+            <DockPanel Grid.Row="0">
+                <TextBlock DockPanel.Dock="Left">
                 <Run Text="{x:Static praps:Resources.Floor}"/>
-                <Run Text="{Binding Path=FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="{Binding Path=FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                 <Run Text="  "/>
                 <Run Text="{x:Static praps:Resources.Section}"/>
                 <Run Text="{Binding Path=Section, Mode=OneWay, Converter={StaticResource SectionNumberToStringConverter}}" FontStyle="Italic" FontWeight="Medium"/>
                 <Run Text="  "/>
                 <Run Text="Квартиры с "/>
-                <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                 <Run Text="по"/>
-                <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
-            </TextBlock>
-        </DockPanel>
+                <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
+                </TextBlock>
+            </DockPanel>
 
-        <Viewbox Grid.Row="1">
-            <ItemsControl ItemsSource="{Binding Path=FlatsView, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <DockPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+            <Viewbox Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding Path=FlatsView, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <DockPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource InListBorderStyle}">
-                            <local:SimpleFlatView/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Viewbox>
-    </Grid>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="{StaticResource All4Margin}" Style="{StaticResource InListBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="FlatInListSharedGroup"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <local:SimpleFlatView Margin="{StaticResource All4Margin}"
+                                                          EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Viewbox>
+        </Grid>
+    </Border>
 </UserControl>

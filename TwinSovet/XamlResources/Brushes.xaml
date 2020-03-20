@@ -6,7 +6,7 @@
     <Color x:Key="GreenColor">LimeGreen</Color>
     <Color x:Key="GrayColor">#909092</Color>
     <Color x:Key="SelectedGrayColor">#D9DBDF</Color>
-    <Color x:Key="GrayBlueColor">#D3DAE7</Color>
+    <Color x:Key="PanelGrayColor">#BBBBBB</Color>
     <Color x:Key="SteelGrayColor">#434D60</Color>
     <Color x:Key="RedColor">#E64E4E</Color>
     <Color x:Key="LinkForegroundColor">#0093C4</Color>
@@ -16,7 +16,8 @@
     <SolidColorBrush x:Key="AlmostTransparent" Color="#01000000"/>
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}"/>
     <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource GreenColor}"/>
-    <SolidColorBrush x:Key="GrayBlueBrush" Color="{StaticResource GrayBlueColor}"/>
+    <SolidColorBrush x:Key="PanelGrayBrush" Color="{StaticResource PanelGrayColor}"/>
     <SolidColorBrush x:Key="SteelGrayBrush" Color="{StaticResource SteelGrayColor}"/>
+    <SolidColorBrush x:Key="SelectedGrayBrush" Color="{StaticResource SelectedGrayColor}"/>
     <SolidColorBrush x:Key="LinkForegroundBrush" Color="{StaticResource LinkForegroundColor}"/>
 </ResourceDictionary>

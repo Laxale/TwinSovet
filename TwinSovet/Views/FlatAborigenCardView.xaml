@@ -13,6 +13,11 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:FlatAborigenViewModel}">
 
+    <UserControl.Resources>
+        <Style TargetType="RowDefinition" BasedOn="{StaticResource CardRowStyle}">
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

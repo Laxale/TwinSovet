@@ -27,6 +27,7 @@ namespace TwinSovet.ViewModels
             Area = flatModel.Area;
             FloorNumber = flatModel.FloorNumber;
             Section = flatModel.Section;
+            Number = flatModel.Number;
         }
 
 
@@ -86,6 +87,8 @@ namespace TwinSovet.ViewModels
             }
         }
 
+        public bool HasOwner => FlatOwner != null;
+
         public FlatAborigenViewModel FlatOwner 
         {
             get => flatOwner;
@@ -97,7 +100,16 @@ namespace TwinSovet.ViewModels
                 flatOwner = value;
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasOwner));
             }
+        }
+
+
+        /// <summary>Returns a string that represents the current object.</summary>
+        /// <returns>A string that represents the current object.</returns>
+        public override string ToString() 
+        {
+            return $"{ Number } квартира { FloorNumber } этажа секции {Section}";
         }
     }
 }

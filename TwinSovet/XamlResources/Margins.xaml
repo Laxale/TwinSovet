@@ -4,6 +4,7 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <Thickness Left="4" x:Key="4LeftMargin"/>
+    <Thickness x:Key="All4Margin">4</Thickness>
     
     <system:Double x:Key="InfoCardRowHeight">30</system:Double>
 </ResourceDictionary>

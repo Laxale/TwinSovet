@@ -6,6 +6,7 @@
     </ResourceDictionary.MergedDictionaries>
 
     <Style x:Key="TrimmedLinkButtonStyle" TargetType="Button">
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="MinHeight" Value="20"/>
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="ClickMode" Value="Release"/>
@@ -20,8 +21,24 @@
                 <ControlTemplate TargetType="Button">
                     <TextBlock TextTrimming="CharacterEllipsis" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                Background="{TemplateBinding Background}" Text="{TemplateBinding Button.Content}"
-                               FontSize="{TemplateBinding FontSize}" 
+                               Name="Block" FontSize="{TemplateBinding FontSize}" 
                                Foreground="{TemplateBinding Foreground}" Margin="{TemplateBinding Padding}"/>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Block" Property="TextDecorations">
+                                <Setter.Value>
+                                    <TextDecorationCollection>
+                                        <TextDecoration Location="Underline">
+                                            <TextDecoration.Pen>
+                                                <Pen Thickness="1" Brush="{StaticResource LinkForegroundBrush}"/>
+                                            </TextDecoration.Pen>
+                                        </TextDecoration>
+                                    </TextDecorationCollection>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

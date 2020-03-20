@@ -7,14 +7,75 @@
              xmlns:prism="http://prismlibrary.com/"
 
              xmlns:local="clr-namespace:TwinSovet.Views"
-             xmlns:properties="clr-namespace:TwinSovet.Properties"
+             xmlns:praps="clr-namespace:TwinSovet.Properties"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
 
              mc:Ignorable="d"
+             Grid.IsSharedSizeScope="True"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
-    <TabControl TabStripPlacement="Left">
-        <TabItem Header="{x:Static properties:Resources.PlanOfHouse}">
+    <UserControl.Resources>
+        <Storyboard x:Key="DetailedFlat_In_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
+            <DoubleAnimation From="0" To="400" AutoReverse="False" Duration="0:0:0.6">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        
+        <Storyboard x:Key="DetailedFlat_Out_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
+            <DoubleAnimation From="400" To="0" AutoReverse="False" Duration="0:0:0.6">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
 
+    <TabControl TabStripPlacement="Left">
+        <TabItem Header="{x:Static praps:Resources.PlanOfHouse}">
+            <Grid Focusable="False">
+                <Grid.CommandBindings>
+                    <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="EscapeCommandBinding_OnExecuted"></CommandBinding>
+                </Grid.CommandBindings>
+
+                <Grid.InputBindings>
+                    <StaticResource ResourceKey="EscapeKeyBinding"/>
+                </Grid.InputBindings>
+
+                <local:FirstSectionPlanView Grid.Row="0" Grid.Column="0" x:Name="FirstSection"
+                                            EventShowFlatDetails="FirstSectionPlanView_OnEventShowFlatDetails"/>
+
+                <!--
+                Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                             Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+                -->
+                <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
+                        Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder"
+                        >
+                    <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                        Path=DetailedFlatViewModel, Mode=OneWay}"
+                                        Margin="{StaticResource All4Margin}"/>
+                </Border>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="{x:Static praps:Resources.UK_short}">
+            <Grid>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Страница данных по УК"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Документы дома">
+            <Grid>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Страница документов дома"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Счётчики дома">
+            <Grid>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Страница счётчиков дома"/>
+            </Grid>
         </TabItem>
     </TabControl>
 </UserControl>

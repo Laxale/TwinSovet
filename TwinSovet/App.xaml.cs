@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Threading;
+
+using Microsoft.Practices.Unity;
+
 using NLog;
 using TwinSovet.Helpers;
 
@@ -19,6 +22,12 @@ namespace TwinSovet
         private readonly ViewMappingCache viewMappingCache = new ViewMappingCache();
 
 
+        public App() 
+        {
+            instancesCache = new SingleInstancesCache(type => MainContainer.Instance.Resolve(type));
+        }
+
+
         /// <summary>
         ///   Вызывает событие <see cref="E:System.Windows.Application.Startup" />.
         /// </summary>
@@ -30,6 +39,8 @@ namespace TwinSovet
             DispatcherUnhandledException += OnDispatcherUnhandledException;
 
             base.OnStartup(e);
+
+            var initer = ViewModelInitializer.Instance;
 
             ViewModelLocationProvider.SetDefaultViewModelFactory(instancesCache.GetOrCreateInstance);
             ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewMappingCache.GetViewModelType);

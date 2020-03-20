@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TwinSovet.ViewModels;
+
+
 namespace TwinSovet.Views 
 {
     /// <summary>
@@ -21,6 +24,9 @@ namespace TwinSovet.Views
     /// </summary>
     public partial class FloorView : UserControl 
     {
+        internal event Action<FlatViewModel> EventShowFlatDetails = flatModel => { };
+
+
         public FloorView()
         {
             InitializeComponent();
@@ -35,6 +41,12 @@ namespace TwinSovet.Views
         {
             get => (ICollectionView) GetValue(RoomsViewProperty);
             set => SetValue(RoomsViewProperty, value);
+        }
+
+
+        private void SimpleFlatView_OnEventShowFlatDetails(FlatViewModel flatModel) 
+        {
+            EventShowFlatDetails(flatModel);
         }
     }
 }

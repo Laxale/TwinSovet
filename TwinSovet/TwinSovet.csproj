@@ -13,6 +13,9 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\house.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
@@ -88,6 +91,8 @@
     <Compile Include="Converters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Helpers\ClientCommands.cs" />
+    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\StaticsProvider.cs" />
     <Compile Include="Helpers\MainContainer.cs" />
@@ -95,6 +100,7 @@
     <Compile Include="Helpers\ViewMappingCache.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
+    <Compile Include="ViewModels\FirstSectionPlanViewModel.cs" />
     <Compile Include="ViewModels\FlatAborigenViewModel.cs" />
     <Compile Include="ViewModels\FlatViewModel.cs" />
     <Compile Include="ViewModels\FloorViewModel.cs" />
@@ -179,6 +185,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XamlResources\InputBindings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XamlResources\Margins.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +216,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Resources\house.ico" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

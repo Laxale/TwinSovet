@@ -156,4 +156,13 @@
   <data name="Number" xml:space="preserve">
       <value>Номер</value>
   </data>
+  <data name="UK_short" xml:space="preserve">
+    <value>УК</value>
+  </data>
+  <data name="Cancellation" xml:space="preserve">
+    <value>Отмена</value>
+  </data>
+  <data name="ToDoDefineOwner" xml:space="preserve">
+    <value>Указать собственника</value>
+  </data>
 </root>

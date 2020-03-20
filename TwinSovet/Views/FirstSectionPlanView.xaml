@@ -2,14 +2,47 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:prism="http://prismlibrary.com/"
 
-    <Viewbox>
-        <ItemsControl>
+             xmlns:views="clr-namespace:TwinSovet.Views"
+             xmlns:praps="clr-namespace:TwinSovet.Properties"
+             xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
 
-        </ItemsControl>
-    </Viewbox>
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:FirstSectionPlanViewModel}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="10" MinHeight="0"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок первой секции -->
+        <DockPanel Grid.Row="0">
+            <TextBlock DockPanel.Dock="Left">
+                <Run Text="{x:Static praps:Resources.Section}"/>
+                <Run Text="{x:Static praps:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="  "/>
+                <Run Text="Квартиры с "/>
+                <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="по"/>
+                <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
+            </TextBlock>
+        </DockPanel>
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding Path=FloorsView, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views:FloorView Margin="0, 4, 0, 4"
+                                         EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
