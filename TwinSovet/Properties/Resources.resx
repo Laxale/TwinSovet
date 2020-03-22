@@ -204,4 +204,16 @@
   <data name="DoHighlightFlatsWithoutOwner" xml:space="preserve">
     <value>Выделить квартиры без хозяина</value>
   </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Заметки</value>
+  </data>
+  <data name="ToDoShowNotes" xml:space="preserve">
+    <value>Показать заметки</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>Фотографии</value>
+  </data>
+  <data name="ToDoShowPhotos" xml:space="preserve">
+    <value>Показать фотографии</value>
+  </data>
 </root>

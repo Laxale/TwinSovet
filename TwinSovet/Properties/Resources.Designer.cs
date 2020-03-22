@@ -196,6 +196,15 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Заметки.
+        /// </summary>
+        public static string Notes {
+            get {
+                return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Номер.
         /// </summary>
         public static string Number {
@@ -228,6 +237,15 @@ namespace TwinSovet.Properties {
         public static string Phone {
             get {
                 return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Фотографии.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
             }
         }
         
@@ -309,6 +327,24 @@ namespace TwinSovet.Properties {
         public static string ToDoSave {
             get {
                 return ResourceManager.GetString("ToDoSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Показать заметки.
+        /// </summary>
+        public static string ToDoShowNotes {
+            get {
+                return ResourceManager.GetString("ToDoShowNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Показать фотографии.
+        /// </summary>
+        public static string ToDoShowPhotos {
+            get {
+                return ResourceManager.GetString("ToDoShowPhotos", resourceCulture);
             }
         }
         

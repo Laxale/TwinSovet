@@ -8,7 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
+using PubSub;
+
+using StickyWindows;
+using StickyWindows.WPF;
+
 using TwinSovet.Attributes;
+using TwinSovet.Messages;
 using TwinSovet.ViewModels;
 
 
@@ -41,6 +47,9 @@ namespace TwinSovet.Views
             detailedAborigen_Out_Animation = (Storyboard)Resources["DetailedAborigen_Out_Animation"];
 
             createOwner_Out_Animation.Completed += CreateOwnerOutAnimation_OnCompleted;
+
+            this.Subscribe<MessageShowNotes<FloorViewModel>>(OnShowNotesRequest);
+            this.Subscribe<MessageShowPhotos<FloorViewModel>>(OnShowPhotosRequest);
         }
 
 
@@ -155,7 +164,7 @@ namespace TwinSovet.Views
             DetailedAborigenCard.FocusInnerBox();
         }
 
-        private void AborigensPage_EscapeCommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        private void AborigensPage_EscapeCommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e) 
         {
             AnimateAborigenDetailsOut();
             AborigensFilterer.FocusInnerBox();
@@ -167,6 +176,41 @@ namespace TwinSovet.Views
             AborigensFilterer.FocusInnerBox();
         }
 
+
+        private void OnShowNotesRequest(MessageShowNotes<FloorViewModel> message) 
+        {
+            Window window = CreateHostWindow();
+
+            window.Content = new NotesView();
+
+            window.Show();
+        }
+
+        private void OnShowPhotosRequest(MessageShowPhotos<FloorViewModel> message) 
+        {
+            Window window = CreateHostWindow();
+
+            window.Content = "страница фотографий";
+
+            window.Show();
+        }
+
+
+        private Window CreateHostWindow() 
+        {
+            var window = new Window
+            {
+                MinHeight = 400,
+                Height = 400,
+                MinWidth = 500,
+                Width = 500
+            };
+
+            var behavior = new StickyWindowBehavior();
+            System.Windows.Interactivity.Interaction.GetBehaviors(window).Add(behavior);
+
+            return window;
+        }
 
         private void AnimateAborigenDetailsOut() 
         {

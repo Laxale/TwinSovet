@@ -89,7 +89,6 @@
                 <TabControl Grid.Row="0" Grid.Column="0"
                             IsHitTestVisible="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
                                                        Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
-                    <!--
                     <TabControl.Style>
                         <Style TargetType="TabControl">
                             <Style.Triggers>
@@ -104,7 +103,6 @@
                             </Style.Triggers>
                         </Style>
                     </TabControl.Style>
-                    -->
 
                     <TabItem>
                         <TabItem.Header>
@@ -194,13 +192,9 @@
                     </TabItem>
                 </TabControl>
 
-                <!--
-                Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                             Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                -->
+                <!-- Панель отображения деталей квартиры -->
                 <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
-                        Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder"
-                        >
+                        Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder">
                     <StackPanel Orientation="Vertical">
                         <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
                                                                   Path=DetailedFlatViewModel, Mode=OneWay}"
@@ -257,10 +251,11 @@
 
                 <local:AborigensListView Grid.Row="2" x:Name="AborigensList" Margin="{StaticResource All4Margin}"
                                          EventShowAborigenDetais="AborigensListView_OnEventShowAborigenDetais"/>
-                
+
+                <!-- Панель отображения деталей жителя -->
                 <Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="{StaticResource SteelGrayBrush}"
-                        CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1"
-                        x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Width="0" Padding="{StaticResource All4Margin}">
+                        CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1" Width="0" 
+                        x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Padding="{StaticResource All4Margin}">
                     <StackPanel Orientation="Vertical">
                         <local:FlatAborigenCardView x:Name="DetailedAborigenCard"
                                                     DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},

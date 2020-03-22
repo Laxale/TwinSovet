@@ -12,7 +12,7 @@ using TwinSovet.Data.Enums;
 
 namespace TwinSovet.ViewModels 
 {
-    internal class FloorViewModel : ViewModelBase 
+    internal class FloorViewModel : SubjectEntityViewModel 
     {
         private readonly ObservableCollection<FlatViewModel> flats = new ObservableCollection<FlatViewModel>();
 

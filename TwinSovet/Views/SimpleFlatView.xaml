@@ -9,7 +9,7 @@
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
 
              mc:Ignorable="d"
-             MouseDown="SimpleFlatView_OnMouseDown"
+             MouseLeftButtonDown="SimpleFlatView_OnMouseDown"
              d:DataContext="{d:DesignInstance viewModels:FlatViewModel}">
 
     <Grid Background="{StaticResource AlmostTransparent}">

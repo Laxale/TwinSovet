@@ -47,6 +47,12 @@
     <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="StickyWindows, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StickyWindows.0.2.0\lib\net45\StickyWindows.dll</HintPath>
+    </Reference>
+    <Reference Include="StickyWindows.WPF, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StickyWindows.WPF.0.2.0\lib\net45\StickyWindows.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -64,6 +70,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -95,10 +102,14 @@
     <Compile Include="Converters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
+    <Compile Include="Enums\AttachableEntityType.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Messages\MessageShowAttachables.cs" />
+    <Compile Include="Messages\MessageShowPhotos.cs" />
+    <Compile Include="Messages\MessageShowNotes.cs" />
     <Compile Include="Providers\FlatsProvider.cs" />
     <Compile Include="Providers\FloorsProvider.cs" />
     <Compile Include="Providers\RelationsProvider.cs" />
@@ -116,7 +127,9 @@
     <Compile Include="ViewModels\FlatViewModel.cs" />
     <Compile Include="ViewModels\FloorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NotesViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
+    <Compile Include="ViewModels\SubjectEntityViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AborigensListView.xaml.cs">
       <DependentUpon>AborigensListView.xaml</DependentUpon>
@@ -135,6 +148,9 @@
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotesView.xaml.cs">
+      <DependentUpon>NotesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SimpleAborigenView.xaml.cs">
       <DependentUpon>SimpleAborigenView.xaml</DependentUpon>
@@ -179,6 +195,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
