@@ -87,19 +87,30 @@
     </ApplicationDefinition>
     <Compile Include="Attributes\HasViewModelAttribute.cs" />
     <Compile Include="Attributes\SingleInstanceAttribute.cs" />
+    <Compile Include="Controls\FilterView.xaml.cs">
+      <DependentUpon>FilterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\GenderEnumToStringConverter.cs" />
+    <Compile Include="Converters\ReversedBooleanConverter.cs" />
     <Compile Include="Converters\ReversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Helpers\StaticsProvider.cs" />
+    <Compile Include="Providers\FlatsProvider.cs" />
+    <Compile Include="Providers\FloorsProvider.cs" />
+    <Compile Include="Providers\RelationsProvider.cs" />
+    <Compile Include="Providers\StaticsProvider.cs" />
     <Compile Include="Helpers\MainContainer.cs" />
     <Compile Include="Helpers\SingleInstancesCache.cs" />
     <Compile Include="Helpers\ViewMappingCache.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
+    <Compile Include="Messages\MessageShowFlatDetails.cs" />
+    <Compile Include="ViewModels\AborigenInListDecoratorViewModel.cs" />
+    <Compile Include="ViewModels\AborigensListViewModel.cs" />
     <Compile Include="ViewModels\FirstSectionPlanViewModel.cs" />
     <Compile Include="ViewModels\FlatAborigenViewModel.cs" />
     <Compile Include="ViewModels\FlatViewModel.cs" />
@@ -107,6 +118,9 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AborigensListView.xaml.cs">
+      <DependentUpon>AborigensListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstSectionPlanView.xaml.cs">
       <DependentUpon>FirstSectionPlanView.xaml</DependentUpon>
     </Compile>
@@ -122,9 +136,16 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SimpleAborigenView.xaml.cs">
+      <DependentUpon>SimpleAborigenView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SimpleFlatView.xaml.cs">
       <DependentUpon>SimpleFlatView.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\FilterView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -137,6 +158,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\AborigensListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FirstSectionPlanView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -154,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimpleAborigenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -61,6 +61,24 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Жители.
+        /// </summary>
+        public static string Aborigens {
+            get {
+                return ResourceManager.GetString("Aborigens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск жителей.
+        /// </summary>
+        public static string AborigenSearch {
+            get {
+                return ResourceManager.GetString("AborigenSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Twin Sovet.
         /// </summary>
         public static string AppName {
@@ -84,6 +102,15 @@ namespace TwinSovet.Properties {
         public static string Cancellation {
             get {
                 return ResourceManager.GetString("Cancellation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выделить квартиры без хозяина.
+        /// </summary>
+        public static string DoHighlightFlatsWithoutOwner {
+            get {
+                return ResourceManager.GetString("DoHighlightFlatsWithoutOwner", resourceCulture);
             }
         }
         
@@ -124,6 +151,24 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Загружаем список жителей.
+        /// </summary>
+        public static string LoadingAborigensList {
+            get {
+                return ResourceManager.GetString("LoadingAborigensList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Почта.
+        /// </summary>
+        public static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Мужичок.
         /// </summary>
         public static string Man {
@@ -142,11 +187,29 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Имя.
+        /// </summary>
+        public static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Номер.
         /// </summary>
         public static string Number {
             get {
                 return ResourceManager.GetString("Number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Отчество.
+        /// </summary>
+        public static string Otchestvo {
+            get {
+                return ResourceManager.GetString("Otchestvo", resourceCulture);
             }
         }
         
@@ -160,11 +223,38 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Телефон.
+        /// </summary>
+        public static string Phone {
+            get {
+                return ResourceManager.GetString("Phone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to План дома.
         /// </summary>
         public static string PlanOfHouse {
             get {
                 return ResourceManager.GetString("PlanOfHouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск по квартирам.
+        /// </summary>
+        public static string SearchByFlats {
+            get {
+                return ResourceManager.GetString("SearchByFlats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Поиск по этажам.
+        /// </summary>
+        public static string SearchByFloors {
+            get {
+                return ResourceManager.GetString("SearchByFloors", resourceCulture);
             }
         }
         
@@ -187,11 +277,38 @@ namespace TwinSovet.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Фамилия.
+        /// </summary>
+        public static string Surname {
+            get {
+                return ResourceManager.GetString("Surname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Очистить.
+        /// </summary>
+        public static string ToDoClear {
+            get {
+                return ResourceManager.GetString("ToDoClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Указать собственника.
         /// </summary>
         public static string ToDoDefineOwner {
             get {
                 return ResourceManager.GetString("ToDoDefineOwner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сохранить.
+        /// </summary>
+        public static string ToDoSave {
+            get {
+                return ResourceManager.GetString("ToDoSave", resourceCulture);
             }
         }
         

@@ -1,16 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
+
 using TwinSovet.Data.Enums;
 
 
-namespace TwinSovet.Helpers 
+namespace TwinSovet.Providers 
 {
     internal static class StaticsProvider 
     {
+        /// <summary>
+        /// 
+        /// </summary>
         static StaticsProvider() 
         {
             AvailableSectionNumbers = new List<SectionType> { SectionType.Furniture, SectionType.Hospital };
@@ -28,6 +28,8 @@ namespace TwinSovet.Helpers
 
 
         public static bool IsAdminMode { get; }
+
+        public static int SearchDelay { get; } = 300;
 
         public static int FlatsPerMebelFloor { get; } = 6;
 

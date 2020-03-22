@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="TwinSovet.Views.AborigensListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:prism="http://prismlibrary.com/"
+
+             xmlns:local="clr-namespace:TwinSovet.Views"
+             xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+
+             mc:Ignorable="d"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             d:DataContext="{d:DesignInstance viewModels:AborigensListViewModel}">
+
+    <Grid>
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Path=AborigensView, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="viewModels:AborigenInListDecoratorViewModel">
+                        <Border CornerRadius="{StaticResource InListBorderCornerRadius}" 
+                                Background="{StaticResource PanelGrayBrush}" Margin="{StaticResource All4Margin}">
+                            <local:SimpleAborigenView DataContext="{Binding}" EventShowAborigenDetais="SimpleAborigenView_OnShowAborigenDetais"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

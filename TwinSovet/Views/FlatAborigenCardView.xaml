@@ -9,6 +9,7 @@
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance viewModels:FlatAborigenViewModel}">
@@ -24,6 +25,8 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -35,56 +38,31 @@
                Visibility="{Binding Path=HasPhoto, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <!-- Иконка отсутствующего аватара -->
-        <Path Grid.Row="0" Grid.Column="0" Fill="{StaticResource SteelGrayBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"
-              Visibility="{Binding Path=HasPhoto, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}">
-            <Path.Style>
-                <Style TargetType="Path">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Path=IsMan, Mode=OneWay}" Value="True">
-                            <Setter Property="Data" Value="{StaticResource ManUserIconGeometry}"/>
-                        </DataTrigger>
+        <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource GenderPathIconStyle}"
+              Visibility="{Binding Path=HasPhoto, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
 
-                        <DataTrigger Binding="{Binding Path=IsWoman, Mode=OneWay}" Value="True">
-                            <Setter Property="Data" Value="{StaticResource WomanUserIconGeometry}"/>
-                        </DataTrigger>
+        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay}" Name="NameBox"/>
 
-                        <DataTrigger Binding="{Binding Path=IsGenderUndefined, Mode=OneWay}" Value="True">
-                            <Setter Property="Data" Value="{StaticResource QuestionFileIconGeometry}"/>
-                            <Setter Property="LayoutTransform">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="0.2" ScaleY="0.2"/>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-
-                        <DataTrigger Binding="{Binding Path=IsLibertarian, Mode=OneWay}" Value="True">
-                            <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
-                            <Setter Property="LayoutTransform">
-                                <Setter.Value>
-                                    <ScaleTransform ScaleX="0.2" ScaleY="0.2"/>
-                                </Setter.Value>
-                            </Setter>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Path.Style>
-        </Path>
-
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static praps:Resources.Surname}"/>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Surname, Mode=TwoWay}"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static praps:Resources.Otchestvo}"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Otchestvo, Mode=TwoWay}"/>
 
-        <DockPanel Grid.Row="3" Grid.Column="1">
-            <TextBlock DockPanel.Dock="Left" Text="{x:Static praps:Resources.Gender}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static praps:Resources.Phone}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=PhoneNumber, Mode=TwoWay}"/>
 
-            <ComboBox ItemsSource="{x:Static helpers:StaticsProvider.AvailableGenders}" Margin="{StaticResource 4LeftMargin}"
-                      VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="100">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding Converter={StaticResource GenderEnumToStringConverter}}"/>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-        </DockPanel>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static praps:Resources.Mail}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Email, Mode=TwoWay}"/>
+
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static praps:Resources.Gender}"/>
+        <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{x:Static providers:StaticsProvider.AvailableGenders}"
+                  VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="100">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Converter={StaticResource GenderEnumToStringConverter}}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
     </Grid>
 </UserControl>

@@ -13,8 +13,11 @@
     <Color x:Key="BlueColor">#33A9D0</Color>
     <Color x:Key="WhiteColor">White</Color>
 
+    <SolidColorBrush x:Key="LightGrayBrush" Color="#FFEEEEEE"/>
     <SolidColorBrush x:Key="AlmostTransparent" Color="#01000000"/>
+    <SolidColorBrush x:Key="RedBrush" Color="{StaticResource RedColor}"/>
     <SolidColorBrush x:Key="GrayBrush" Color="{StaticResource GrayColor}"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource WhiteColor}"/>
     <SolidColorBrush x:Key="GreenBrush" Color="{StaticResource GreenColor}"/>
     <SolidColorBrush x:Key="PanelGrayBrush" Color="{StaticResource PanelGrayColor}"/>
     <SolidColorBrush x:Key="SteelGrayBrush" Color="{StaticResource SteelGrayColor}"/>

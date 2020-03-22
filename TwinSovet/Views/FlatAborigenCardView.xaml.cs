@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 
 namespace TwinSovet.Views
@@ -14,9 +15,15 @@ namespace TwinSovet.Views
     /// </summary>
     public partial class FlatAborigenCardView : UserControl 
     {
-        public FlatAborigenCardView()
+        public FlatAborigenCardView() 
         {
             InitializeComponent();
+        }
+
+
+        public void FocusInnerBox() 
+        {
+            Keyboard.Focus(NameBox);
         }
     }
 }

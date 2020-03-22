@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using PubSub;
+
+using TwinSovet.Messages;
 using TwinSovet.ViewModels;
 
 
@@ -30,6 +33,14 @@ namespace TwinSovet.Views
         public FloorView()
         {
             InitializeComponent();
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            ViewModel = (FloorViewModel)DataContext;
+            this.Subscribe<MessageShowFlatDetails>(OnShowFlatDetailsRequest);
         }
 
 
@@ -44,6 +55,17 @@ namespace TwinSovet.Views
         }
 
 
+        private FloorViewModel ViewModel { get; set; }
+
+
+        private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
+        {
+            if (ViewModel.FlatsView.SourceCollection.OfType<FlatViewModel>().Contains(message.Flat))
+            {
+                EventShowFlatDetails(message.Flat);
+            }
+        }
+        
         private void SimpleFlatView_OnEventShowFlatDetails(FlatViewModel flatModel) 
         {
             EventShowFlatDetails(flatModel);

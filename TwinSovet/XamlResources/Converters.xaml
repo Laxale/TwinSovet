@@ -6,7 +6,10 @@
                     xmlns:converters="clr-namespace:TwinSovet.Converters">
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    <converters:ReversedBooleanConverter x:Key="ReversedBooleanConverter"/>
     <converters:GenderEnumToStringConverter x:Key="GenderEnumToStringConverter"/>
     <converters:SectionTypeToStringConverter x:Key="SectionNumberToStringConverter"/>
+    <converters:ReversedNullToVisibilityConverter x:Key="ReversedNullToVisibilityConverter"/>
     <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter"/>
 </ResourceDictionary>

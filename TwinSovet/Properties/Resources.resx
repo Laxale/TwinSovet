@@ -165,4 +165,43 @@
   <data name="ToDoDefineOwner" xml:space="preserve">
     <value>Указать собственника</value>
   </data>
+  <data name="ToDoSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Aborigens" xml:space="preserve">
+    <value>Жители</value>
+  </data>
+  <data name="ToDoClear" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+  <data name="SearchByFloors" xml:space="preserve">
+    <value>Поиск по этажам</value>
+  </data>
+  <data name="SearchByFlats" xml:space="preserve">
+    <value>Поиск по квартирам</value>
+  </data>
+  <data name="LoadingAborigensList" xml:space="preserve">
+    <value>Загружаем список жителей</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
+  <data name="Otchestvo" xml:space="preserve">
+    <value>Отчество</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Почта</value>
+  </data>
+  <data name="AborigenSearch" xml:space="preserve">
+    <value>Поиск жителей</value>
+  </data>
+  <data name="DoHighlightFlatsWithoutOwner" xml:space="preserve">
+    <value>Выделить квартиры без хозяина</value>
+  </data>
 </root>

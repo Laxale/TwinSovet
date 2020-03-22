@@ -9,6 +9,11 @@ using TwinSovet.Helpers;
 
 using Prism.Mvvm;
 
+using PubSub;
+
+using TwinSovet.Messages;
+using TwinSovet.ViewModels;
+
 
 namespace TwinSovet 
 {
@@ -56,6 +61,12 @@ namespace TwinSovet
             MessageBox.Show(message);
 
             Environment.Exit(-6);
+        }
+
+
+        private void SimpleFlatView_OnEventShowFlatDetails(FlatViewModel flat) 
+        {
+            this.Publish(new MessageShowFlatDetails(flat));
         }
     }
 }

@@ -48,27 +48,12 @@
             </DockPanel>
 
             <Viewbox Grid.Row="1">
-                <ItemsControl ItemsSource="{Binding Path=FlatsView, Mode=OneWay}">
+                <ItemsControl ItemsSource="{Binding Path=FlatsView, Mode=OneWay}" ItemTemplate="{StaticResource FlatInListTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <DockPanel/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Margin="{StaticResource All4Margin}" Style="{StaticResource InListBorderStyle}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="FlatInListSharedGroup"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <local:SimpleFlatView Margin="{StaticResource All4Margin}"
-                                                          EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </Viewbox>
         </Grid>

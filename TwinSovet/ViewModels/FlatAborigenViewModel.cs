@@ -4,6 +4,8 @@ using System.Linq;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
+
+using TwinSovet.Converters;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 
@@ -12,8 +14,10 @@ namespace TwinSovet.ViewModels
 {
     internal class FlatAborigenViewModel : ViewModelBase 
     {
-        private readonly FlatAborigenModel flatAborigenModel;
+        private static readonly GenderEnumToStringConverter genderConverter = new GenderEnumToStringConverter();
 
+        private readonly FlatAborigenModel flatAborigenModel;
+        
         private string name;
         private string email;
         private string surname;
@@ -25,6 +29,15 @@ namespace TwinSovet.ViewModels
         public FlatAborigenViewModel(FlatAborigenModel flatAborigenModel) 
         {
             this.flatAborigenModel = flatAborigenModel;
+
+            Name = flatAborigenModel.Name;
+            Email = flatAborigenModel.Email;
+            Surname = flatAborigenModel.Surname;
+            Otchestvo = flatAborigenModel.Otchestvo;
+            Gender = flatAborigenModel.Gender;
+            PhoneNumber = flatAborigenModel.PhoneNumber;
+
+            LocalizedGender = (string)genderConverter.Convert(Gender, null, null, null);
         }
 
 
@@ -129,6 +142,14 @@ namespace TwinSovet.ViewModels
                 OnPropertyChanged(nameof(IsLibertarian));
                 OnPropertyChanged(nameof(IsGenderUndefined));
             }
+        }
+
+        public string LocalizedGender { get; }
+
+
+        public string GetId() 
+        {
+            return flatAborigenModel.Id;
         }
     }
 }

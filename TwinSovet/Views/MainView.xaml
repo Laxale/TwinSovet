@@ -9,14 +9,20 @@
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:controls="clr-namespace:TwinSovet.Controls"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d"
              Grid.IsSharedSizeScope="True"
              prism:ViewModelLocator.AutoWireViewModel="True">
 
     <UserControl.Resources>
+        <Duration x:Key="AnimDuration">0:0:0.5</Duration>
+        <system:Double x:Key="SlidePanelWidth">400</system:Double>
+
         <Storyboard x:Key="DetailedFlat_In_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
-            <DoubleAnimation From="0" To="400" AutoReverse="False" Duration="0:0:0.6">
+            <DoubleAnimation From="0" To="{StaticResource SlidePanelWidth}" AutoReverse="False" Duration="{StaticResource AnimDuration}">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -24,7 +30,43 @@
         </Storyboard>
         
         <Storyboard x:Key="DetailedFlat_Out_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
-            <DoubleAnimation From="400" To="0" AutoReverse="False" Duration="0:0:0.6">
+            <DoubleAnimation From="{StaticResource SlidePanelWidth}" To="0" AutoReverse="False" Duration="{StaticResource AnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="CreateOwner_In_Animation" TargetName="CreateOwnerPanel" TargetProperty="Height">
+            <DoubleAnimation From="0" To="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                   Path=OwnerPanelHeight, Mode=OneWay}"
+                             AutoReverse="False" Duration="{StaticResource AnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="CreateOwner_Out_Animation" TargetName="CreateOwnerPanel" TargetProperty="Height">
+            <DoubleAnimation From="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                            Path=OwnerPanelHeight, Mode=OneWay}" 
+                             To="0" AutoReverse="False" Duration="{StaticResource AnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="DetailedAborigen_In_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
+            <DoubleAnimation From="0" To="{StaticResource SlidePanelWidth}" AutoReverse="False" Duration="{StaticResource AnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="DetailedAborigen_Out_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
+            <DoubleAnimation From="{StaticResource SlidePanelWidth}" To="0" AutoReverse="False" Duration="{StaticResource AnimDuration}">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
@@ -33,18 +75,124 @@
     </UserControl.Resources>
 
     <TabControl TabStripPlacement="Left">
+        <!-- Вкладка плана дома -->
         <TabItem Header="{x:Static praps:Resources.PlanOfHouse}">
+            <TabItem.CommandBindings>
+                <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="HomePlan_EscapeCommandBinding_OnExecuted"/>
+            </TabItem.CommandBindings>
+
+            <TabItem.InputBindings>
+                <StaticResource ResourceKey="EscapeKeyBinding"/>
+            </TabItem.InputBindings>
+
             <Grid Focusable="False">
-                <Grid.CommandBindings>
-                    <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="EscapeCommandBinding_OnExecuted"></CommandBinding>
-                </Grid.CommandBindings>
+                <TabControl Grid.Row="0" Grid.Column="0"
+                            IsHitTestVisible="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                       Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
+                    <!--
+                    <TabControl.Style>
+                        <Style TargetType="TabControl">
+                            <Style.Triggers>
+                                <Trigger Property="IsHitTestVisible" Value="False">
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <BlurEffect/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TabControl.Style>
+                    -->
 
-                <Grid.InputBindings>
-                    <StaticResource ResourceKey="EscapeKeyBinding"/>
-                </Grid.InputBindings>
+                    <TabItem>
+                        <TabItem.Header>
+                            <DockPanel VerticalAlignment="Center" MinHeight="20">
+                                <ToggleButton ToolTip="{x:Static praps:Resources.DoHighlightFlatsWithoutOwner}" Cursor="Hand" VerticalAlignment="Center" 
+                                              Command="{Binding ElementName=FirstSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Name="Bord" Background="{StaticResource AlmostTransparent}">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="Bord" Property="Background" Value="{StaticResource LightGrayBrush}"/>
+                                                </Trigger>
 
-                <local:FirstSectionPlanView Grid.Row="0" Grid.Column="0" x:Name="FirstSection"
-                                            EventShowFlatDetails="FirstSectionPlanView_OnEventShowFlatDetails"/>
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter TargetName="Bord" Property="BorderBrush" Value="{StaticResource SteelGrayBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+
+                                    <Path Data="{StaticResource UnknownIconGeometry}">
+                                        <Path.Style>
+                                            <Style TargetType="Path">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                                                                   Path=IsChecked, Mode=OneWay}"
+                                                                 Value="True">
+                                                        <Setter Property="StrokeThickness" Value="2"/>
+                                                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
+                                                        <Setter Property="Stroke" Value="{StaticResource RedBrush}"/>
+                                                    </DataTrigger>
+
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                                                                   Path=IsChecked, Mode=OneWay}"
+                                                                 Value="False">
+                                                        <Setter Property="StrokeThickness" Value="1"/>
+                                                        <Setter Property="Fill" Value="{StaticResource GrayBrush}"/>
+                                                        <Setter Property="Stroke" Value="{StaticResource GrayBrush}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+
+                                        <Path.LayoutTransform>
+                                            <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
+                                        </Path.LayoutTransform>
+                                    </Path>
+                                </ToggleButton>
+
+                                <TextBlock Text="{x:Static praps:Resources.Mebelnaya}" Margin="{StaticResource 4LeftMargin}"/>
+                            </DockPanel>
+                        </TabItem.Header>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <controls:FilterView Grid.Column="0" WatermarkText="{x:Static praps:Resources.SearchByFloors}"
+                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FloorFilterText, Mode=TwoWay,
+                                                                          Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+
+                                <controls:FilterView Grid.Column="1" Margin="{StaticResource  4LeftMargin}"
+                                                     WatermarkText="{x:Static praps:Resources.SearchByFlats}"
+                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FlatFilterText, Mode=TwoWay,
+                                                                          Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                            </Grid>
+
+                            <local:FirstSectionPlanView Grid.Row="1" Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
+                                                        EventShowFlatDetails="FirstSectionPlanView_OnEventShowFlatDetails"/>
+                        </Grid>
+                    </TabItem>
+
+                    <TabItem Header="{x:Static praps:Resources.Hospital}">
+                        <TextBlock Text="{x:Static praps:Resources.Hospital}" HorizontalAlignment="Center"/>
+                    </TabItem>
+                </TabControl>
 
                 <!--
                 Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
@@ -53,9 +201,77 @@
                 <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
                         Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder"
                         >
-                    <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                        Path=DetailedFlatViewModel, Mode=OneWay}"
-                                        Margin="{StaticResource All4Margin}"/>
+                    <StackPanel Orientation="Vertical">
+                        <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                                  Path=DetailedFlatViewModel, Mode=OneWay}"
+                                            Margin="{StaticResource All4Margin}" 
+                                            EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
+
+                        <Border x:Name="CreateOwnerPanel" Visibility="Hidden" Margin="{StaticResource All4Margin}"
+                                Loaded="OwnerPanel_OnLoaded" Background="{StaticResource SelectedGrayBrush}" 
+                                CornerRadius="{StaticResource InListBorderCornerRadius}">
+                            <Grid Margin="{StaticResource All4Margin}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <local:FlatAborigenCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                                  Path=DetailedFlatViewModel.FlatOwner, Mode=OneWay}"/>
+                                <DockPanel Grid.Row="1" HorizontalAlignment="Right">
+                                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static praps:Resources.ToDoSave}"/>
+                                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
+                                            Content="{x:Static praps:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
+                                            Click="CancelOwnerCreationButton_OnClick"/>
+                                </DockPanel>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </TabItem>
+
+        <!-- Вкладка жителей дома -->
+        <TabItem Header="{x:Static praps:Resources.Aborigens}">
+            <TabItem.CommandBindings>
+                <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="AborigensPage_EscapeCommandBinding_OnExecuted"/>
+            </TabItem.CommandBindings>
+
+            <TabItem.InputBindings>
+                <StaticResource ResourceKey="EscapeKeyBinding"/>
+            </TabItem.InputBindings>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Страница жителей"/>
+
+                <controls:FilterView Grid.Row="1" Margin="{StaticResource All4Margin}"
+                                     WatermarkText="{x:Static praps:Resources.AborigenSearch}" x:Name="AborigensFilterer"
+                                     FilterText="{Binding ElementName=AborigensList, Path=DataContext.FilterText, Mode=TwoWay,
+                                                          Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+
+                <local:AborigensListView Grid.Row="2" x:Name="AborigensList" Margin="{StaticResource All4Margin}"
+                                         EventShowAborigenDetais="AborigensListView_OnEventShowAborigenDetais"/>
+                
+                <Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="{StaticResource SteelGrayBrush}"
+                        CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1"
+                        x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Width="0" Padding="{StaticResource All4Margin}">
+                    <StackPanel Orientation="Vertical">
+                        <local:FlatAborigenCardView x:Name="DetailedAborigenCard"
+                                                    DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                                          Path=DetailedAborigenViewModel, Mode=OneWay}"/>
+                        
+                        <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
+                            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static praps:Resources.ToDoSave}"/>
+                            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Foreground="{StaticResource RedBrush}" Margin="{StaticResource 4LeftMargin}"
+                                    Content="{x:Static praps:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
+                        </DockPanel>
+                    </StackPanel>
                 </Border>
             </Grid>
         </TabItem>
