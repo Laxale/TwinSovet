@@ -12,6 +12,7 @@
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
+             xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              Grid.IsSharedSizeScope="True"
@@ -76,7 +77,7 @@
 
     <TabControl TabStripPlacement="Left">
         <!-- Вкладка плана дома -->
-        <TabItem Header="{x:Static praps:Resources.PlanOfHouse}">
+        <TabItem Header="{x:Static locRes:Resources.PlanOfHouse}">
             <TabItem.CommandBindings>
                 <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="HomePlan_EscapeCommandBinding_OnExecuted"/>
             </TabItem.CommandBindings>
@@ -86,13 +87,14 @@
             </TabItem.InputBindings>
 
             <Grid Focusable="False">
-                <TabControl Grid.Row="0" Grid.Column="0"
-                            IsHitTestVisible="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                                       Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
+                <!-- Контрол вкладок с секциями дома -->
+                <TabControl Grid.Row="0" Grid.Column="0" 
+                            IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+                                                Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
                     <TabControl.Style>
                         <Style TargetType="TabControl">
                             <Style.Triggers>
-                                <Trigger Property="IsHitTestVisible" Value="False">
+                                <Trigger Property="IsEnabled" Value="False">
                                     <Setter Property="Opacity" Value="0.8"/>
                                     <Setter Property="Effect">
                                         <Setter.Value>
@@ -104,10 +106,11 @@
                         </Style>
                     </TabControl.Style>
 
+                    <!-- Вкладка плана мебельной секции -->
                     <TabItem>
                         <TabItem.Header>
                             <DockPanel VerticalAlignment="Center" MinHeight="20">
-                                <ToggleButton ToolTip="{x:Static praps:Resources.DoHighlightFlatsWithoutOwner}" Cursor="Hand" VerticalAlignment="Center" 
+                                <ToggleButton ToolTip="{x:Static locRes:Resources.DoHighlightFlatsWithoutOwner}" Cursor="Hand" VerticalAlignment="Center" 
                                               Command="{Binding ElementName=FirstSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
                                     <ToggleButton.Template>
                                         <ControlTemplate TargetType="ToggleButton">
@@ -156,7 +159,7 @@
                                     </Path>
                                 </ToggleButton>
 
-                                <TextBlock Text="{x:Static praps:Resources.Mebelnaya}" Margin="{StaticResource 4LeftMargin}"/>
+                                <TextBlock Text="{x:Static locRes:Resources.Mebelnaya}" Margin="{StaticResource 4LeftMargin}"/>
                             </DockPanel>
                         </TabItem.Header>
 
@@ -172,13 +175,13 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <controls:FilterView Grid.Column="0" WatermarkText="{x:Static praps:Resources.SearchByFloors}"
-                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FloorFilterText, Mode=TwoWay,
+                                <controls:FilterView Grid.Column="0" WatermarkText="{x:Static locRes:Resources.SearchByFloors}"
+                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FloorFilterModel.FilterText, Mode=TwoWay,
                                                                           Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
 
                                 <controls:FilterView Grid.Column="1" Margin="{StaticResource  4LeftMargin}"
-                                                     WatermarkText="{x:Static praps:Resources.SearchByFlats}"
-                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FlatFilterText, Mode=TwoWay,
+                                                     WatermarkText="{x:Static locRes:Resources.SearchByFlats}"
+                                                     FilterText="{Binding ElementName=FirstSectionView, Path=DataContext.FlatFilterModel.FilterText, Mode=TwoWay,
                                                                           Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
                             </Grid>
 
@@ -187,20 +190,32 @@
                         </Grid>
                     </TabItem>
 
-                    <TabItem Header="{x:Static praps:Resources.Hospital}">
-                        <TextBlock Text="{x:Static praps:Resources.Hospital}" HorizontalAlignment="Center"/>
+                    <!-- Вкладка плана больничной секции -->
+                    <TabItem Header="{x:Static locRes:Resources.Hospital}">
+                        <TextBlock Text="{x:Static locRes:Resources.Hospital}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </TabItem>
                 </TabControl>
+
+                <Border Background="{StaticResource SteelGrayBrush}" 
+                        Opacity="0.2" x:Name="MaskPanel" Visibility="Collapsed"
+                        MouseLeftButtonDown="SectionsMaskPanel_OnPreviewMouseLeftButtonDown"/>
 
                 <!-- Панель отображения деталей квартиры -->
                 <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
                         Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder">
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}">
                         <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
                                                                   Path=DetailedFlatViewModel, Mode=OneWay}"
-                                            Margin="{StaticResource All4Margin}" 
-                                            EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
+                                            x:Name="DetailedFlatCard" EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
 
+                        <DockPanel HorizontalAlignment="Right">
+                            <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static locRes:Resources.ToDoSave}"/>
+                            <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
+                                    Content="{x:Static locRes:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
+                                    Click="CancelFlatDetailsButton_OnClick"/>
+                        </DockPanel>
+
+                        <!-- Панель указания/создания владельца выбранной квартиры -->
                         <Border x:Name="CreateOwnerPanel" Visibility="Hidden" Margin="{StaticResource All4Margin}"
                                 Loaded="OwnerPanel_OnLoaded" Background="{StaticResource SelectedGrayBrush}" 
                                 CornerRadius="{StaticResource InListBorderCornerRadius}">
@@ -210,12 +225,15 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <local:FlatAborigenCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+
+                                <local:FlatAborigenCardView Grid.Row="0" 
+                                                            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
                                                                   Path=DetailedFlatViewModel.FlatOwner, Mode=OneWay}"/>
+
                                 <DockPanel Grid.Row="1" HorizontalAlignment="Right">
-                                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static praps:Resources.ToDoSave}"/>
+                                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static locRes:Resources.ToDoSave}"/>
                                     <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
-                                            Content="{x:Static praps:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
+                                            Content="{x:Static locRes:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
                                             Click="CancelOwnerCreationButton_OnClick"/>
                                 </DockPanel>
                             </Grid>
@@ -226,7 +244,7 @@
         </TabItem>
 
         <!-- Вкладка жителей дома -->
-        <TabItem Header="{x:Static praps:Resources.Aborigens}">
+        <TabItem Header="{x:Static locRes:Resources.Aborigens}">
             <TabItem.CommandBindings>
                 <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="AborigensPage_EscapeCommandBinding_OnExecuted"/>
             </TabItem.CommandBindings>
@@ -245,8 +263,8 @@
                 <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Страница жителей"/>
 
                 <controls:FilterView Grid.Row="1" Margin="{StaticResource All4Margin}"
-                                     WatermarkText="{x:Static praps:Resources.AborigenSearch}" x:Name="AborigensFilterer"
-                                     FilterText="{Binding ElementName=AborigensList, Path=DataContext.FilterText, Mode=TwoWay,
+                                     WatermarkText="{x:Static locRes:Resources.AborigenSearch}" x:Name="AborigensFilterer"
+                                     FilterText="{Binding ElementName=AborigensList, Path=DataContext.FilterModel.FilterText, Mode=TwoWay,
                                                           Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
 
                 <local:AborigensListView Grid.Row="2" x:Name="AborigensList" Margin="{StaticResource All4Margin}"
@@ -262,16 +280,16 @@
                                                                           Path=DetailedAborigenViewModel, Mode=OneWay}"/>
                         
                         <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
-                            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static praps:Resources.ToDoSave}"/>
+                            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static locRes:Resources.ToDoSave}"/>
                             <Button Style="{StaticResource TrimmedLinkButtonStyle}" Foreground="{StaticResource RedBrush}" Margin="{StaticResource 4LeftMargin}"
-                                    Content="{x:Static praps:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
+                                    Content="{x:Static locRes:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
                         </DockPanel>
                     </StackPanel>
                 </Border>
             </Grid>
         </TabItem>
 
-        <TabItem Header="{x:Static praps:Resources.UK_short}">
+        <TabItem Header="{x:Static locRes:Resources.UK_short}">
             <Grid>
                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="Страница данных по УК"/>
             </Grid>

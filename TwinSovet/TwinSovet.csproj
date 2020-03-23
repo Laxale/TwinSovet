@@ -47,12 +47,6 @@
     <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="StickyWindows, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StickyWindows.0.2.0\lib\net45\StickyWindows.dll</HintPath>
-    </Reference>
-    <Reference Include="StickyWindows.WPF, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StickyWindows.WPF.0.2.0\lib\net45\StickyWindows.WPF.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -104,9 +98,12 @@
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
     <Compile Include="Enums\AttachableEntityType.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
+    <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="ViewModels\FlatInListDecoratorViewModel.cs" />
     <Compile Include="Messages\MessageShowAttachables.cs" />
     <Compile Include="Messages\MessageShowPhotos.cs" />
     <Compile Include="Messages\MessageShowNotes.cs" />
@@ -122,13 +119,15 @@
     <Compile Include="Messages\MessageShowFlatDetails.cs" />
     <Compile Include="ViewModels\AborigenInListDecoratorViewModel.cs" />
     <Compile Include="ViewModels\AborigensListViewModel.cs" />
+    <Compile Include="ViewModels\FilterViewModel.cs" />
     <Compile Include="ViewModels\FirstSectionPlanViewModel.cs" />
-    <Compile Include="ViewModels\FlatAborigenViewModel.cs" />
+    <Compile Include="ViewModels\AborigenViewModel.cs" />
     <Compile Include="ViewModels\FlatViewModel.cs" />
     <Compile Include="ViewModels\FloorViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\NotesViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
+    <Compile Include="ViewModels\SelectAborigenViewModel.cs" />
     <Compile Include="ViewModels\SubjectEntityViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AborigensListView.xaml.cs">
@@ -151,6 +150,9 @@
     </Compile>
     <Compile Include="Views\NotesView.xaml.cs">
       <DependentUpon>NotesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectAborigenView.xaml.cs">
+      <DependentUpon>SelectAborigenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SimpleAborigenView.xaml.cs">
       <DependentUpon>SimpleAborigenView.xaml</DependentUpon>
@@ -199,6 +201,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\NotesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectAborigenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -288,9 +294,17 @@
       <Project>{C73D1486-C5C4-4BF0-AE0B-D0A214E2CCB9}</Project>
       <Name>PubSub</Name>
     </ProjectReference>
+    <ProjectReference Include="..\StickyWindows.WPF\StickyWindows.WPF.csproj">
+      <Project>{42153158-b140-4ff5-91a0-e00e01f24428}</Project>
+      <Name>StickyWindows.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TwinSovet.Data\TwinSovet.Data.csproj">
       <Project>{0CBAF836-B3BA-4C85-B7B2-8B65C190E9AB}</Project>
       <Name>TwinSovet.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TwinSovet.Localization\TwinSovet.Localization.csproj">
+      <Project>{4a937194-f9eb-4335-8963-a6c8c2cf687c}</Project>
+      <Name>TwinSovet.Localization</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

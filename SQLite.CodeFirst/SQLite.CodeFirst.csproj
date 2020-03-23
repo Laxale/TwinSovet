@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="..\common.targets" />
+  <PropertyGroup>
+    <ProjectGuid>{50A32FE4-0E13-4213-A373-72523CDF34D9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SQLite.CodeFirst</RootNamespace>
+    <AssemblyName>SQLite.CodeFirst</AssemblyName>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <!-- </Release Configuration> -->
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Internal\Builder\NameCreators\NameCreator.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\DefaultValueConstraint.cs" />
+    <Compile Include="Internal\Utility\InMemoryAwareFile.cs" />
+    <Compile Include="Internal\Extensions\ListExtensions.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\PrimaryKeyConstraint.cs" />
+    <Compile Include="Public\Attributes\AutoincrementAttribute.cs" />
+    <Compile Include="Public\Attributes\CollateAttribute.cs" />
+    <Compile Include="Public\Attributes\CollationFunction.cs" />
+    <Compile Include="Public\Attributes\OnConflictAction.cs" />
+    <Compile Include="Public\Attributes\SqlDefaultValueAttribute.cs" />
+    <Compile Include="Public\Attributes\UniqueAttribute.cs" />
+    <Compile Include="Public\Entities\IHistory.cs" />
+    <Compile Include="Internal\Builder\NameCreators\IndexNameCreator.cs" />
+    <Compile Include="Internal\Builder\NameCreators\SpecialChars.cs" />
+    <Compile Include="Public\IDatabaseCreator.cs" />
+    <Compile Include="Internal\Extensions\DbModelBuilderExtensions.cs" />
+    <Compile Include="Internal\Extensions\EdmPropertyExtensions.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\CollateConstraint.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\UniqueConstraint.cs" />
+    <Compile Include="Internal\Utility\HashCreator.cs" />
+    <Compile Include="Internal\Utility\HistoryEntityTypeValidator.cs" />
+    <Compile Include="Internal\Utility\SqliteAssociationType.cs" />
+    <Compile Include="Public\ISqliteSqlGenerator.cs" />
+    <Compile Include="Public\DbInitializers\SqliteDropCreateDatabaseWhenModelChanges.cs" />
+    <Compile Include="Public\Entities\History.cs" />
+    <Compile Include="Public\SqliteSqlGenerator.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\IColumnConstraintCollection.cs" />
+    <Compile Include="Internal\Statement\IStatementCollection.cs" />
+    <Compile Include="Internal\Utility\AssociationTypeContainer.cs" />
+    <Compile Include="Internal\Builder\ColumnStatementCollectionBuilder.cs" />
+    <Compile Include="Internal\Builder\CreateIndexStatementBuilder.cs" />
+    <Compile Include="Internal\Builder\ForeignKeyStatementBuilder.cs" />
+    <Compile Include="Internal\Builder\CreateDatabaseStatementBuilder.cs" />
+    <Compile Include="Internal\Builder\CompositePrimaryKeyStatementBuilder.cs" />
+    <Compile Include="Internal\Convention\SqliteForeignKeyIndexConvention.cs" />
+    <Compile Include="Internal\Extensions\EntityTypeExtension.cs" />
+    <Compile Include="Public\DbInitializers\SqliteCreateDatabaseIfNotExists.cs" />
+    <Compile Include="Public\DbInitializers\SqliteDropCreateDatabaseAlways.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\MaxLengthConstraint.cs" />
+    <Compile Include="Internal\Statement\CreateIndexStatement.cs" />
+    <Compile Include="Internal\Statement\CreateIndexStatementCollection.cs" />
+    <Compile Include="Internal\Statement\CompositePrimaryKeyStatement.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Internal\Utility\ConnectionStringParser.cs" />
+    <Compile Include="Public\DbInitializers\SqliteInitializerBase.cs" />
+    <Compile Include="Internal\Builder\IStatementBuilder.cs" />
+    <Compile Include="Public\SqliteDatabaseCreator.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\ColumnConstraintCollection.cs" />
+    <Compile Include="Internal\Statement\ForeignKeyStatement.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\IColumnConstraint.cs" />
+    <Compile Include="Internal\Statement\ColumnConstraint\NotNullConstraint.cs" />
+    <Compile Include="Internal\Statement\ColumnStatementCollection.cs" />
+    <Compile Include="Internal\Statement\ColumnStatement.cs" />
+    <Compile Include="Internal\Statement\CreateDatabaseStatement.cs" />
+    <Compile Include="Internal\Statement\CreateTableStatement.cs" />
+    <Compile Include="Internal\Statement\IStatement.cs" />
+    <Compile Include="Internal\Builder\CreateTableStatementBuilder.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

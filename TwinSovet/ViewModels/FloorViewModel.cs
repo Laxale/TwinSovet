@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 using TwinSovet.Data.Enums;
+using TwinSovet.Helpers;
 
 
 namespace TwinSovet.ViewModels 
 {
     internal class FloorViewModel : SubjectEntityViewModel 
     {
-        private readonly ObservableCollection<FlatViewModel> flats = new ObservableCollection<FlatViewModel>();
+        private readonly ObservableCollection<FlatInListDecoratorViewModel> flatDecorators = new ObservableCollection<FlatInListDecoratorViewModel>();
 
         private int floorNumber;
-        private string filterText;
         private int minFlatNumber;
         private int maxFlatNumber;
         private SectionType section;
@@ -25,8 +25,8 @@ namespace TwinSovet.ViewModels
 
         public FloorViewModel() 
         {
-            FlatsView = CollectionViewSource.GetDefaultView(flats);
-            FlatsEnumerable = flats;
+            FlatsView = CollectionViewSource.GetDefaultView(flatDecorators);
+            FlatsEnumerable = flatDecorators;
 
             PropertyChanged += Self_OnPropertyChanged;
         }
@@ -34,7 +34,7 @@ namespace TwinSovet.ViewModels
 
         public ICollectionView FlatsView { get; }
 
-        public IEnumerable<FlatViewModel> FlatsEnumerable { get; }
+        public IEnumerable<FlatInListDecoratorViewModel> FlatsEnumerable { get; }
 
         public int FloorNumber 
         {
@@ -78,21 +78,7 @@ namespace TwinSovet.ViewModels
             }
         }
 
-        public bool HasFilter => !string.IsNullOrWhiteSpace(FilterText);
-
-        public string FilterText 
-        {
-            get => filterText;
-
-            set
-            {
-                if (filterText == value) return;
-
-                filterText = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public FilterViewModel FilterModel { get; } = new FilterViewModel();
 
         public SectionType Section 
         {
@@ -111,10 +97,10 @@ namespace TwinSovet.ViewModels
 
         public void SetFlats(IEnumerable<FlatViewModel> flats) 
         {
-            this.flats.Clear();
-            this.flats.AddRange(flats);
+            flatDecorators.Clear();
+            flatDecorators.AddRange(flats.Select(flat => new FlatInListDecoratorViewModel(flat)));
 
-            List<int> flatNumbers = this.flats.Select(flat => flat.Number).ToList();
+            List<int> flatNumbers = flatDecorators.Select(decorator => decorator.Flat.Number).ToList();
 
             MinFlatNumber = flatNumbers.Min();
             MaxFlatNumber = flatNumbers.Max();
@@ -132,15 +118,15 @@ namespace TwinSovet.ViewModels
         {
             var flat = (FlatViewModel)flatObj;
 
-            return flat.Number.ToString().ToLowerInvariant().Contains(FilterText.ToLowerInvariant());
+            return flat.Number.ToString().ToLowerInvariant().Contains(FilterModel.FilterText.ToLowerInvariant());
         }
 
 
         private void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
-            if (e.PropertyName == nameof(FilterText))
+            if (e.PropertyName == nameof(FilterModel.FilterText))
             {
-                if (HasFilter)
+                if (FilterModel.HasFilter)
                 {
                     FlatsView.Filter = IsFlatInFilter;
 

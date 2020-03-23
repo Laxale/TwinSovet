@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using TwinSovet.Data.DataBase;
+using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Enums;
 
 
@@ -8,7 +10,8 @@ namespace TwinSovet.Data.Models
     /// <summary>
     /// Модель жильца или владельца площади в доме.
     /// </summary>
-    public class FlatAborigenModel : DbObject 
+    [Table(DbConst.TableNames.AborigensTableName)]
+    public class AborigenModel : DbObject 
     {
         public string Name { get; set; }
 

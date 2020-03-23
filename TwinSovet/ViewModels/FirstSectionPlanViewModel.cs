@@ -80,52 +80,18 @@ namespace TwinSovet.ViewModels
             }
         }
 
-        public bool HasFloorFilter => !string.IsNullOrWhiteSpace(FloorFilterText);
+        public FilterViewModel FlatFilterModel { get; } = new FilterViewModel();
 
-        public string FloorFilterText 
-        {
-            get => floorFilterText;
-
-            set
-            {
-                if (floorFilterText == value) return;
-
-                floorFilterText = value;
-
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(FloorFilterText));
-            }
-        }
-
-        public bool HasFlatFilter => !string.IsNullOrWhiteSpace(FlatFilterText);
-
-        public string FlatFilterText 
-        {
-            get => flatFilterText;
-
-            set
-            {
-                if (flatFilterText == value) return;
-
-                flatFilterText = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-
-        private string LoweredFlatFilter => FlatFilterText?.ToLowerInvariant();
-
-        private string LoweredFloorFilter => FloorFilterText?.ToLowerInvariant();
-
-
+        public FilterViewModel FloorFilterModel { get; } = new FilterViewModel();
+        
+        
         public void SetFloors(IEnumerable<FloorViewModel> floorModels) 
         {
             floors.Clear();
             floors.AddRange(floorModels);
 
-            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatViewModel>().Min(flat => flat.Number));
-            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatViewModel>().Max(flat => flat.Number));
+            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatInListDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
+            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatInListDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
         }
 
 
@@ -142,18 +108,19 @@ namespace TwinSovet.ViewModels
             {
                 SetFloors(floorModels);
             });
-            
-            PropertyChanged += Self_OnPropertyChanged;
+
+            FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
+            FloorFilterModel.PropertyChanged += FloorFilterModel_OnPropertyChanged;
         }
 
 
         private void HighlightOrphanFlatsImpl() 
         {
-            floors.ForEach(floor => floor.FlatsEnumerable.ForEach(flat =>
+            floors.ForEach(floor => floor.FlatsEnumerable.ForEach(flatDecorator =>
             {
-                if (!flat.HasOwner)
+                if (!flatDecorator.HasOwner)
                 {
-                    flat.IsOrphanHighlighted = isOrphanHighlighted;
+                    flatDecorator.IsOrphanHighlighted = isOrphanHighlighted;
                 }
             }));
 
@@ -164,25 +131,25 @@ namespace TwinSovet.ViewModels
         {
             var floor = (FloorViewModel)floorObj;
 
-            return floor.FloorNumber.ToString().ToLowerInvariant().Contains(LoweredFloorFilter);
+            return floor.FloorNumber.ToString().ToLowerInvariant().Contains(FloorFilterModel.LoweredFilter);
         }
 
         private bool IsFlatInFilter(object floorObj) 
         {
             var floor = (FloorViewModel)floorObj;
-            string loweredFlatFiler = LoweredFlatFilter;
+            string loweredFlatFiler = FlatFilterModel.LoweredFilter;
 
             bool hasAnyFlats = false;
-            foreach (FlatViewModel flatViewModel in floor.FlatsEnumerable)
+            foreach (var flatDecorator in floor.FlatsEnumerable)
             {
-                if (flatViewModel.Number.ToString().ToLowerInvariant().Contains(loweredFlatFiler))
+                if (flatDecorator.Flat.Number.ToString().ToLowerInvariant().Contains(loweredFlatFiler))
                 {
                     hasAnyFlats = true;
-                    flatViewModel.IsHighlighted = true;
+                    flatDecorator.IsHighlighted = true;
                 }
                 else
                 {
-                    flatViewModel.IsHighlighted = false;
+                    flatDecorator.IsHighlighted = false;
                 }
             }
 
@@ -193,7 +160,7 @@ namespace TwinSovet.ViewModels
         {
             foreach (FloorViewModel floor in floors)
             {
-                floor.FilterText = FloorFilterText;
+                floor.FilterModel.FilterText = FloorFilterModel.FilterText;
             }
         }
 
@@ -203,50 +170,47 @@ namespace TwinSovet.ViewModels
         }
 
 
-        private void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        private void FlatFilterModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
-            if (e.PropertyName == nameof(FloorFilterText))
+            if (FloorFilterModel.HasFilter)
             {
-                if (HasFlatFilter)
-                {
-                    PropertyChanged -= Self_OnPropertyChanged;
-                    FlatFilterText = null;
-                    PropertyChanged += Self_OnPropertyChanged;
-                }
+                FloorFilterModel.PropertyChanged -= FloorFilterModel_OnPropertyChanged;
+                FloorFilterModel.FilterText = null;
+                FloorFilterModel.PropertyChanged += FloorFilterModel_OnPropertyChanged;
+            }
 
-                if (HasFloorFilter)
-                {
-                    FloorsView.Filter = IsFloorInFilter;
-                }
-                else
-                {
-                    FloorsView.Filter = null;
-                }
-
+            if (FlatFilterModel.HasFilter)
+            {
+                FloorsView.Filter = IsFlatInFilter;
+            }
+            else
+            {
+                FloorsView.Filter = null;
                 ClearFlatsHighlighting();
             }
-            else if (e.PropertyName == nameof(FlatFilterText))
+
+            SetFlatFilters();
+        }
+        
+        private void FloorFilterModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        {
+            if (FlatFilterModel.HasFilter)
             {
-                if (HasFloorFilter)
-                {
-                    PropertyChanged -= Self_OnPropertyChanged;
-                    FloorFilterText = null;
-                    PropertyChanged += Self_OnPropertyChanged;
-                }
-
-                if (HasFlatFilter)
-                {
-                    FloorsView.Filter = IsFlatInFilter;
-
-                }
-                else
-                {
-                    FloorsView.Filter = null;
-                    ClearFlatsHighlighting();
-                }
-
-                SetFlatFilters();
+                FlatFilterModel.PropertyChanged -= FlatFilterModel_OnPropertyChanged;
+                FlatFilterModel.FilterText = null;
+                FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
             }
+
+            if (FloorFilterModel.HasFilter)
+            {
+                FloorsView.Filter = IsFloorInFilter;
+            }
+            else
+            {
+                FloorsView.Filter = null;
+            }
+
+            ClearFlatsHighlighting();
         }
     }
 }

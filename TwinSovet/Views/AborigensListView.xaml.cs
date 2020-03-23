@@ -25,7 +25,7 @@ namespace TwinSovet.Views
     [HasViewModel(typeof(AborigensListViewModel))]
     public partial class AborigensListView : UserControl 
     {
-        internal event Action<FlatAborigenViewModel> EventShowAborigenDetais = aborigen => { };
+        internal event Action<AborigenViewModel> EventShowAborigenDetais = aborigen => { };
 
 
         public AborigensListView()
@@ -34,7 +34,7 @@ namespace TwinSovet.Views
         }
 
 
-        private void SimpleAborigenView_OnShowAborigenDetais(FlatAborigenViewModel aborigen) 
+        private void SimpleAborigenView_OnShowAborigenDetais(AborigenViewModel aborigen) 
         {
             EventShowAborigenDetais(aborigen);
         }

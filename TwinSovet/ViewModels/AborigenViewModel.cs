@@ -12,11 +12,11 @@ using TwinSovet.Data.Models;
 
 namespace TwinSovet.ViewModels 
 {
-    internal class FlatAborigenViewModel : ViewModelBase 
+    internal class AborigenViewModel : ViewModelBase 
     {
         private static readonly GenderEnumToStringConverter genderConverter = new GenderEnumToStringConverter();
 
-        private readonly FlatAborigenModel flatAborigenModel;
+        private readonly AborigenModel flatAborigenModel;
         
         private string name;
         private string email;
@@ -26,7 +26,7 @@ namespace TwinSovet.ViewModels
         private string phoneNumber;
 
 
-        public FlatAborigenViewModel(FlatAborigenModel flatAborigenModel) 
+        public AborigenViewModel(AborigenModel flatAborigenModel) 
         {
             this.flatAborigenModel = flatAborigenModel;
 

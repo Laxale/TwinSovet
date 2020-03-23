@@ -15,6 +15,6 @@ namespace TwinSovet.Data.Models
     {
         public FlatModel Flat { get; }
 
-        public FlatAborigenModel Booker { get; set; }
+        public AborigenModel Booker { get; set; }
     }
 }

@@ -23,7 +23,7 @@ namespace TwinSovet.Views
     /// </summary>
     public partial class SimpleAborigenView : UserControl 
     {
-        internal event Action<FlatAborigenViewModel> EventShowAborigenDetais = aborigen => { };
+        internal event Action<AborigenViewModel> EventShowAborigenDetais = aborigen => { };
 
 
         public SimpleAborigenView() 

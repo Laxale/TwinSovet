@@ -9,6 +9,7 @@
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+             xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -24,8 +25,8 @@
         <!-- Заголовок первой секции -->
         <DockPanel Grid.Row="0">
             <TextBlock DockPanel.Dock="Left">
-                <Run Text="{x:Static praps:Resources.Section}"/>
-                <Run Text="{x:Static praps:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="{x:Static locRes:Resources.Section}"/>
+                <Run Text="{x:Static locRes:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
                 <Run Text="  "/>
                 <Run Text="Квартиры с "/>
                 <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>

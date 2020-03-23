@@ -29,11 +29,12 @@
                 <ResourceDictionary Source="./XamlResources/InputBindings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <KeyBinding x:Key="EnterKeyBinding" Key="Escape" Command="helpers:ClientCommands.Enter"/>
             <KeyBinding x:Key="EscapeKeyBinding" Key="Escape" Command="helpers:ClientCommands.Cancel"/>
 
             <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource InListBorderStyle}">
                 <d:Style.DataContext>
-                    <x:Type Type="viewModels:FlatViewModel"/>
+                    <x:Type Type="viewModels:FlatInListDecoratorViewModel"/>
                 </d:Style.DataContext>
 
                 <Setter Property="BorderThickness" Value="4, 4, 0, 0"/>
@@ -99,6 +100,22 @@
                                 <ScaleTransform ScaleX="0.2" ScaleY="0.2"/>
                             </Setter.Value>
                         </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="StackPanelInListAlternatedStyle" TargetType="StackPanel">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+                                                               Path=(ItemsControl.AlternationIndex)}"
+                                 Value="0">
+                        <Setter Property="Background" Value="{StaticResource LightGrayBrush}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
+                                                               Path=(ItemsControl.AlternationIndex)}"
+                                 Value="1">
+                        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

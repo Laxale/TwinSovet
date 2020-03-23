@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              
-             xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
+             xmlns:locPraps="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d">
 
@@ -67,7 +67,7 @@
 
             <!-- Картинка очистки текста фильтра -->
             <Button Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Click="ClearButton_OnClick" 
-                    Style="{StaticResource ImageButtonStyle}" Height="24" Width="24" ToolTip="{x:Static praps:Resources.ToDoClear}">
+                    Style="{StaticResource ImageButtonStyle}" Height="24" Width="24" ToolTip="{x:Static locPraps:Resources.ToDoClear}">
                 <Path Data="{StaticResource CloseIconGeometry}" IsHitTestVisible="False"/>
             </Button>
         </Grid>

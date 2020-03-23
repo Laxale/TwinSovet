@@ -9,7 +9,8 @@
 
         xmlns:views="clr-namespace:TwinSovet.Views"
         xmlns:praps="clr-namespace:TwinSovet.Properties"
-        
+        xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
+
         mc:Ignorable="d"
         Height="450" Width="800"
         Icon="Resources/house.ico"
@@ -17,7 +18,7 @@
         SnapsToDevicePixels="True"
         MinHeight="450" MinWidth="800"
         WindowStartupLocation="CenterScreen"
-        Title="{x:Static praps:Resources.AppName}">
+        Title="{x:Static locRes:Resources.AppName}">
 
     <i:Interaction.Behaviors>
         <wpf:StickyWindowBehavior/>

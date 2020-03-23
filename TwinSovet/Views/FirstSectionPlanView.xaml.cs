@@ -14,7 +14,7 @@ namespace TwinSovet.Views
     [HasViewModel(typeof(FirstSectionPlanViewModel))]
     public partial class FirstSectionPlanView : UserControl 
     {
-        internal event Action<FlatViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public FirstSectionPlanView() 
@@ -23,7 +23,7 @@ namespace TwinSovet.Views
         }
 
 
-        private void FloorView_OnEventShowFlatDetails(FlatViewModel flatModel) 
+        private void FloorView_OnEventShowFlatDetails(FlatInListDecoratorViewModel flatModel) 
         {
             EventShowFlatDetails(flatModel);
         }

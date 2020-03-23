@@ -10,9 +10,10 @@
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
+             xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance viewModels:FlatAborigenViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:AborigenViewModel}">
 
     <UserControl.Resources>
         <Style TargetType="RowDefinition" BasedOn="{StaticResource CardRowStyle}">
@@ -43,19 +44,19 @@
 
         <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay}" Name="NameBox"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static praps:Resources.Surname}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static locRes:Resources.Surname}"/>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Surname, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static praps:Resources.Otchestvo}"/>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static locRes:Resources.Otchestvo}"/>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=Otchestvo, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static praps:Resources.Phone}"/>
+        <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static locRes:Resources.Phone}"/>
         <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=PhoneNumber, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static praps:Resources.Mail}"/>
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static locRes:Resources.Mail}"/>
         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=Email, Mode=TwoWay}"/>
 
-        <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static praps:Resources.Gender}"/>
+        <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static locRes:Resources.Gender}"/>
         <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{x:Static providers:StaticsProvider.AvailableGenders}"
                   VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="100">
             <ComboBox.ItemTemplate>

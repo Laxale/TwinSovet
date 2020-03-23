@@ -19,6 +19,8 @@ using PubSub;
 using TwinSovet.Messages;
 using TwinSovet.ViewModels;
 
+using LocRes = TwinSovet.Localization.Properties.Resources;
+
 
 namespace TwinSovet.Views 
 {
@@ -30,7 +32,7 @@ namespace TwinSovet.Views
         private const string notesButtonTag = "NotesButtonTag";
         private const string photosButtonTag = "PhotosButtonTag";
 
-        internal event Action<FlatViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public FloorView()
@@ -63,17 +65,13 @@ namespace TwinSovet.Views
 
         private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
         {
-            if (ViewModel.FlatsView.SourceCollection.OfType<FlatViewModel>().Contains(message.Flat))
+            if (ViewModel.FlatsView.SourceCollection.OfType<FlatInListDecoratorViewModel>().Contains(message.FlatDecorator))
             {
-                EventShowFlatDetails(message.Flat);
+                EventShowFlatDetails(message.FlatDecorator);
             }
         }
-        
-        private void SimpleFlatView_OnEventShowFlatDetails(FlatViewModel flatModel) 
-        {
-            EventShowFlatDetails(flatModel);
-        }
 
+        
         private void FloorView_OnMouseEnter(object sender, MouseEventArgs e) 
         {
             Button notesButton = CreateNotesButton();
@@ -114,7 +112,7 @@ namespace TwinSovet.Views
 
         private Button CreateNotesButton() 
         {
-            Button button = CreateAttachableButton(notesButtonTag, Properties.Resources.Notes, Properties.Resources.ToDoShowNotes);
+            Button button = CreateAttachableButton(notesButtonTag, LocRes.Notes, LocRes.ToDoShowNotes);
             
             button.Click += NotesButton_OnClick;
 
@@ -123,7 +121,7 @@ namespace TwinSovet.Views
 
         private Button CreatePhotosButton() 
         {
-            Button button = CreateAttachableButton(photosButtonTag, Properties.Resources.Photos, Properties.Resources.ToDoShowPhotos);
+            Button button = CreateAttachableButton(photosButtonTag, LocRes.Photos, LocRes.ToDoShowPhotos);
 
             button.Click += ShowPhotosButtonOnClick;
 

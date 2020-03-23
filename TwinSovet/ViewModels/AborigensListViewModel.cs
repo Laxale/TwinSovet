@@ -14,8 +14,10 @@ using TwinSovet.Messages;
 using TwinSovet.Properties;
 
 using PubSub;
-
+using TwinSovet.Data.Providers;
 using TwinSovet.Providers;
+
+using LocRes = TwinSovet.Localization.Properties.Resources;
 
 
 namespace TwinSovet.ViewModels 
@@ -33,29 +35,13 @@ namespace TwinSovet.ViewModels
         {
             AborigensView = CollectionViewSource.GetDefaultView(aborigenDecorators);
 
-            this.Publish(new MessageInitializeModelRequest(this, Resources.LoadingAborigensList));
+            this.Publish(new MessageInitializeModelRequest(this, LocRes.LoadingAborigensList));
         }
 
 
         public ICollectionView AborigensView { get; }
 
-        public bool HasFilter => !string.IsNullOrWhiteSpace(FilterText);
-
-        public string FilterText 
-        {
-            get => filterText;
-
-            set
-            {
-                if (filterText == value) return;
-
-                filterText = value;
-                loweredFilter = value?.ToLowerInvariant();
-
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasFilter));
-            }
-        }
+        public FilterViewModel FilterModel { get; } = new FilterViewModel();
 
 
         /// <summary>
@@ -65,38 +51,24 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            var random = new Random();
-            var list = new List<AborigenInListDecoratorViewModel>();
-            for (int index = 0; index < 100; index++)
-            {
-                var aborigenModel = new FlatAborigenModel
-                {
-                    Email = "test@mail.foo",
-                    Name = $"Крутое имя { random.Next(0, 1000) }",
-                    Surname = $"Фамилия { random.Next(0, 1000) }",
-                    PhoneNumber = "666-666",
-                    Otchestvo = $"Отчество { random.Next(0, 1000) }",
-                    Gender = index % 2 == 0 ? GenderType.Man : GenderType.Woman
-                };
-                var aborigenViewModel = new FlatAborigenViewModel(aborigenModel);
-                var decorator = new AborigenInListDecoratorViewModel(aborigenViewModel);
+            List<AborigenInListDecoratorViewModel> decorators =
+                AborigensProvider.GetAborigens()
+                    .Select(aborigenModel => new AborigenInListDecoratorViewModel(new AborigenViewModel(aborigenModel)))
+                    .ToList();
 
-                list.Add(decorator);
-            }
-
-            Task.Run(() => LoadAborigenFlats(list));
+            Task.Run(() => LoadAborigenFlats(decorators));
 
             DispatcherHelper.InvokeOnDispatcher(() =>
             {
                 //
-                aborigenDecorators.AddRange(list);
+                aborigenDecorators.AddRange(decorators);
             });
 
-            PropertyChanged += Self_OnPropertyChanged;
+            FilterModel.PropertyChanged += Filter_OnPropertyChanged;
         }
 
 
-        private void LoadAborigenFlats(List<AborigenInListDecoratorViewModel> list) 
+        internal static void LoadAborigenFlats(List<AborigenInListDecoratorViewModel> list) 
         {
             //
             foreach (AborigenInListDecoratorViewModel aborigenDecorator in list)
@@ -105,6 +77,7 @@ namespace TwinSovet.ViewModels
             }
         }
         
+
         private bool IsInFilter(object aborigenObj) 
         {
             var decorator = (AborigenInListDecoratorViewModel)aborigenObj;
@@ -117,11 +90,11 @@ namespace TwinSovet.ViewModels
         }
 
 
-        private void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        private void Filter_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
-            if (e.PropertyName == nameof(FilterText))
+            if (e.PropertyName == nameof(FilterModel.FilterText))
             {
-                AborigensView.Filter = HasFilter ? (Predicate<object>)IsInFilter : null;
+                AborigensView.Filter = FilterModel.HasFilter ? (Predicate<object>)IsInFilter : null;
             }
         }
     }

@@ -22,7 +22,7 @@ namespace TwinSovet.Views
     /// </summary>
     public partial class SimpleFlatView : UserControl 
     {
-        internal event Action<FlatViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public SimpleFlatView()
@@ -33,8 +33,8 @@ namespace TwinSovet.Views
 
         private void SimpleFlatView_OnMouseDown(object sender, MouseButtonEventArgs e) 
         {
-            var flatModel = (FlatViewModel)DataContext;
-            EventShowFlatDetails(flatModel);
+            var flatDecorator = (FlatInListDecoratorViewModel)DataContext;
+            EventShowFlatDetails(flatDecorator);
         }
     }
 }

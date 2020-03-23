@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using TwinSovet.ViewModels;
 
 
-namespace TwinSovet.Messages
+namespace TwinSovet.Messages 
 {
     internal class MessageShowFlatDetails 
     {
-        public MessageShowFlatDetails(FlatViewModel flat) 
+        public MessageShowFlatDetails(FlatInListDecoratorViewModel flatDecorator) 
         {
-            Flat = flat;
+            FlatDecorator = flatDecorator;
         }
 
 
-        public FlatViewModel Flat { get; }
+        public FlatInListDecoratorViewModel FlatDecorator { get; }
     }
 }

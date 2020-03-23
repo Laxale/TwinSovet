@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Prism.Commands;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
-using TwinSovet.Properties;
+using TwinSovet.Extensions;
+using TwinSovet.Views;
+
+using LocRes = TwinSovet.Localization.Properties.Resources;
 
 
 namespace TwinSovet.ViewModels 
@@ -20,7 +25,7 @@ namespace TwinSovet.ViewModels
         private bool isHighlighted;
         private SectionType section;
         private bool isOrphanHighlighted;
-        private FlatAborigenViewModel flatOwner;
+        private AborigenViewModel owner;
 
 
         public FlatViewModel(FlatModel flatModel) 
@@ -34,11 +39,11 @@ namespace TwinSovet.ViewModels
 
             if (Section == SectionType.Furniture)
             {
-                SectionName = Resources.Mebelnaya;
+                SectionName = LocRes.Mebelnaya;
             }
             else if (Section == SectionType.Hospital)
             {
-                SectionName = Resources.Hospital;
+                SectionName = LocRes.Hospital;
             }
 
             OnPropertyChanged(nameof(FullFlatLocationInfo));
@@ -102,51 +107,6 @@ namespace TwinSovet.ViewModels
         }
 
         public string SectionName { get; }
-
-        public bool HasOwner => FlatOwner != null;
-
-        public bool IsOrphanHighlighted 
-        {
-            get => isOrphanHighlighted;
-
-            set
-            {
-                if (isOrphanHighlighted == value) return;
-
-                isOrphanHighlighted = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool IsHighlighted 
-        {
-            get => isHighlighted;
-
-            set
-            {
-                if (isHighlighted == value) return;
-
-                isHighlighted = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public FlatAborigenViewModel FlatOwner 
-        {
-            get => flatOwner;
-
-            set
-            {
-                if (flatOwner == value) return;
-
-                flatOwner = value;
-
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasOwner));
-            }
-        }
 
         public string FullFlatLocationInfo => $"{SectionName}; этаж {FloorNumber}; номер {Number}";
 

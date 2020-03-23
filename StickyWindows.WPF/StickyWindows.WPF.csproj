@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45</TargetFrameworks>
+
+    <Authors>Corneliu I. Tusnea, Riccardo Pietrucci, Thomas Freudenberg</Authors>
+    <Company>thoemmi</Company>
+    <Copyright>Copyright © 2017 Corneliu I. Tusnea, Riccardo Pietrucci, Thomas Freudenberg</Copyright>
+    <Description>Make your top-level WPF windows stick when moved or resized.</Description>
+    <PackageTags>Window Sticky WPF</PackageTags>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StickyWindows\StickyWindows.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\sticky.targets" />
+
+  <!-- libraries used by all .NET versions -->
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms"></Reference>
+    <Reference Include="System.Xaml"></Reference>
+    <Reference Include="PresentationCore"></Reference>
+    <Reference Include="PresentationFramework"></Reference>
+  </ItemGroup>
+
+  <!-- libraries specific to .NET4.5 -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <Reference Include="WindowBase">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5\WindowsBase.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

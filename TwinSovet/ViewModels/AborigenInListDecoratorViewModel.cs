@@ -11,13 +11,13 @@ namespace TwinSovet.ViewModels
         private FlatViewModel flat;
 
 
-        public AborigenInListDecoratorViewModel(FlatAborigenViewModel aborigen) 
+        public AborigenInListDecoratorViewModel(AborigenViewModel aborigen) 
         {
             Aborigen = aborigen;
         }
 
 
-        public FlatAborigenViewModel Aborigen { get; }
+        public AborigenViewModel Aborigen { get; }
 
         public FlatViewModel Flat 
         {

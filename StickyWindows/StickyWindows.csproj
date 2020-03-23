@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net40;net45</TargetFrameworks>
+
+    <Authors>Corneliu I. Tusnea, Thomas Freudenberg</Authors>
+    <Company>thoemmi</Company>
+    <Copyright>Copyright © 2017 Corneliu I. Tusnea, Thomas Freudenberg</Copyright>
+    <Description>Make your top-level WinForms windows stick when moved or resized.</Description>
+    <PackageTags>Window Sticky WinForms</PackageTags>
+  </PropertyGroup>
+
+  <Import Project="..\sticky.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="GitVersionTask" Version="4.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0-beta-63127-02">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- libraries used by all .NET versions -->
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms"></Reference>
+  </ItemGroup>
+</Project>

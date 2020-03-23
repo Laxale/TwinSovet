@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using TwinSovet.Data.Enums;
-using TwinSovet.Properties;
 
-namespace TwinSovet.Converters
+using LocRes = TwinSovet.Localization.Properties.Resources;
+
+
+namespace TwinSovet.Converters 
 {
     [ValueConversion(typeof(GenderType), typeof(string))]
     internal class GenderEnumToStringConverter : IValueConverter 
@@ -35,13 +37,13 @@ namespace TwinSovet.Converters
             switch (gender)
             {
                 case GenderType.None:
-                    return Resources.He_IsNotDefined;
+                    return LocRes.He_IsNotDefined;
 
                 case GenderType.Man:
-                    return Resources.Man;
+                    return LocRes.Man;
 
                 case GenderType.Woman:
-                    return Resources.Woman;
+                    return LocRes.Woman;
 
                 case GenderType.Libertarian:
                     return "Либертарианец";

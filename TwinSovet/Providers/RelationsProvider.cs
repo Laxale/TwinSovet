@@ -29,7 +29,7 @@ namespace TwinSovet.Providers
                 int randomFloorIndex = new Random().Next(1, 20);
                 int randomFlatIndex = new Random().Next(1, 6);
 
-                string flatId = floors.ElementAt(randomFloorIndex).FlatsEnumerable.ElementAt(randomFlatIndex).GetId();
+                string flatId = floors.ElementAt(randomFloorIndex).FlatsEnumerable.ElementAt(randomFlatIndex).Flat?.GetId();
 
                 aborigenFlats.Add(aborigenId, flatId);
 

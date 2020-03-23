@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using TwinSovet.Properties;
+using LocRes = TwinSovet.Localization.Properties.Resources;
 
 
 namespace TwinSovet.Helpers 
@@ -14,10 +14,16 @@ namespace TwinSovet.Helpers
     {
         static ClientCommands() 
         {
-            Cancel = new RoutedUICommand(Resources.Cancellation, nameof(Cancel), typeof(ClientCommands));
+            Enter = new RoutedUICommand(LocRes.ToDoAccept, nameof(Enter), typeof(ClientCommands));
+            Cancel = new RoutedUICommand(LocRes.Cancellation, nameof(Cancel), typeof(ClientCommands));
         }
 
 
         public static RoutedUICommand Cancel { get; }
+
+        /// <summary>
+        /// Возвращает команду ввода или принятия чего-либо (<see cref="Key.Enter"/>).
+        /// </summary>
+        public static RoutedUICommand Enter { get; }
     }
 }

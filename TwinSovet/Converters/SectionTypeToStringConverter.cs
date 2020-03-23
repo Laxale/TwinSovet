@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-using TwinSovet.Properties;
+using LocRes = TwinSovet.Localization.Properties.Resources;
 
 
 namespace TwinSovet.Converters 
@@ -32,9 +32,9 @@ namespace TwinSovet.Converters
         {
             var sectionNumber = (int) value;
 
-            if (sectionNumber == 0) return Resources.She_IsNotDefined;
-            if (sectionNumber == 1) return Resources.Mebelnaya;
-            if (sectionNumber == 2) return Resources.Hospital;
+            if (sectionNumber == 0) return LocRes.She_IsNotDefined;
+            if (sectionNumber == 1) return LocRes.Mebelnaya;
+            if (sectionNumber == 2) return LocRes.Hospital;
 
             throw new InvalidOperationException($"Неожиданный номер секции '{ sectionNumber }'");
         }

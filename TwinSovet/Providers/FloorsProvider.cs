@@ -38,21 +38,21 @@ namespace TwinSovet.Providers
 
         private static FlatViewModel FindFlat(string flatId) 
         {
-            FlatViewModel mebelFlat =
+            var targetDecorator =
                 sectionFloors[SectionType.Furniture]
                     .SelectMany(floor => floor.FlatsEnumerable)
-                    .FirstOrDefault(flat => flat.GetId() == flatId);
-            if (mebelFlat != null)
+                    .FirstOrDefault(flatDecorator => flatDecorator.Flat.GetId() == flatId);
+            if (targetDecorator != null)
             {
-                return mebelFlat;
+                return targetDecorator.Flat;
             }
 
-            FlatViewModel hospitalFlat =
+            var hospitalFlat =
                 sectionFloors[SectionType.Hospital]
                     .SelectMany(floor => floor.FlatsEnumerable)
-                    .FirstOrDefault(flat => flat.GetId() == flatId);
+                    .FirstOrDefault(decorator => decorator.Flat.GetId() == flatId);
 
-            return hospitalFlat;
+            return hospitalFlat?.Flat;
         }
 
         public static IEnumerable<FloorViewModel> GetFloors(SectionType section) 
