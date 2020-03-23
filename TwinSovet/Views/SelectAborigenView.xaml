@@ -45,9 +45,9 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Path=AborigensView, Mode=OneWay}" 
                  AlternationCount="2" HorizontalContentAlignment="Stretch" Name="AborigensList">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="viewModels:AborigenInListDecoratorViewModel">
+                <DataTemplate DataType="viewModels:AborigenDecoratorViewModel">
                     <StackPanel Style="{StaticResource StackPanelInListAlternatedStyle}" Orientation="Vertical">
-                        <TextBlock Text="{Binding Path=Aborigen.FullNameInfo, Mode=OneWay}"/>
+                        <TextBlock Text="{Binding Path=AborigenEditable.FullNameInfo, Mode=OneWay}"/>
                         <TextBlock>
                             <Run Text="{x:Static localization:Resources.Flat}"/>
                             <Run Text="{Binding Path=Flat.Number, Mode=OneWay}"/>

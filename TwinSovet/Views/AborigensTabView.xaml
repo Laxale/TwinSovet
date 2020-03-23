@@ -66,8 +66,8 @@
                 x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Padding="{StaticResource All4Margin}">
             <StackPanel Orientation="Vertical">
                 <local:AborigenCardView x:Name="DetailedAborigenCard"
-                                            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
-                                                                  Path=DetailedAborigenViewModel, Mode=OneWay}"/>
+                                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
+                                                              Path=DetailedAborigenDecorator, Mode=OneWay}"/>
 
                 <!-- Панелька кнопок -->
                 <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">

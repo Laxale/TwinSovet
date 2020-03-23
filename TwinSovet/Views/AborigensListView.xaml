@@ -30,7 +30,7 @@
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=AborigensView, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="viewModels:AborigenInListDecoratorViewModel">
+                    <DataTemplate DataType="viewModels:AborigenDecoratorViewModel">
                         <Border CornerRadius="{StaticResource InListBorderCornerRadius}" 
                                 Background="{StaticResource PanelGrayBrush}" Margin="{StaticResource All4Margin}">
                             <local:SimpleAborigenView DataContext="{Binding}" EventShowAborigenDetais="SimpleAborigenView_OnShowAborigenDetais"/>

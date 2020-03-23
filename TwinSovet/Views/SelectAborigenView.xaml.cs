@@ -30,7 +30,7 @@ namespace TwinSovet.Views
     {
         private readonly DelayedEventInvoker delayedFocuser = new DelayedEventInvoker(StaticsProvider.SearchDelay);
 
-        internal event Action<AborigenInListDecoratorViewModel> EventAborigenSelected = decorator => { };
+        internal event Action<AborigenDecoratorViewModel> EventAborigenSelected = decorator => { };
 
 
         public SelectAborigenView() 
@@ -53,7 +53,7 @@ namespace TwinSovet.Views
 
         private void ListBoxItem_OnDoubleClick(object sender, MouseButtonEventArgs e) 
         {
-            var decorator = (AborigenInListDecoratorViewModel)((ListBoxItem) sender).DataContext;
+            var decorator = (AborigenDecoratorViewModel)((ListBoxItem) sender).DataContext;
             EventAborigenSelected(decorator);
         }
 
@@ -66,7 +66,7 @@ namespace TwinSovet.Views
         private void AcceptCommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e) 
         {
             var decorator =
-                AborigensList.SelectedItem is AborigenInListDecoratorViewModel aborigenDecorator ?
+                AborigensList.SelectedItem is AborigenDecoratorViewModel aborigenDecorator ?
                     aborigenDecorator : 
                     null;
 

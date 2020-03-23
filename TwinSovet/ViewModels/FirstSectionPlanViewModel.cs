@@ -90,8 +90,8 @@ namespace TwinSovet.ViewModels
             floors.Clear();
             floors.AddRange(floorModels);
 
-            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatInListDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
-            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatInListDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
+            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
+            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
         }
 
 

@@ -9,7 +9,7 @@
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
-             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
 
@@ -27,8 +27,8 @@
         <!-- Заголовок первой секции -->
         <DockPanel Grid.Row="0">
             <TextBlock DockPanel.Dock="Left">
-                <Run Text="{x:Static localization:Resources.Section}"/>
-                <Run Text="{x:Static localization:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="{x:Static loc:Resources.Section}"/>
+                <Run Text="{x:Static loc:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
                 <Run Text="  "/>
                 <Run Text="Квартиры с "/>
                 <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
@@ -45,12 +45,12 @@
             </Grid.ColumnDefinitions>
 
             <controls:FilterView Grid.Column="0" x:Name="FloorsFilter" Loaded="FloorsFilter_OnLoaded"
-                                 WatermarkText="{x:Static localization:Resources.SearchByFloors}"
+                                 WatermarkText="{x:Static loc:Resources.SearchByFloors}"
                                  FilterText="{Binding Path=FloorFilterModel.FilterText, Mode=TwoWay,
                                                       Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
 
             <controls:FilterView Grid.Column="1" Margin="{StaticResource  4LeftMargin}"
-                                 WatermarkText="{x:Static localization:Resources.SearchByFlats}"
+                                 WatermarkText="{x:Static loc:Resources.SearchByFlats}"
                                  FilterText="{Binding Path=FlatFilterModel.FilterText, Mode=TwoWay,
                                                       Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
         </Grid>

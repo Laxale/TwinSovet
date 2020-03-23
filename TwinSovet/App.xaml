@@ -38,7 +38,7 @@
 
             <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource InListBorderStyle}">
                 <d:Style.DataContext>
-                    <x:Type Type="viewModels:FlatInListDecoratorViewModel"/>
+                    <x:Type Type="viewModels:FlatDecoratorViewModel"/>
                 </d:Style.DataContext>
 
                 <Setter Property="BorderThickness" Value="4, 4, 0, 0"/>

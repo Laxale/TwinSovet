@@ -38,7 +38,7 @@ namespace TwinSovet.Views
 
         private void OwnerButton_OnClick(object sender, RoutedEventArgs e) 
         {
-            var flatDecorator = (FlatInListDecoratorViewModel)DataContext;
+            var flatDecorator = (FlatDecoratorViewModel)DataContext;
             if (flatDecorator.HasOwner)
             {
                 EventRequestShowOwner(flatDecorator.Flat);

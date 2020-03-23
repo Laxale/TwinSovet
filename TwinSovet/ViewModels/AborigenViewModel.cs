@@ -19,8 +19,8 @@ namespace TwinSovet.ViewModels
     {
         private static readonly GenderEnumToStringConverter genderConverter = new GenderEnumToStringConverter();
 
-        private readonly AborigenModel originalModel;
-        
+        private readonly string originalModelId;
+
         private string name;
         private string email;
         private string surname;
@@ -31,9 +31,10 @@ namespace TwinSovet.ViewModels
         public event Action EventExecutedSaveAborigen = () => { };
 
 
-        public AborigenViewModel(AborigenModel originalModel) 
+        public AborigenViewModel(AborigenModel originalModel, bool isReadOnly) 
         {
-            this.originalModel = originalModel;
+            IsReadOnly = isReadOnly;
+            originalModelId = originalModel.Id;
 
             Name = originalModel.Name;
             Email = originalModel.Email;
@@ -51,6 +52,8 @@ namespace TwinSovet.ViewModels
         public DelegateCommand CommandSave { get; }
 
 
+        public bool IsReadOnly { get; }
+
         public bool HasPhoto { get; } = false;
 
         public bool IsMan => Gender == GenderType.Man;
@@ -67,6 +70,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (name == value) return;
 
                 name = value;
@@ -82,6 +86,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (surname == value) return;
 
                 surname = value;
@@ -97,6 +102,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (otchestvo == value) return;
 
                 otchestvo = value;
@@ -114,6 +120,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (phoneNumber == value) return;
 
                 phoneNumber = value;
@@ -128,6 +135,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (email == value) return;
 
                 email = value;
@@ -142,6 +150,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
+                VerifyIsEditable();
                 if (gender == value) return;
 
                 gender = value;
@@ -157,25 +166,72 @@ namespace TwinSovet.ViewModels
         public string LocalizedGender { get; }
 
 
+        public static AborigenViewModel CreateEditable(AborigenModel model) 
+        {
+            return new AborigenViewModel(model, false);
+        }
+
+        public static AborigenViewModel CreateReadOnly(AborigenModel model) 
+        {
+            return new AborigenViewModel(model, false);
+        }
+
+
         public string GetId() 
         {
-            return originalModel.Id;
+            return originalModelId;
+        }
+
+        public AborigenModel GetModel() 
+        {
+            var clone = new AborigenModel
+            {
+                Id = originalModelId,
+                Gender = Gender,
+                Email = Email,
+                Otchestvo = Otchestvo,
+                PhoneNumber = PhoneNumber,
+                Surname = Surname,
+                Name = Name
+            };
+
+            return clone;
+        }
+
+        public void AcceptEditableProps(AborigenViewModel editableModel) 
+        {
+            VerifyIsReadonly();
+            if (editableModel.GetId() != this.GetId())
+            {
+                throw new InvalidOperationException($"Нельзя принимать свойства от посторонней модели");
+            }
+
+            Name = editableModel.Name;
+            Surname = editableModel.Surname;
+            Otchestvo = editableModel.Otchestvo;
+            Email = editableModel.Email;
+            PhoneNumber = editableModel.PhoneNumber;
+            Gender = editableModel.Gender;
         }
 
 
         private void SaveImpl() 
         {
-            AborigenModel clone = originalModel.Clone();
-            clone.Gender = Gender;
-            clone.Email = Email;
-            clone.Otchestvo = Otchestvo;
-            clone.PhoneNumber = PhoneNumber;
-            clone.Surname = Surname;
-            clone.Name = Name;
-            
-            AborigensProvider.SaveOrUpdateAborigen(clone);
+            AborigenModel model = GetModel();
+
+            AborigensProvider.SaveOrUpdateAborigen(model);
 
             EventExecutedSaveAborigen();
+        }
+
+        private void VerifyIsEditable() 
+        {
+            if (IsReadOnly) throw new InvalidOperationException($"Нельзя редактировать readonly модель");
+        }
+
+        private void VerifyIsReadonly() 
+        {
+            if (!IsReadOnly) throw new InvalidOperationException($"Функция приёма свойств предназначена для readonly модели");
         }
     }
 }

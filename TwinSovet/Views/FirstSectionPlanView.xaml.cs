@@ -18,7 +18,7 @@ namespace TwinSovet.Views
     {
         private readonly DelayedEventInvoker delayedFocuser = new DelayedEventInvoker(StaticsProvider.SearchDelay);
 
-        internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public FirstSectionPlanView() 
@@ -34,7 +34,7 @@ namespace TwinSovet.Views
             FloorsFilter.FocusInnerBox();
         }
 
-        private void FloorView_OnEventShowFlatDetails(FlatInListDecoratorViewModel flatModel) 
+        private void FloorView_OnEventShowFlatDetails(FlatDecoratorViewModel flatModel) 
         {
             EventShowFlatDetails(flatModel);
         }

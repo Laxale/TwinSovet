@@ -23,7 +23,7 @@ namespace TwinSovet.Views
     /// </summary>
     public partial class SimpleAborigenView : UserControl 
     {
-        internal event Action<AborigenViewModel> EventShowAborigenDetais = aborigen => { };
+        internal event Action<AborigenDecoratorViewModel> EventShowAborigenDetais = aborigen => { };
 
 
         public SimpleAborigenView() 
@@ -34,7 +34,7 @@ namespace TwinSovet.Views
 
         private void AborigenButton_OnClick(object sender, RoutedEventArgs e) 
         {
-            EventShowAborigenDetais(((AborigenInListDecoratorViewModel)DataContext).Aborigen);
+            EventShowAborigenDetais((AborigenDecoratorViewModel)DataContext);
         }
     }
 }

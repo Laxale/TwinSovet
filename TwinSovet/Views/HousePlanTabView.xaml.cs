@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using TwinSovet.Helpers;
-using TwinSovet.Providers;
+
+using TwinSovet.Data.Models;
 using TwinSovet.ViewModels;
 
 
@@ -48,8 +38,8 @@ namespace TwinSovet.Views
         public static readonly DependencyProperty OwnerPanelHeightProperty =
             DependencyProperty.Register(nameof(OwnerPanelHeight), typeof(double), typeof(HousePlanTabView));
 
-        public static readonly DependencyProperty DetailedFlatViewModelProperty =
-            DependencyProperty.Register(nameof(DetailedFlatViewModel), typeof(FlatInListDecoratorViewModel), typeof(HousePlanTabView));
+        public static readonly DependencyProperty DetailedFlatDecoratorProperty =
+            DependencyProperty.Register(nameof(DetailedFlatDecorator), typeof(FlatDecoratorViewModel), typeof(HousePlanTabView));
 
         public static readonly DependencyProperty IsShowingFlatDetailsProperty =
             DependencyProperty.Register(nameof(IsShowingFlatDetails), typeof(bool), typeof(HousePlanTabView), new FrameworkPropertyMetadata(OnIsShowingDetailsChanged));
@@ -64,16 +54,16 @@ namespace TwinSovet.Views
         /// <summary>
         /// Возвращает или задаёт вьюмодель выбранной для детализации квартиры.
         /// </summary>
-        internal FlatInListDecoratorViewModel DetailedFlatViewModel
+        internal FlatDecoratorViewModel DetailedFlatDecorator 
         {
-            get => (FlatInListDecoratorViewModel)GetValue(DetailedFlatViewModelProperty);
-            set => SetValue(DetailedFlatViewModelProperty, value);
+            get => (FlatDecoratorViewModel)GetValue(DetailedFlatDecoratorProperty);
+            set => SetValue(DetailedFlatDecoratorProperty, value);
         }
 
         /// <summary>
         /// Возвращает или задаёт флаг - отображаются ли сейчас детали той или иной выбранной квартиры.
         /// </summary>
-        public bool IsShowingFlatDetails
+        public bool IsShowingFlatDetails 
         {
             get => (bool)GetValue(IsShowingFlatDetailsProperty);
             set => SetValue(IsShowingFlatDetailsProperty, value);
@@ -120,13 +110,13 @@ namespace TwinSovet.Views
             CreateOwnerPanel.Visibility = Visibility.Hidden;
         }
 
-        private void FirstSectionPlanView_OnEventShowFlatDetails(FlatInListDecoratorViewModel flatModel) 
+        private void FirstSectionPlanView_OnEventShowFlatDetails(FlatDecoratorViewModel flatDecorator) 
         {
-            DetailedFlatViewModel = flatModel;
             IsShowingFlatDetails = true;
+            DetailedFlatDecorator = flatDecorator;
         }
 
-        private void FlatCardView_OnEventRequestOwnerCreation(FlatViewModel flatModel)
+        private void FlatCardView_OnEventRequestOwnerCreation(FlatViewModel flatModel) 
         {
             if (CreateOwnerPanel.Visibility == Visibility.Visible)
             {
@@ -136,12 +126,6 @@ namespace TwinSovet.Views
             {
                 AnimateOwnerCreationIn();
             }
-        }
-
-        private void AnimateOwnerCreationIn()
-        {
-            CreateOwnerPanel.Visibility = Visibility.Visible;
-            createOwner_In_Animation.Begin();
         }
 
         private void OwnerPanel_OnLoaded(object sender, RoutedEventArgs e) 
@@ -162,6 +146,17 @@ namespace TwinSovet.Views
         private void SectionsMaskPanel_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
         {
             IsShowingFlatDetails = false;
+        }
+
+
+        private void AnimateOwnerCreationIn() 
+        {
+            if (!DetailedFlatDecorator.HasOwner)
+            {
+                DetailedFlatDecorator.Owner = new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(new AborigenModel()));
+            }
+            CreateOwnerPanel.Visibility = Visibility.Visible;
+            createOwner_In_Animation.Begin();
         }
     }
 }

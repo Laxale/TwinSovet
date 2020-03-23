@@ -4,15 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
-             xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
-             xmlns:praps="clr-namespace:TwinSovet.Properties"
-             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
-             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:enums="clr-namespace:TwinSovet.Data.Enums;assembly=TwinSovet.Data"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:FlatInListDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
 
     <UserControl.Resources>
         <Style TargetType="RowDefinition" BasedOn="{StaticResource CardRowStyle}">
@@ -43,13 +41,13 @@
         </Path>
 
         <!-- Номер квартиры -->
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localization:Resources.Number}"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static loc:Resources.Number}"/>
 
         <!-- Номер квартиры -->
         <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Path=Flat.Number, Mode=TwoWay}" x:Name="NumberBox"/>
 
         <!-- Владелец квартиры -->
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static localization:Resources.Owner}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static loc:Resources.Owner}"/>
 
         <!-- Владелец квартиры -->
         <DockPanel Grid.Row="1" Grid.Column="4">
@@ -58,12 +56,12 @@
                     <Style TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=HasOwner, Mode=OneWay}" Value="True">
-                                <Setter Property="Content" Value="{Binding Path=Owner.FullNameInfo, Mode=OneWay}"/>
+                                <Setter Property="Content" Value="{Binding Path=Owner.AborigenReadOnly.FullNameInfo, Mode=OneWay}"/>
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding Path=HasOwner, Mode=OneWay}" Value="False">
-                                <Setter Property="Content" Value="{x:Static localization:Resources.He_IsNotDefined}"/>
-                                <Setter Property="ToolTip" Value="{x:Static localization:Resources.ToDoCreateOwner}"/>
+                                <Setter Property="Content" Value="{x:Static loc:Resources.He_IsNotDefined}"/>
+                                <Setter Property="ToolTip" Value="{x:Static loc:Resources.ToDoCreateOwner}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -73,23 +71,38 @@
             <!-- Кнопка выбора существующего владельца -->
             <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" 
                     Margin="{StaticResource 4LeftMargin}" Command="{Binding Path=CommandSelectOwner, Mode=OneWay}"
-                    Content="{x:Static localization:Resources.ToDoSelect}" ToolTip="{x:Static localization:Resources.SelectExisting_He}"
+                    Content="{x:Static loc:Resources.ToDoSelect}" ToolTip="{x:Static loc:Resources.SelectExisting_He}"
                     Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
         </DockPanel>
         
         <!-- Секция квартиры -->
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static localization:Resources.Section}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static loc:Resources.Section}"/>
 
         <!-- Секция квартиры -->
-        <DockPanel Grid.Row="2" Grid.Column="4">
-            <ComboBox DockPanel.Dock="Left" ItemsSource="{x:Static providers:StaticsProvider.AvailableSectionNumbers}"
-                      SelectedItem="{Binding Path=Flat.Section, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="80"/>
-            <TextBlock DockPanel.Dock="Left" Margin="{StaticResource 4LeftMargin}"
-                       Text="{Binding Path=Flat.Section, Mode=OneWay, Converter={StaticResource SectionNumberToStringConverter}}"/>
-        </DockPanel>
+        <ComboBox Grid.Row="2" Grid.Column="4" Grid.IsSharedSizeScope="True"
+                  ItemsSource="{x:Static providers:StaticsProvider.AvailableSectionNumbers}"
+                  SelectedItem="{Binding Path=Flat.Section, Mode=TwoWay}" VerticalAlignment="Center" MinWidth="80">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="enums:SectionType">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="SectionName"/>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="SectionNumber"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" Text="{Binding Mode=OneWay, Converter={StaticResource SectionNumberToStringConverter}}"/>
+                        <TextBlock Grid.Column="1" Margin="{StaticResource 4LeftMargin}">
+                            <Run Text="("/>
+                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource SectionToSectionNumberConverter}}"/>
+                            <Run Text=")"/>
+                        </TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
 
         <!-- Площадь квартиры -->
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="{x:Static localization:Resources.Area}"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" Text="{x:Static loc:Resources.Area}"/>
 
         <!-- Площадь квартиры -->
         <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding Path=Flat.Area, Mode=TwoWay}"/>

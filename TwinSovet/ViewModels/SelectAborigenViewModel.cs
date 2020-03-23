@@ -21,7 +21,7 @@ namespace TwinSovet.ViewModels
 {
     internal class SelectAborigenViewModel : ViewModelBase 
     {
-        private readonly ObservableCollection<AborigenInListDecoratorViewModel> aborigenDecorators = new ObservableCollection<AborigenInListDecoratorViewModel>();
+        private readonly ObservableCollection<AborigenDecoratorViewModel> aborigenDecorators = new ObservableCollection<AborigenDecoratorViewModel>();
 
         
         public SelectAborigenViewModel() 
@@ -44,9 +44,9 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            List<AborigenInListDecoratorViewModel> decorators =
+            List<AborigenDecoratorViewModel> decorators =
                 AborigensProvider.GetAborigens()
-                    .Select(aborigenModel => new AborigenInListDecoratorViewModel(new AborigenViewModel(aborigenModel)))
+                    .Select(aborigenModel => new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(aborigenModel)))
                     .ToList();
 
             DispatcherHelper.InvokeOnDispatcher(() => aborigenDecorators.AddRange(decorators));
@@ -72,9 +72,9 @@ namespace TwinSovet.ViewModels
 
         private bool IsInFilter(object decoratorObj) 
         {
-            var decorator = (AborigenInListDecoratorViewModel) decoratorObj;
+            var decorator = (AborigenDecoratorViewModel) decoratorObj;
 
-            bool isNameFiltered = decorator.Aborigen.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
+            bool isNameFiltered = decorator.AborigenEditable.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
 
             if (isNameFiltered)
             {

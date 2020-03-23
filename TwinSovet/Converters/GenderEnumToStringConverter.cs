@@ -32,6 +32,13 @@ namespace TwinSovet.Converters
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) 
         {
+            // какого чёрта сюда приходит строка?
+            if (value is string)
+            {
+                Console.WriteLine($"GenderEnumToStringConverter: value = '{ value }'");
+                return "";
+            }
+
             var gender = (GenderType)value;
 
             switch (gender)

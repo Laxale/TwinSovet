@@ -32,7 +32,7 @@ namespace TwinSovet.Views
         private const string notesButtonTag = "NotesButtonTag";
         private const string photosButtonTag = "PhotosButtonTag";
 
-        internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public FloorView()
@@ -65,7 +65,7 @@ namespace TwinSovet.Views
 
         private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
         {
-            if (ViewModel.FlatsView.SourceCollection.OfType<FlatInListDecoratorViewModel>().Contains(message.FlatDecorator))
+            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>().Contains(message.FlatDecorator))
             {
                 EventShowFlatDetails(message.FlatDecorator);
             }

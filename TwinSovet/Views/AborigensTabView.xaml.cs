@@ -48,29 +48,29 @@ namespace TwinSovet.Views
         }
 
         
-        public static readonly DependencyProperty DetailedAborigenViewModelProperty =
-            DependencyProperty.Register(nameof(DetailedAborigenViewModel), typeof(AborigenViewModel), 
+        public static readonly DependencyProperty DetailedAborigenDecoratorProperty =
+            DependencyProperty.Register(nameof(DetailedAborigenDecorator), typeof(AborigenViewModel), 
                 typeof(AborigensTabView), new FrameworkPropertyMetadata(DetailedAborigen_OnPropertyChanged));
 
         
         /// <summary>
         /// Возвращает или задаёт вьюмодель выбранного для детализации жителя.
         /// </summary>
-        internal AborigenViewModel DetailedAborigenViewModel 
+        internal AborigenDecoratorViewModel DetailedAborigenDecorator 
         {
-            get => (AborigenViewModel)GetValue(DetailedAborigenViewModelProperty);
-            set => SetValue(DetailedAborigenViewModelProperty, value);
+            get => (AborigenDecoratorViewModel)GetValue(DetailedAborigenDecoratorProperty);
+            set => SetValue(DetailedAborigenDecoratorProperty, value);
         }
 
 
         private static void DetailedAborigen_OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
             var view = (AborigensTabView) sender;
-            var aborigenModel = (AborigenViewModel) e.NewValue;
+            var aborigenModel = (AborigenDecoratorViewModel) e.NewValue;
             
             view.SaveButton.Command = aborigenModel.CommandSave;
 
-            aborigenModel.EventExecutedSaveAborigen += () => AborigenModel_OnExecutedSaveAborigen(view);
+            aborigenModel.AborigenEditable.EventExecutedSaveAborigen += () => AborigenModel_OnExecutedSaveAborigen(view);
         }
 
         private static void AborigenModel_OnExecutedSaveAborigen(AborigensTabView tabView) 
@@ -79,9 +79,9 @@ namespace TwinSovet.Views
         }
 
 
-        private void AborigensListView_OnEventShowAborigenDetais(AborigenViewModel aborigen) 
+        private void AborigensListView_OnEventShowAborigenDetais(AborigenDecoratorViewModel aborigen) 
         {
-            DetailedAborigenViewModel = aborigen;
+            DetailedAborigenDecorator = aborigen;
             BeginEditAborigen(false);
         }
 
@@ -147,7 +147,12 @@ namespace TwinSovet.Views
         private void BeginEditAborigen(bool isNew) 
         {
             AborigensMaskPanel.Visibility = Visibility.Visible;
-            DetailedAborigenViewModel = isNew ? new AborigenViewModel(new AborigenModel()) : DetailedAborigenViewModel;
+
+            DetailedAborigenDecorator = 
+                isNew ? 
+                    new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(new AborigenModel())) :
+                    DetailedAborigenDecorator;
+
             detailedAborigen_In_Animation.Begin();
         }
 

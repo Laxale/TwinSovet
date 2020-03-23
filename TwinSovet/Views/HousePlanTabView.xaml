@@ -6,10 +6,9 @@
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
-             xmlns:controls="clr-namespace:TwinSovet.Controls"
-             xmlns:providers="clr-namespace:TwinSovet.Providers"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             
+             mc:Ignorable="d"
+             d:DesignWidth="500">
 
     <UserControl.Resources>
         <Storyboard x:Key="DetailedFlat_In_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
@@ -29,7 +28,7 @@
         </Storyboard>
 
         <Storyboard x:Key="CreateOwner_In_Animation" TargetName="CreateOwnerPanel" TargetProperty="Height">
-            <DoubleAnimation From="0" To="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+            <DoubleAnimation From="0" To="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
                                                    Path=OwnerPanelHeight, Mode=OneWay}"
                              AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
                 <DoubleAnimation.EasingFunction>
@@ -39,7 +38,7 @@
         </Storyboard>
 
         <Storyboard x:Key="CreateOwner_Out_Animation" TargetName="CreateOwnerPanel" TargetProperty="Height">
-            <DoubleAnimation From="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
+            <DoubleAnimation From="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
                                             Path=OwnerPanelHeight, Mode=OneWay}" 
                              To="0" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
                 <DoubleAnimation.EasingFunction>
@@ -60,29 +59,14 @@
     <Grid Focusable="False">
         <!-- Контрол вкладок с секциями дома -->
         <TabControl Grid.Row="0" Grid.Column="0" 
-                            IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                                Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
-            <TabControl.Style>
-                <Style TargetType="TabControl">
-                    <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.8"/>
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <BlurEffect/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </TabControl.Style>
-
+                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
+                                        Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
             <!-- Вкладка плана мебельной секции -->
             <TabItem>
                 <TabItem.Header>
                     <DockPanel VerticalAlignment="Center" MinHeight="20">
                         <ToggleButton ToolTip="{x:Static loc:Resources.DoHighlightFlatsWithoutOwner}" Cursor="Hand" VerticalAlignment="Center" 
-                                              Command="{Binding ElementName=FirstSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
+                                      Command="{Binding ElementName=FirstSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
                             <ToggleButton.Template>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Border Name="Bord" Background="{StaticResource AlmostTransparent}">
@@ -130,30 +114,39 @@
                             </Path>
                         </ToggleButton>
 
-                        <TextBlock Text="{x:Static loc:Resources.Mebelnaya}" Margin="{StaticResource 4LeftMargin}"/>
+                        <TextBlock Margin="{StaticResource 4LeftMargin}">
+                            <Run Text="{x:Static loc:Resources.Mebelnaya}"/>
+                            <Run Text="(1)"/>
+                        </TextBlock>
                     </DockPanel>
                 </TabItem.Header>
 
-                <local:FirstSectionPlanView Grid.Row="1" Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
+                <local:FirstSectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
                                             EventShowFlatDetails="FirstSectionPlanView_OnEventShowFlatDetails"/>
             </TabItem>
 
             <!-- Вкладка плана больничной секции -->
-            <TabItem Header="{x:Static loc:Resources.Hospital}">
+            <TabItem>
+                <TabItem.Header>
+                    <TextBlock>
+                        <Run Text="{x:Static loc:Resources.Hospital}"/>
+                        <Run Text="(2)"/>
+                    </TextBlock>
+                </TabItem.Header>
                 <TextBlock Text="{x:Static loc:Resources.Hospital}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </TabItem>
         </TabControl>
 
         <Border Style="{StaticResource MaskBorderStyle}" x:Name="HomePlanMaskPanel" Visibility="Collapsed"
-                        MouseLeftButtonDown="SectionsMaskPanel_OnPreviewMouseLeftButtonDown"/>
+                MouseLeftButtonDown="SectionsMaskPanel_OnPreviewMouseLeftButtonDown"/>
 
         <!-- Панель отображения деталей квартиры -->
         <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
-                        Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder">
+                Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder">
             <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}">
-                <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                                                  Path=DetailedFlatViewModel, Mode=OneWay}"
-                                            x:Name="DetailedFlatCard" EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
+                <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
+                                                          Path=DetailedFlatDecorator, Mode=OneWay}"
+                                    x:Name="DetailedFlatCard" EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
 
                 <DockPanel HorizontalAlignment="Right">
                     <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"/>
@@ -164,8 +157,8 @@
 
                 <!-- Панель указания/создания владельца выбранной квартиры -->
                 <Border x:Name="CreateOwnerPanel" Visibility="Hidden" Margin="{StaticResource All4Margin}"
-                                Loaded="OwnerPanel_OnLoaded" Background="{StaticResource SelectedGrayBrush}" 
-                                CornerRadius="{StaticResource InListBorderCornerRadius}">
+                        Loaded="OwnerPanel_OnLoaded" Background="{StaticResource SelectedGrayBrush}" 
+                        CornerRadius="{StaticResource InListBorderCornerRadius}">
                     <Grid Margin="{StaticResource All4Margin}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -174,8 +167,8 @@
 
 
                         <local:AborigenCardView Grid.Row="0" 
-                                                    DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:MainView},
-                                                                  Path=DetailedFlatViewModel.FlatOwner, Mode=OneWay}"/>
+                                                DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
+                                                                      Path=DetailedFlatDecorator.Owner, Mode=OneWay}"/>
 
                         <DockPanel Grid.Row="1" HorizontalAlignment="Right">
                             <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"/>

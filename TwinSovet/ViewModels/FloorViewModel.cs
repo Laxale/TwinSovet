@@ -15,7 +15,7 @@ namespace TwinSovet.ViewModels
 {
     internal class FloorViewModel : SubjectEntityViewModel 
     {
-        private readonly ObservableCollection<FlatInListDecoratorViewModel> flatDecorators = new ObservableCollection<FlatInListDecoratorViewModel>();
+        private readonly ObservableCollection<FlatDecoratorViewModel> flatDecorators = new ObservableCollection<FlatDecoratorViewModel>();
 
         private int floorNumber;
         private int minFlatNumber;
@@ -34,7 +34,7 @@ namespace TwinSovet.ViewModels
 
         public ICollectionView FlatsView { get; }
 
-        public IEnumerable<FlatInListDecoratorViewModel> FlatsEnumerable { get; }
+        public IEnumerable<FlatDecoratorViewModel> FlatsEnumerable { get; }
 
         public int FloorNumber 
         {
@@ -98,7 +98,7 @@ namespace TwinSovet.ViewModels
         public void SetFlats(IEnumerable<FlatViewModel> flats) 
         {
             flatDecorators.Clear();
-            flatDecorators.AddRange(flats.Select(flat => new FlatInListDecoratorViewModel(flat)));
+            flatDecorators.AddRange(flats.Select(flat => new FlatDecoratorViewModel(flat)));
 
             List<int> flatNumbers = flatDecorators.Select(decorator => decorator.Flat.Number).ToList();
 

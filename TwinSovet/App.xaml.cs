@@ -64,7 +64,7 @@ namespace TwinSovet
         }
 
 
-        private void SimpleFlatView_OnEventShowFlatDetails(FlatInListDecoratorViewModel flat) 
+        private void SimpleFlatView_OnEventShowFlatDetails(FlatDecoratorViewModel flat) 
         {
             this.Publish(new MessageShowFlatDetails(flat));
         }

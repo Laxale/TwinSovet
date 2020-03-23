@@ -12,7 +12,7 @@
 
              mc:Ignorable="d"
              MouseLeftButtonDown="SimpleFlatView_OnMouseDown"
-             d:DataContext="{d:DesignInstance viewModels:FlatInListDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
 
     <Grid Background="{StaticResource AlmostTransparent}">
         <Grid.RowDefinitions>

@@ -25,7 +25,7 @@ namespace TwinSovet.ViewModels
 {
     internal class AborigensListViewModel : ViewModelBase 
     {
-        private readonly ObservableCollection<AborigenInListDecoratorViewModel> aborigenDecorators = new ObservableCollection<AborigenInListDecoratorViewModel>();
+        private readonly ObservableCollection<AborigenDecoratorViewModel> aborigenDecorators = new ObservableCollection<AborigenDecoratorViewModel>();
 
 
         public AborigensListViewModel() 
@@ -48,9 +48,9 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            List<AborigenInListDecoratorViewModel> decorators =
+            List<AborigenDecoratorViewModel> decorators =
                 AborigensProvider.GetAborigens()
-                    .Select(aborigenModel => new AborigenInListDecoratorViewModel(new AborigenViewModel(aborigenModel)))
+                    .Select(aborigenModel => new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(aborigenModel)))
                     .ToList();
 
             Task.Run(() => LoadAborigenFlats(decorators));
@@ -71,30 +71,30 @@ namespace TwinSovet.ViewModels
             DispatcherHelper.InvokeOnDispatcher(() =>
             {
                 //
-                aborigenDecorators.Add(new AborigenInListDecoratorViewModel(new AborigenViewModel(aborigen.Clone())));
+                aborigenDecorators.Add(new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(aborigen.Clone())));
             });
         }
 
 
-        internal static void LoadAborigenFlats(List<AborigenInListDecoratorViewModel> list) 
+        internal static void LoadAborigenFlats(List<AborigenDecoratorViewModel> list) 
         {
             //
-            foreach (AborigenInListDecoratorViewModel aborigenDecorator in list)
+            foreach (AborigenDecoratorViewModel aborigenDecorator in list)
             {
-                aborigenDecorator.Flat = FlatsProvider.FindFlatOfAborigen(aborigenDecorator.Aborigen.GetId());
+                aborigenDecorator.Flat = FlatsProvider.FindFlatOfAborigen(aborigenDecorator.AborigenEditable.GetId());
             }
         }
         
 
         private bool IsInFilter(object aborigenObj) 
         {
-            var decorator = (AborigenInListDecoratorViewModel)aborigenObj;
+            var decorator = (AborigenDecoratorViewModel)aborigenObj;
 
             return 
-                decorator.Aborigen.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
-                decorator.Aborigen.Email.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
-                decorator.Aborigen.PhoneNumber.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
-                decorator.Aborigen.LocalizedGender.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
+                decorator.AborigenEditable.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.AborigenEditable.Email.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.AborigenEditable.PhoneNumber.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.AborigenEditable.LocalizedGender.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
         }
 
 

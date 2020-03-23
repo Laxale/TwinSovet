@@ -11,14 +11,14 @@ using LocRes = TwinSovet.Localization.Resources;
 
 namespace TwinSovet.ViewModels 
 {
-    internal class FlatInListDecoratorViewModel : ViewModelBase 
+    internal class FlatDecoratorViewModel : ViewModelBase 
     {
         private bool isHighlighted;
-        private AborigenViewModel owner;
         private bool isOrphanHighlighted;
+        private AborigenDecoratorViewModel owner;
 
 
-        public FlatInListDecoratorViewModel(FlatViewModel flat) 
+        public FlatDecoratorViewModel(FlatViewModel flat) 
         {
             Flat = flat;
 
@@ -64,7 +64,7 @@ namespace TwinSovet.ViewModels
         
         public bool HasOwner => Owner != null;
 
-        public AborigenViewModel Owner 
+        public AborigenDecoratorViewModel Owner 
         {
             get => owner;
 
@@ -85,8 +85,8 @@ namespace TwinSovet.ViewModels
             Window window = Extensions.WindowExtensions.CreateEmptyVerticalWindow();
             window.MakeSticky();
 
-            AborigenInListDecoratorViewModel selectedDecorator = null;
-            void SelectView_OntAborigenSelected(AborigenInListDecoratorViewModel decorator)
+            AborigenDecoratorViewModel selectedDecorator = null;
+            void SelectView_OntAborigenSelected(AborigenDecoratorViewModel decorator)
             {
                 selectedDecorator = decorator;
                 window.DialogResult = true;
@@ -103,7 +103,7 @@ namespace TwinSovet.ViewModels
             selectView.EventAborigenSelected -= SelectView_OntAborigenSelected;
             if (selectedDecorator != null)
             {
-                Owner = selectedDecorator.Aborigen;
+                Owner = selectedDecorator;
             }
         }
     }

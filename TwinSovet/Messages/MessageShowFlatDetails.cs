@@ -11,12 +11,12 @@ namespace TwinSovet.Messages
 {
     internal class MessageShowFlatDetails 
     {
-        public MessageShowFlatDetails(FlatInListDecoratorViewModel flatDecorator) 
+        public MessageShowFlatDetails(FlatDecoratorViewModel flatDecorator) 
         {
             FlatDecorator = flatDecorator;
         }
 
 
-        public FlatInListDecoratorViewModel FlatDecorator { get; }
+        public FlatDecoratorViewModel FlatDecorator { get; }
     }
 }

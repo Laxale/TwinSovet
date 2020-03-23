@@ -8,7 +8,7 @@
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:AborigenInListDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:AborigenDecoratorViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,12 +22,12 @@
         </Grid.ColumnDefinitions>
         
         <!-- Иконка пола жителя -->
-        <Path Grid.Row="0" Grid.Column="0" DataContext="{Binding Path=Aborigen, Mode=OneWay}"
+        <Path Grid.Row="0" Grid.Column="0" DataContext="{Binding Path=AborigenEditable, Mode=OneWay}"
               Style="{StaticResource GenderPathIconStyle}" Margin="{StaticResource All4Margin}"
               Visibility="{Binding Path=HasPhoto, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
         
         <Button Grid.Row="0" Grid.Column="1" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 4LeftMargin}"
-                Content="{Binding Path=Aborigen.FullNameInfo, Mode=OneWay}" Click="AborigenButton_OnClick"/>
+                Content="{Binding Path=AborigenEditable.FullNameInfo, Mode=OneWay}" Click="AborigenButton_OnClick"/>
 
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Flat.FullFlatLocationInfo, Mode=OneWay}"
                    Margin="4, 0, 0, 4"/>
