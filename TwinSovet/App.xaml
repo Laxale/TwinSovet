@@ -29,7 +29,11 @@
                 <ResourceDictionary Source="./XamlResources/InputBindings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <KeyBinding x:Key="EnterKeyBinding" Key="Escape" Command="helpers:ClientCommands.Enter"/>
+            <Duration x:Key="SlideAnimDuration">0:0:0.5</Duration>
+            <system:Double x:Key="SlidePanelWidth">400</system:Double>
+
+            <KeyBinding x:Key="NewKeyBinding" Key="N" Modifiers="Control" Command="New"/>
+            <KeyBinding x:Key="EnterKeyBinding" Key="Enter" Command="helpers:ClientCommands.Enter"/>
             <KeyBinding x:Key="EscapeKeyBinding" Key="Escape" Command="helpers:ClientCommands.Cancel"/>
 
             <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource InListBorderStyle}">
@@ -71,6 +75,10 @@
             </DataTemplate>
 
             <Style x:Key="GenderPathIconStyle" TargetType="Path">
+                <d:Style.DataContext>
+                    <x:Type Type="viewModels:AborigenViewModel"/>
+                </d:Style.DataContext>
+
                 <Setter Property="VerticalAlignment" Value="Center"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
@@ -85,10 +93,10 @@
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Path=IsGenderUndefined, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource QuestionFileIconGeometry}"/>
+                        <Setter Property="Data" Value="{StaticResource QuestionIconGeometry}"/>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <ScaleTransform ScaleX="0.2" ScaleY="0.2"/>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>
@@ -97,7 +105,7 @@
                         <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
-                                <ScaleTransform ScaleX="0.2" ScaleY="0.2"/>
+                                <ScaleTransform ScaleX="0.05" ScaleY="0.05"/>
                             </Setter.Value>
                         </Setter>
                     </DataTrigger>
@@ -118,6 +126,11 @@
                         <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
                     </DataTrigger>
                 </Style.Triggers>
+            </Style>
+
+            <Style x:Key="MaskBorderStyle" TargetType="Border">
+                <Setter Property="Opacity" Value="0.2"/>
+                <Setter Property="Background" Value="{StaticResource SteelGrayBrush}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

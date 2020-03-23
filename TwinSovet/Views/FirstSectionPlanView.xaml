@@ -9,7 +9,9 @@
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
-             xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:controls="clr-namespace:TwinSovet.Controls"
+             xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -18,15 +20,15 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="10" MinHeight="0"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!-- Заголовок первой секции -->
         <DockPanel Grid.Row="0">
             <TextBlock DockPanel.Dock="Left">
-                <Run Text="{x:Static locRes:Resources.Section}"/>
-                <Run Text="{x:Static locRes:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run Text="{x:Static localization:Resources.Section}"/>
+                <Run Text="{x:Static localization:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
                 <Run Text="  "/>
                 <Run Text="Квартиры с "/>
                 <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
@@ -35,12 +37,31 @@
             </TextBlock>
         </DockPanel>
 
-        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
+        <!-- Панелька фильтров -->
+        <Grid Grid.Row="1" Margin="{StaticResource 4TopMargin}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:FilterView Grid.Column="0" x:Name="FloorsFilter" Loaded="FloorsFilter_OnLoaded"
+                                 WatermarkText="{x:Static localization:Resources.SearchByFloors}"
+                                 FilterText="{Binding Path=FloorFilterModel.FilterText, Mode=TwoWay,
+                                                      Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+
+            <controls:FilterView Grid.Column="1" Margin="{StaticResource  4LeftMargin}"
+                                 WatermarkText="{x:Static localization:Resources.SearchByFlats}"
+                                 FilterText="{Binding Path=FlatFilterModel.FilterText, Mode=TwoWay,
+                                                      Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+        </Grid>
+
+
+        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" 
+                      VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=FloorsView, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views:FloorView Margin="0, 4, 0, 4"
-                                         EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
+                        <views:FloorView Margin="0, 4, 0, 4" EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

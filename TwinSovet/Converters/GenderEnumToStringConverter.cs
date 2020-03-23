@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using TwinSovet.Data.Enums;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Converters 

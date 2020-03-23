@@ -11,11 +11,11 @@ using System.Windows.Input;
 namespace TwinSovet.Views
 {
     /// <summary>
-    /// Логика взаимодействия для FlatAborigenCardView.xaml
+    /// Логика взаимодействия для AborigenCardView.xaml
     /// </summary>
-    public partial class FlatAborigenCardView : UserControl 
+    public partial class AborigenCardView : UserControl 
     {
-        public FlatAborigenCardView() 
+        public AborigenCardView() 
         {
             InitializeComponent();
         }

@@ -9,7 +9,7 @@
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
-             xmlns:locRes="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:FlatInListDecoratorViewModel}">
@@ -43,13 +43,13 @@
         </Path>
 
         <!-- Номер квартиры -->
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static locRes:Resources.Number}"/>
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static localization:Resources.Number}"/>
 
         <!-- Номер квартиры -->
         <TextBox Grid.Row="0" Grid.Column="4" Text="{Binding Path=Flat.Number, Mode=TwoWay}" x:Name="NumberBox"/>
 
         <!-- Владелец квартиры -->
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static locRes:Resources.Owner}"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{x:Static localization:Resources.Owner}"/>
 
         <!-- Владелец квартиры -->
         <DockPanel Grid.Row="1" Grid.Column="4">
@@ -62,8 +62,8 @@
                             </DataTrigger>
 
                             <DataTrigger Binding="{Binding Path=HasOwner, Mode=OneWay}" Value="False">
-                                <Setter Property="Content" Value="{x:Static locRes:Resources.He_IsNotDefined}"/>
-                                <Setter Property="ToolTip" Value="{x:Static locRes:Resources.ToDoCreateOwner}"/>
+                                <Setter Property="Content" Value="{x:Static localization:Resources.He_IsNotDefined}"/>
+                                <Setter Property="ToolTip" Value="{x:Static localization:Resources.ToDoCreateOwner}"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -73,12 +73,12 @@
             <!-- Кнопка выбора существующего владельца -->
             <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" 
                     Margin="{StaticResource 4LeftMargin}" Command="{Binding Path=CommandSelectOwner, Mode=OneWay}"
-                    Content="{x:Static locRes:Resources.ToDoSelect}" ToolTip="{x:Static locRes:Resources.SelectExisting_He}"
+                    Content="{x:Static localization:Resources.ToDoSelect}" ToolTip="{x:Static localization:Resources.SelectExisting_He}"
                     Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
         </DockPanel>
         
         <!-- Секция квартиры -->
-        <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static locRes:Resources.Section}"/>
+        <TextBlock Grid.Row="2" Grid.Column="2" Text="{x:Static localization:Resources.Section}"/>
 
         <!-- Секция квартиры -->
         <DockPanel Grid.Row="2" Grid.Column="4">
@@ -89,7 +89,7 @@
         </DockPanel>
 
         <!-- Площадь квартиры -->
-        <TextBlock Grid.Row="3" Grid.Column="2" Text="{x:Static locRes:Resources.Area}"/>
+        <TextBlock Grid.Row="3" Grid.Column="2" Text="{x:Static localization:Resources.Area}"/>
 
         <!-- Площадь квартиры -->
         <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding Path=Flat.Area, Mode=TwoWay}"/>

@@ -15,7 +15,7 @@ using NLog;
 
 using SQLite.CodeFirst;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Data.DataBase.Base 

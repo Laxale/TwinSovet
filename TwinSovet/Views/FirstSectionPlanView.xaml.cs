@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 
 using TwinSovet.Attributes;
+using TwinSovet.Helpers;
+using TwinSovet.Providers;
 using TwinSovet.ViewModels;
 
 
@@ -14,18 +16,32 @@ namespace TwinSovet.Views
     [HasViewModel(typeof(FirstSectionPlanViewModel))]
     public partial class FirstSectionPlanView : UserControl 
     {
+        private readonly DelayedEventInvoker delayedFocuser = new DelayedEventInvoker(StaticsProvider.SearchDelay);
+
         internal event Action<FlatInListDecoratorViewModel> EventShowFlatDetails = flatModel => { };
 
 
         public FirstSectionPlanView() 
         {
             InitializeComponent();
+
+            delayedFocuser.DelayedEvent += DelayedFocuser_OnDelayedEvent;
         }
 
+
+        private void DelayedFocuser_OnDelayedEvent() 
+        {
+            FloorsFilter.FocusInnerBox();
+        }
 
         private void FloorView_OnEventShowFlatDetails(FlatInListDecoratorViewModel flatModel) 
         {
             EventShowFlatDetails(flatModel);
+        }
+
+        private void FloorsFilter_OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            delayedFocuser.RequestDelayedEvent();
         }
     }
 }

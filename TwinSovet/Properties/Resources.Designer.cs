@@ -59,5 +59,23 @@ namespace TwinSovet.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить нового жителя.
+        /// </summary>
+        public static string AddNewAborigen {
+            get {
+                return ResourceManager.GetString("AddNewAborigen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить.
+        /// </summary>
+        public static string ToDoAdd {
+            get {
+                return ResourceManager.GetString("ToDoAdd", resourceCulture);
+            }
+        }
     }
 }

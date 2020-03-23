@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel.Security;
 using System.Text;
-using System.Threading.Tasks;
 
 using TwinSovet.Converters;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
+using TwinSovet.Data.Providers;
+
+using Prism.Commands;
+using TwinSovet.Data.Extensions;
 
 
 namespace TwinSovet.ViewModels 
@@ -16,7 +19,7 @@ namespace TwinSovet.ViewModels
     {
         private static readonly GenderEnumToStringConverter genderConverter = new GenderEnumToStringConverter();
 
-        private readonly AborigenModel flatAborigenModel;
+        private readonly AborigenModel originalModel;
         
         private string name;
         private string email;
@@ -25,20 +28,27 @@ namespace TwinSovet.ViewModels
         private GenderType gender;
         private string phoneNumber;
 
+        public event Action EventExecutedSaveAborigen = () => { };
 
-        public AborigenViewModel(AborigenModel flatAborigenModel) 
+
+        public AborigenViewModel(AborigenModel originalModel) 
         {
-            this.flatAborigenModel = flatAborigenModel;
+            this.originalModel = originalModel;
 
-            Name = flatAborigenModel.Name;
-            Email = flatAborigenModel.Email;
-            Surname = flatAborigenModel.Surname;
-            Otchestvo = flatAborigenModel.Otchestvo;
-            Gender = flatAborigenModel.Gender;
-            PhoneNumber = flatAborigenModel.PhoneNumber;
+            Name = originalModel.Name;
+            Email = originalModel.Email;
+            Surname = originalModel.Surname;
+            Otchestvo = originalModel.Otchestvo;
+            Gender = originalModel.Gender;
+            PhoneNumber = originalModel.PhoneNumber;
 
             LocalizedGender = (string)genderConverter.Convert(Gender, null, null, null);
+
+            CommandSave = new DelegateCommand(SaveImpl);
         }
+
+
+        public DelegateCommand CommandSave { get; }
 
 
         public bool HasPhoto { get; } = false;
@@ -47,10 +57,10 @@ namespace TwinSovet.ViewModels
 
         public bool IsWoman => Gender == GenderType.Woman;
 
+        public bool IsGenderUndefined => Gender == GenderType.None;
+
         public bool IsLibertarian => Gender == GenderType.Libertarian;
-
-        public bool IsGenderUndefined => Gender == GenderType.Libertarian;
-
+        
         public string Name 
         {
             get => name;
@@ -149,7 +159,23 @@ namespace TwinSovet.ViewModels
 
         public string GetId() 
         {
-            return flatAborigenModel.Id;
+            return originalModel.Id;
+        }
+
+
+        private void SaveImpl() 
+        {
+            AborigenModel clone = originalModel.Clone();
+            clone.Gender = Gender;
+            clone.Email = Email;
+            clone.Otchestvo = Otchestvo;
+            clone.PhoneNumber = PhoneNumber;
+            clone.Surname = Surname;
+            clone.Name = Name;
+            
+            AborigensProvider.SaveOrUpdateAborigen(clone);
+
+            EventExecutedSaveAborigen();
         }
     }
 }

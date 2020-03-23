@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-
+using Prism.Commands;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 using TwinSovet.Helpers;
@@ -14,21 +14,18 @@ using TwinSovet.Messages;
 using TwinSovet.Properties;
 
 using PubSub;
+using TwinSovet.Data.Extensions;
 using TwinSovet.Data.Providers;
 using TwinSovet.Providers;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.ViewModels 
 {
     internal class AborigensListViewModel : ViewModelBase 
     {
-        private string filterText;
-        private string loweredFilter;
-
-        private readonly ObservableCollection<AborigenInListDecoratorViewModel> aborigenDecorators = 
-            new ObservableCollection<AborigenInListDecoratorViewModel>();
+        private readonly ObservableCollection<AborigenInListDecoratorViewModel> aborigenDecorators = new ObservableCollection<AborigenInListDecoratorViewModel>();
 
 
         public AborigensListViewModel() 
@@ -38,7 +35,7 @@ namespace TwinSovet.ViewModels
             this.Publish(new MessageInitializeModelRequest(this, LocRes.LoadingAborigensList));
         }
 
-
+        
         public ICollectionView AborigensView { get; }
 
         public FilterViewModel FilterModel { get; } = new FilterViewModel();
@@ -65,6 +62,17 @@ namespace TwinSovet.ViewModels
             });
 
             FilterModel.PropertyChanged += Filter_OnPropertyChanged;
+
+            AborigensProvider.EventAborigenAdded += AborigensProvider_OnAborigenAdded;
+        }
+
+        private void AborigensProvider_OnAborigenAdded(AborigenModel aborigen) 
+        {
+            DispatcherHelper.InvokeOnDispatcher(() =>
+            {
+                //
+                aborigenDecorators.Add(new AborigenInListDecoratorViewModel(new AborigenViewModel(aborigen.Clone())));
+            });
         }
 
 
@@ -83,10 +91,10 @@ namespace TwinSovet.ViewModels
             var decorator = (AborigenInListDecoratorViewModel)aborigenObj;
 
             return 
-                decorator.Aborigen.FullNameInfo.ToLowerInvariant().Contains(loweredFilter) ||
-                decorator.Aborigen.Email.ToLowerInvariant().Contains(loweredFilter) ||
-                decorator.Aborigen.PhoneNumber.ToLowerInvariant().Contains(loweredFilter) ||
-                decorator.Aborigen.LocalizedGender.ToLowerInvariant().Contains(loweredFilter);
+                decorator.Aborigen.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.Aborigen.Email.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.Aborigen.PhoneNumber.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.Aborigen.LocalizedGender.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
         }
 
 

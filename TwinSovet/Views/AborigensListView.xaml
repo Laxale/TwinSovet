@@ -8,13 +8,26 @@
 
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+             xmlns:controls="clr-namespace:TwinSovet.Controls"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:AborigensListViewModel}">
 
     <Grid>
-        <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <controls:FilterView Grid.Row="0" Margin="{StaticResource All4Margin}"
+                             WatermarkText="{x:Static loc:Resources.AborigenSearch}" x:Name="AborigensFilterer"
+                             FilterText="{Binding Path=FilterModel.FilterText, Mode=TwoWay,
+                                                          Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=AborigensView, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate DataType="viewModels:AborigenInListDecoratorViewModel">

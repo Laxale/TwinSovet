@@ -53,6 +53,7 @@
     <Compile Include="DataBase\Base\SimpleDbObject.cs" />
     <Compile Include="Enums\GenderType.cs" />
     <Compile Include="Enums\SectionType.cs" />
+    <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Models\BookRelation.cs" />
     <Compile Include="Models\FlatModel.cs" />
     <Compile Include="Models\AborigenModel.cs" />

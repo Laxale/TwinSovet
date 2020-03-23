@@ -103,6 +103,7 @@
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\NonDesignInvoker.cs" />
     <Compile Include="ViewModels\FlatInListDecoratorViewModel.cs" />
     <Compile Include="Messages\MessageShowAttachables.cs" />
     <Compile Include="Messages\MessageShowPhotos.cs" />
@@ -133,17 +134,23 @@
     <Compile Include="Views\AborigensListView.xaml.cs">
       <DependentUpon>AborigensListView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AborigensTabView.xaml.cs">
+      <DependentUpon>AborigensTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\FirstSectionPlanView.xaml.cs">
       <DependentUpon>FirstSectionPlanView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FlatAborigenCardView.xaml.cs">
-      <DependentUpon>FlatAborigenCardView.xaml</DependentUpon>
+    <Compile Include="Views\AborigenCardView.xaml.cs">
+      <DependentUpon>AborigenCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FlatCardView.xaml.cs">
       <DependentUpon>FlatCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FloorView.xaml.cs">
       <DependentUpon>FloorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\HousePlanTabView.xaml.cs">
+      <DependentUpon>HousePlanTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
@@ -180,11 +187,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AborigensTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\FirstSectionPlanView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FlatAborigenCardView.xaml">
+    <Page Include="Views\AborigenCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -193,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\FloorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\HousePlanTabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

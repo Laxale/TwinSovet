@@ -6,7 +6,7 @@ using TwinSovet.Views;
 
 using Prism.Commands;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.ViewModels 

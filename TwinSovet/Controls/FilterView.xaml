@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              
              xmlns:controls="clr-namespace:TwinSovet.Controls"
-             xmlns:locPraps="clr-namespace:TwinSovet.Localization.Properties;assembly=TwinSovet.Localization"
+             xmlns:locPraps="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d">
 

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TwinSovet.Helpers;
 
 
 namespace TwinSovet.Controls 
@@ -63,7 +64,7 @@ namespace TwinSovet.Controls
 
         public void FocusInnerBox() 
         {
-            Keyboard.Focus(InputBox);
+            DispatcherHelper.BeginInvokeOnDispatcher(() => Keyboard.Focus(InputBox));
         }
 
 

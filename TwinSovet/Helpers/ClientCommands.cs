@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Helpers 

@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="TwinSovet.Views.AborigensTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TwinSovet.Views"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:praps="clr-namespace:TwinSovet.Properties"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             
+             mc:Ignorable="d"
+             d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <Storyboard x:Key="DetailedAborigen_In_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
+            <DoubleAnimation From="0" To="{StaticResource SlidePanelWidth}" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="DetailedAborigen_Out_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
+            <DoubleAnimation From="{StaticResource SlidePanelWidth}" To="0" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="New" Executed="NewAborigenCommandBinding_OnExecuted" CanExecute="NewAborigenCommandBinding_OnCanExecute"/>
+        <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="AborigensPage_EscapeCommandBinding_OnExecuted"/>
+    </UserControl.CommandBindings>
+
+    <UserControl.InputBindings>
+        <StaticResource ResourceKey="NewKeyBinding"/>
+        <StaticResource ResourceKey="EscapeKeyBinding"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" Text="Список жителей"/>
+
+        <WrapPanel Grid.Row="1" Margin="{StaticResource All4Margin}">
+            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static praps:Resources.ToDoAdd}"
+                            ToolTip="{x:Static praps:Resources.AddNewAborigen}" Click="AddNewAborigenButton_OnClick" />
+        </WrapPanel>
+
+        <local:AborigensListView Grid.Row="2" x:Name="AborigensList" Margin="{StaticResource All4Margin}"
+                                 EventShowAborigenDetais="AborigensListView_OnEventShowAborigenDetais"/>
+
+        <Border Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource MaskBorderStyle}" Name="AborigensMaskPanel" 
+                Visibility="Collapsed" MouseLeftButtonDown="AborigensMaskPanel_OnMouseLeftButtonDown"/>
+
+        <!-- Панель отображения деталей жителя -->
+        <Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="{StaticResource SteelGrayBrush}"
+                CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1" Width="0" 
+                x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Padding="{StaticResource All4Margin}">
+            <StackPanel Orientation="Vertical">
+                <local:AborigenCardView x:Name="DetailedAborigenCard"
+                                            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
+                                                                  Path=DetailedAborigenViewModel, Mode=OneWay}"/>
+
+                <!-- Панелька кнопок -->
+                <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
+                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}" Name="SaveButton"/>
+
+                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
+                            Foreground="{StaticResource RedBrush}" Margin="{StaticResource 4LeftMargin}"
+                            Content="{x:Static loc:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
+                </DockPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

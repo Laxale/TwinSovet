@@ -14,7 +14,7 @@ using TwinSovet.Helpers;
 
 using PubSub;
 using TwinSovet.Data.Providers;
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.ViewModels 

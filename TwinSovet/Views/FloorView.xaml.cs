@@ -19,7 +19,7 @@ using PubSub;
 using TwinSovet.Messages;
 using TwinSovet.ViewModels;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Views 

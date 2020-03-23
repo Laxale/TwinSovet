@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using TwinSovet.Attributes;
+using TwinSovet.Helpers;
 using TwinSovet.ViewModels;
 
 
@@ -31,8 +32,27 @@ namespace TwinSovet.Views
         public AborigensListView()
         {
             InitializeComponent();
+
+            Loaded += OnLoaded;
         }
 
+
+        private AborigensListViewModel ViewModel { get; set; }
+
+
+        public void FocusSearchBox() 
+        {
+            AborigensFilterer.FocusInnerBox();
+        }
+
+
+        private void OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            NonDesignInvoker.Invoke(this, () =>
+            {
+                ViewModel = (AborigensListViewModel)DataContext;
+            });
+        }
 
         private void SimpleAborigenView_OnShowAborigenDetais(AborigenViewModel aborigen) 
         {

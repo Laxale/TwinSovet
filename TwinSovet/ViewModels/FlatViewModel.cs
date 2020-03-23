@@ -10,7 +10,7 @@ using TwinSovet.Data.Models;
 using TwinSovet.Extensions;
 using TwinSovet.Views;
 
-using LocRes = TwinSovet.Localization.Properties.Resources;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.ViewModels 
