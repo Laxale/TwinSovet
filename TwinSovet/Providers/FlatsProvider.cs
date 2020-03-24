@@ -19,10 +19,7 @@ namespace TwinSovet.Providers
         private static readonly object Locker = new object();
         private static readonly Dictionary<string, FlatViewModel> aborigenFlats = new Dictionary<string, FlatViewModel>();
 
-        public const int MinFlatNumber = 1;
-        public const int MaxFlatNumber = 247;
-
-
+        
         static FlatsProvider() 
         {
             CommandSave = new DelegateCommand<FlatDecoratorViewModel>(SaveImpl, CanSave);
@@ -44,9 +41,10 @@ namespace TwinSovet.Providers
         [DebuggerStepThrough]
         public static void VerifyFlatNumber(int flatNumber) 
         {
-            if (flatNumber < MinFlatNumber || flatNumber > MaxFlatNumber)
+            if (flatNumber < StaticsProvider.MinFlatNumber || flatNumber > StaticsProvider.MaxFlatNumber)
             {
-                throw new InvalidOperationException($"Номер квартиры не может быть меньше '{ MinFlatNumber }' или больше '{ MaxFlatNumber }'");
+                string message = $"Номер квартиры не может быть меньше '{StaticsProvider.MinFlatNumber}' или больше '{StaticsProvider.MaxFlatNumber}'";
+                throw new InvalidOperationException(message);
             }
         }
 
@@ -115,6 +113,7 @@ namespace TwinSovet.Providers
             if (selectedDecorator != null)
             {
                 flatDecorator.SetOwner(selectedDecorator);
+                CommandSave.RaiseCanExecuteChanged();
             }
         }
     }

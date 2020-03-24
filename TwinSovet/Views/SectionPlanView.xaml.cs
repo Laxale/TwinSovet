@@ -11,10 +11,10 @@ using TwinSovet.ViewModels;
 namespace TwinSovet.Views 
 {
     /// <summary>
-    /// Логика взаимодействия для FirstSectionPlanView.xaml
+    /// Логика взаимодействия для SectionPlanView.xaml
     /// </summary>
-    [HasViewModel(typeof(FirstSectionPlanViewModel))]
-    public partial class FirstSectionPlanView : UserControl 
+    [HasViewModel(typeof(FurnitureSectionPlanViewModel))]
+    public partial class SectionPlanView : UserControl 
     {
         private readonly DelayedEventInvoker delayedFocuser = new DelayedEventInvoker(StaticsProvider.SearchDelay);
 
@@ -22,9 +22,11 @@ namespace TwinSovet.Views
         internal event Action<AborigenDecoratorViewModel> EventShowAborigenDetails = aborigenDecorator => { };
 
 
-        public FirstSectionPlanView() 
+        public SectionPlanView() 
         {
             InitializeComponent();
+
+            Progresser.Maximum = StaticsProvider.FlatsInFurnitureSection;
 
             delayedFocuser.DelayedEvent += DelayedFocuser_OnDelayedEvent;
         }

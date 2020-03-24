@@ -8,7 +8,8 @@
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
-             
+             xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+
              mc:Ignorable="d"
              d:DesignWidth="500">
 
@@ -81,53 +82,9 @@
             <TabItem>
                 <TabItem.Header>
                     <DockPanel VerticalAlignment="Center" MinHeight="20">
-                        <ToggleButton ToolTip="{x:Static loc:Resources.DoHighlightFlatsWithoutOwner}" Cursor="Hand" VerticalAlignment="Center" 
+                        <ToggleButton Style="{StaticResource HighlightOrphansToggleButtonStyle}"
                                       Command="{Binding ElementName=FirstSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
-                            <ToggleButton.Template>
-                                <ControlTemplate TargetType="ToggleButton">
-                                    <Border Name="Bord" Background="{StaticResource AlmostTransparent}">
-                                        <ContentPresenter/>
-                                    </Border>
-
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter TargetName="Bord" Property="Background" Value="{StaticResource LightGrayBrush}"/>
-                                        </Trigger>
-
-                                        <Trigger Property="IsChecked" Value="False">
-                                            <Setter TargetName="Bord" Property="BorderBrush" Value="{StaticResource SteelGrayBrush}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </ToggleButton.Template>
-
-                            <Path Data="{StaticResource UnknownIconGeometry}">
-                                <Path.Style>
-                                    <Style TargetType="Path">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
-                                                                                   Path=IsChecked, Mode=OneWay}"
-                                                                 Value="True">
-                                                <Setter Property="StrokeThickness" Value="2"/>
-                                                <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
-                                                <Setter Property="Stroke" Value="{StaticResource RedBrush}"/>
-                                            </DataTrigger>
-
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
-                                                                                   Path=IsChecked, Mode=OneWay}"
-                                                                 Value="False">
-                                                <Setter Property="StrokeThickness" Value="1"/>
-                                                <Setter Property="Fill" Value="{StaticResource GrayBrush}"/>
-                                                <Setter Property="Stroke" Value="{StaticResource GrayBrush}"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Path.Style>
-
-                                <Path.LayoutTransform>
-                                    <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
-                                </Path.LayoutTransform>
-                            </Path>
+                            <Path Style="{StaticResource HighlightOrphansPathStyle}"/>
                         </ToggleButton>
 
                         <TextBlock Margin="{StaticResource 4LeftMargin}">
@@ -137,20 +94,38 @@
                     </DockPanel>
                 </TabItem.Header>
 
-                <local:FirstSectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
+                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
                                             EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
-                                            EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails"/>
+                                            EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails">
+                    <local:SectionPlanView.DataContext>
+                        <viewModels:FurnitureSectionPlanViewModel/>
+                    </local:SectionPlanView.DataContext>
+                </local:SectionPlanView>
             </TabItem>
 
             <!-- Вкладка плана больничной секции -->
             <TabItem>
                 <TabItem.Header>
-                    <TextBlock>
-                        <Run Text="{x:Static loc:Resources.Hospital}"/>
-                        <Run Text="(2)"/>
-                    </TextBlock>
+                    <DockPanel VerticalAlignment="Center" MinHeight="20">
+                        <ToggleButton Style="{StaticResource HighlightOrphansToggleButtonStyle}"
+                                      Command="{Binding ElementName=HospitalSectionView, Path=DataContext.CommandHighlightOrphanFlats, Mode=OneWay}">
+                            <Path Style="{StaticResource HighlightOrphansPathStyle}"/>
+                        </ToggleButton>
+
+                        <TextBlock Margin="{StaticResource 4LeftMargin}">
+                            <Run Text="{x:Static loc:Resources.Hospital}"/>
+                            <Run Text="(2)"/>
+                        </TextBlock>
+                    </DockPanel>
                 </TabItem.Header>
-                <TextBlock Text="{x:Static loc:Resources.Hospital}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="HospitalSectionView"
+                                       EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
+                                       EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails">
+                    <local:SectionPlanView.DataContext>
+                        <viewModels:HospitalSectionPlanViewModel/>
+                    </local:SectionPlanView.DataContext>
+                </local:SectionPlanView>
             </TabItem>
         </TabControl>
 

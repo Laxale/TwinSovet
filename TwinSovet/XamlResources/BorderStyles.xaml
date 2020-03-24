@@ -18,7 +18,11 @@
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
-                <Setter Property="Background" Value="{StaticResource GrayBrush}"/>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource GrayColor}" Opacity="0.6"/>
+                    </Setter.Value>
+                </Setter>
             </Trigger>
 
             <Trigger Property="IsMouseOver" Value="False">

@@ -61,7 +61,7 @@
                 Visibility="Collapsed" MouseLeftButtonDown="AborigensMaskPanel_OnMouseLeftButtonDown"/>
 
         <!-- Панель редактирования деталей жителя -->
-        <local:EditAborigenView Grid.Row="2" HorizontalAlignment="Right" Width="0" 
+        <local:EditAborigenView Grid.Row="0" Grid.RowSpan="3" HorizontalAlignment="Right" Width="0" 
                                 DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
                                                       Path=DetailedAborigenDecorator, Mode=OneWay}"
                                 x:Name="DetailedAborigenPanel" EventCancellationRequest="DetailedAborigenPanel_OnEventCancellationRequest"/>

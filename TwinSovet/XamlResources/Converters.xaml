@@ -9,7 +9,7 @@
 
     <converters:ReversedBooleanConverter x:Key="ReversedBooleanConverter"/>
     <converters:GenderEnumToStringConverter x:Key="GenderEnumToStringConverter"/>
-    <converters:SectionTypeToStringConverter x:Key="SectionNumberToStringConverter"/>
+    <converters:SectionTypeToStringConverter x:Key="SectionTypeToStringConverter"/>
     <converters:SectionToSectionNumberConverter x:Key="SectionToSectionNumberConverter"/>
     <converters:ReversedNullToVisibilityConverter x:Key="ReversedNullToVisibilityConverter"/>
     <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter"/>

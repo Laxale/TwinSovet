@@ -9,6 +9,7 @@
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              StartupUri="MainWindow.xaml">
@@ -111,6 +112,39 @@
                 </Style.Triggers>
             </Style>
 
+            <Style x:Key="HighlightOrphansPathStyle" TargetType="Path">
+                <Setter Property="Data" Value="{StaticResource UnknownIconGeometry}"/>
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                                   Path=IsChecked, Mode=OneWay}"
+                                 Value="True">
+                        <Setter Property="StrokeThickness" Value="2"/>
+                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
+                        <Setter Property="Stroke" Value="{StaticResource RedBrush}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                                   Path=IsChecked, Mode=OneWay}"
+                                 Value="False">
+                        <Setter Property="StrokeThickness" Value="1"/>
+                        <Setter Property="Fill" Value="{StaticResource GrayBrush}"/>
+                        <Setter Property="Stroke" Value="{StaticResource GrayBrush}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                                   Path=IsMouseOver, Mode=OneWay}"
+                                 Value="True">
+                        <Setter Property="StrokeThickness" Value="2"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
             <Style x:Key="StackPanelInListAlternatedStyle" TargetType="StackPanel">
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=TemplatedParent},
@@ -128,8 +162,34 @@
             </Style>
 
             <Style x:Key="MaskBorderStyle" TargetType="Border">
-                <Setter Property="Opacity" Value="0.2"/>
-                <Setter Property="Background" Value="{StaticResource SteelGrayBrush}"/>
+                <Setter Property="Opacity" Value="0.6"/>
+                <Setter Property="Background" Value="{StaticResource LightGrayBrush}"/>
+            </Style>
+
+            <Style x:Key="HighlightOrphansToggleButtonStyle" TargetType="ToggleButton">
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="ToolTip" Value="{x:Static loc:Resources.DoHighlightFlatsWithoutOwner}"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border Name="Bord" Background="{StaticResource AlmostTransparent}">
+                                <ContentPresenter/>
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter TargetName="Bord" Property="Background" Value="{StaticResource LightGrayBrush}"/>
+                                </Trigger>
+
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter TargetName="Bord" Property="BorderBrush" Value="{StaticResource SteelGrayBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

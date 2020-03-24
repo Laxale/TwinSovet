@@ -41,7 +41,7 @@
                     <Run Text="{Binding Path=FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                     <Run Text="  "/>
                     <Run Text="{x:Static localization:Resources.Section}"/>
-                    <Run Text="{Binding Path=Section, Mode=OneWay, Converter={StaticResource SectionNumberToStringConverter}}" FontStyle="Italic" FontWeight="Medium"/>
+                    <Run Text="{Binding Path=Section, Mode=OneWay, Converter={StaticResource SectionTypeToStringConverter}}" FontStyle="Italic" FontWeight="Medium"/>
                     <Run Text="  "/>
                     <Run Text="Квартиры с "/>
                     <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>

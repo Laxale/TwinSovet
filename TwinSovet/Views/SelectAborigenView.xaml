@@ -28,6 +28,17 @@
 
     <UserControl.Resources>
         <Style TargetType="ListBoxItem">
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="FontWeight" Value="Medium"/>
+                    <Setter Property="Foreground" Value="{StaticResource SteelGrayBrush}"/>
+                </Trigger>
+
+                <Trigger Property="IsSelected" Value="False">
+                    <Setter Property="Foreground" Value="{StaticResource SteelGrayBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+
             <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_OnDoubleClick"/>
         </Style>
     </UserControl.Resources>

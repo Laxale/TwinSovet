@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TwinSovet.Views.FirstSectionPlanView"
+﻿<UserControl x:Class="TwinSovet.Views.SectionPlanView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,8 +13,7 @@
              xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d"
-             prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:FirstSectionPlanViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:SectionViewModelBase}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -24,17 +23,24 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок первой секции -->
-        <DockPanel Grid.Row="0">
+        <WrapPanel Grid.Row="0">
             <TextBlock DockPanel.Dock="Left">
                 <Run Text="{x:Static loc:Resources.Section}"/>
-                <Run Text="{x:Static loc:Resources.Mebelnaya}" FontStyle="Italic" FontWeight="Medium"/>
+                <Run FontStyle="Italic" FontWeight="Medium"
+                     Text="{Binding Path=TypeOfSection, Mode=OneWay, Converter={StaticResource SectionTypeToStringConverter}}" />
                 <Run Text="  "/>
                 <Run Text="Квартиры с "/>
                 <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
                 <Run Text="по"/>
                 <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
             </TextBlock>
-        </DockPanel>
+            
+            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Notes}" 
+                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowNotes}"/>
+
+            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Photos}" 
+                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowPhotos}"/>
+        </WrapPanel>
 
         <!-- Панелька фильтров -->
         <Grid Grid.Row="1" Margin="{StaticResource 4TopMargin}">
@@ -54,7 +60,6 @@
                                                       Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
         </Grid>
 
-
         <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" 
                       VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=FloorsView, Mode=OneWay}">
@@ -67,5 +72,15 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
         </ScrollViewer>
+        
+        <!-- Панелька загрузки -->
+        <Border Grid.Row="0" Grid.RowSpan="3" Background="{StaticResource WhiteBrush}" Opacity="0.9"
+                Visibility="{Binding Path=IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Path=BusyMessage, Mode=OneWay}"/>
+                <ProgressBar Minimum="0" Value="{Binding Path=LoadProgress, Mode=OneWay}" 
+                             Name="Progresser" MinHeight="16" IsIndeterminate="True"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

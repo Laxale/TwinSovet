@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
+using TwinSovet.Data.Enums;
+
 using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Converters 
 {
+    [ValueConversion(typeof(SectionType), typeof(string))]
     internal class SectionTypeToStringConverter : IValueConverter 
     {
         /// <summary>Преобразует значение.</summary>
@@ -30,11 +33,11 @@ namespace TwinSovet.Converters
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) 
         {
-            var sectionNumber = (int) value;
+            var sectionNumber = (SectionType) value;
 
-            if (sectionNumber == 0) return LocRes.She_IsNotDefined;
-            if (sectionNumber == 1) return LocRes.Mebelnaya;
-            if (sectionNumber == 2) return LocRes.Hospital;
+            if (sectionNumber == SectionType.None) return LocRes.She_IsNotDefined;
+            if (sectionNumber == SectionType.Furniture) return LocRes.Mebelnaya;
+            if (sectionNumber == SectionType.Hospital) return LocRes.Hospital;
 
             throw new InvalidOperationException($"Неожиданный номер секции '{ sectionNumber }'");
         }

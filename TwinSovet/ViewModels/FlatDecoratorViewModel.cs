@@ -131,7 +131,7 @@ namespace TwinSovet.ViewModels
         private void AborigenEditable_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
             // readonly модель меняется после сохранения editable модели
-            if (e.PropertyName == nameof(AborigenDecoratorViewModel.AborigenReadOnly.HasAtLeastMinimumInfo))
+            if (e.PropertyName == nameof(AborigenViewModel.HasAtLeastMinimumInfo))
             {
                 RaiseHasOwnerPropertyChanged();
             }

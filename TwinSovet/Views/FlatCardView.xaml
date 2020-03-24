@@ -6,9 +6,9 @@
              
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
-             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:enums="clr-namespace:TwinSovet.Data.Enums;assembly=TwinSovet.Data"
-
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
 
@@ -69,9 +69,10 @@
             </Button>
 
             <!-- Кнопка выбора существующего владельца -->
-            <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" 
-                    Margin="{StaticResource 4LeftMargin}" Command="{Binding Path=CommandSelectOwner, Mode=OneWay}"
+            <Button DockPanel.Dock="Left" 
+                    Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 4LeftMargin}" 
                     Content="{x:Static loc:Resources.ToDoSelect}" ToolTip="{x:Static loc:Resources.SelectExisting_He}"
+                    Command="{x:Static providers:FlatsProvider.CommandSelectOwner}" CommandParameter="{Binding Mode=OneWay}"
                     Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
         </DockPanel>
         
@@ -80,7 +81,7 @@
 
         <!-- Секция квартиры -->
         <TextBlock Grid.Row="2" Grid.Column="4">
-            <Run Text="{Binding Path=Flat.Section, Mode=OneWay, Converter={StaticResource SectionNumberToStringConverter}}"/>
+            <Run Text="{Binding Path=Flat.Section, Mode=OneWay, Converter={StaticResource SectionTypeToStringConverter}}"/>
             <Run Text="("/>
             <Run Text="{Binding Path=Flat.Section, Mode=OneWay, Converter={StaticResource SectionToSectionNumberConverter}}"/>
             <Run Text=")"/>

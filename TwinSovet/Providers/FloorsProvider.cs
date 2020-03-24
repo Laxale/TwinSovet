@@ -14,8 +14,6 @@ namespace TwinSovet.Providers
     internal static class FloorsProvider 
     {
         private static readonly object Locker = new object();
-        private static readonly int startMebelFlatNumber = 1;
-        private static readonly int startHospitalFlatNumber = 121;
         private static readonly Dictionary<SectionType, List<FloorViewModel>> sectionFloors = new Dictionary<SectionType, List<FloorViewModel>>();
         private static readonly Dictionary<int, float> mebelFlatAreas = new Dictionary<int, float>
         {
@@ -88,8 +86,8 @@ namespace TwinSovet.Providers
                         StaticsProvider.FlatsPerHospitalFloor ;
                 int startFlatNumber =
                     section == SectionType.Furniture ?
-                        startMebelFlatNumber :
-                        startHospitalFlatNumber;
+                        StaticsProvider.MinFlatNumber :
+                        StaticsProvider.FlatsInFurnitureSection + 1;
 
                 List<FloorViewModel> floorModels = CreateFloorsForSection(section, flatsPerFloor, startFlatNumber);
 
@@ -106,7 +104,7 @@ namespace TwinSovet.Providers
             var floorModels = new List<FloorViewModel>();
             Dictionary<int, float> areasDict = section == SectionType.Furniture ? mebelFlatAreas : hospitalFlatAreas;
 
-            for (int floorIndex = 1; floorIndex <= StaticsProvider.FloorsCount; floorIndex++)
+            for (int floorIndex = 2; floorIndex <= StaticsProvider.TotalFloorsCount; floorIndex++)
             {
                 var floorViewModel = new FloorViewModel { FloorNumber = floorIndex, Section = section };
 

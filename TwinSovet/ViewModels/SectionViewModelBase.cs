@@ -11,45 +11,56 @@ using Microsoft.Practices.ObjectBuilder2;
 
 using Prism.Commands;
 
-using PubSub;
-
 using TwinSovet.Data.Enums;
-using TwinSovet.Data.Models;
-using TwinSovet.Data.Providers;
 using TwinSovet.Helpers;
-using TwinSovet.Messages;
 using TwinSovet.Providers;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels
 {
-    internal class FirstSectionPlanViewModel : ViewModelBase 
+    internal abstract class SectionViewModelBase : SubjectEntityViewModel 
     {
         private readonly ObservableCollection<FloorViewModel> floors = new ObservableCollection<FloorViewModel>();
 
         private int minFlatNumber;
         private int maxFlatNumber;
+        private int loadProgress;
         private bool isOrphanHighlighted = true;
 
 
-        public FirstSectionPlanViewModel() 
+        public SectionViewModelBase()
         {
             FloorsView = CollectionViewSource.GetDefaultView(floors);
 
             FloorsEnumerable = floors;
 
             CommandHighlightOrphanFlats = new DelegateCommand(HighlightOrphanFlatsImpl, () => IsReady);
-
-            this.Publish(new MessageInitializeModelRequest(this, "Загружаем план мебельной секции"));
         }
 
 
         public DelegateCommand CommandHighlightOrphanFlats { get; }
 
-        
+
         public ICollectionView FloorsView { get; }
 
         public IEnumerable<FloorViewModel> FloorsEnumerable { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int LoadProgress 
+        {
+            get => loadProgress;
+
+            private set
+            {
+                if (loadProgress == value) return;
+
+                loadProgress = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public int MinFlatNumber 
         {
@@ -82,16 +93,8 @@ namespace TwinSovet.ViewModels
         public FilterViewModel FlatFilterModel { get; } = new FilterViewModel();
 
         public FilterViewModel FloorFilterModel { get; } = new FilterViewModel();
-        
-        
-        public void SetFloors(IEnumerable<FloorViewModel> floorModels) 
-        {
-            floors.Clear();
-            floors.AddRange(floorModels);
 
-            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
-            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
-        }
+        public abstract SectionType TypeOfSection { get; }
 
 
         /// <summary>
@@ -101,26 +104,30 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            IEnumerable<FloorViewModel> floorModels = FloorsProvider.GetFloors(SectionType.Furniture);
-            
+            IEnumerable<FloorViewModel> floorModels = FloorsProvider.GetFloors(TypeOfSection).ToList();
+
+            LoadFlatOwners(floorModels);
             DispatcherHelper.InvokeOnDispatcher(() => SetFloors(floorModels));
+            //Task.Run(() => LoadFlatOwners());
 
-            Task.Run(() => LoadFlatOwners());
-
+            PropertyChanged += Self_OnPropertyChanged;
             FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
             FloorFilterModel.PropertyChanged += FloorFilterModel_OnPropertyChanged;
         }
 
 
-        private void LoadFlatOwners() 
+        private void LoadFlatOwners(IEnumerable<FloorViewModel> incomingFloors) 
         {
-            foreach (FloorViewModel floorViewModel in floors)
+            int currentCount = 0;
+            foreach (FloorViewModel floorViewModel in incomingFloors)
             {
                 foreach (FlatDecoratorViewModel flatDecorator in floorViewModel.FlatsEnumerable)
                 {
                     AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
-                    
+
                     flatDecorator.SetOwner(owner);
+                    currentCount++;
+                    LoadProgress = 100 * currentCount / StaticsProvider.FlatsInFurnitureSection;
 
                     if (owner != null)
                     {
@@ -129,7 +136,7 @@ namespace TwinSovet.ViewModels
                 }
             }
         }
-        
+
         private void HighlightOrphanFlatsImpl() 
         {
             floors.ForEach(floor => floor.FlatsEnumerable.ForEach(flatDecorator =>
@@ -186,6 +193,14 @@ namespace TwinSovet.ViewModels
         }
 
 
+        private void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        {
+            if (e.PropertyName == nameof(IsReady))
+            {
+                CommandHighlightOrphanFlats.RaiseCanExecuteChanged();
+            }
+        }
+
         private void FlatFilterModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
             if (FloorFilterModel.HasFilter)
@@ -207,7 +222,7 @@ namespace TwinSovet.ViewModels
 
             SetFlatFilters();
         }
-        
+
         private void FloorFilterModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
         {
             if (FlatFilterModel.HasFilter)
@@ -227,6 +242,16 @@ namespace TwinSovet.ViewModels
             }
 
             ClearFlatsHighlighting();
+        }
+
+
+        private void SetFloors(IEnumerable<FloorViewModel> floorModels) 
+        {
+            floors.Clear();
+            floors.AddRange(floorModels);
+
+            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
+            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
         }
     }
 }
