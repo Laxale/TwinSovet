@@ -67,16 +67,15 @@
                         </Grid.ColumnDefinitions>
 
                         <views:SimpleFlatView Margin="{StaticResource All4Margin}"
-                                              EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails">
-
-                        </views:SimpleFlatView>
+                                              EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"
+                                              EventShowOwnerDetails="SimpleFlatView_OnEventShowOwnerDetails"/>
                     </Grid>
                 </Border>
             </DataTemplate>
 
             <Style x:Key="GenderPathIconStyle" TargetType="Path">
                 <d:Style.DataContext>
-                    <x:Type Type="viewModels:AborigenViewModel"/>
+                    <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
                 </d:Style.DataContext>
 
                 <Setter Property="VerticalAlignment" Value="Center"/>
@@ -84,15 +83,15 @@
                 <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
 
                 <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=IsMan, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsMan, Mode=OneWay}" Value="True">
                         <Setter Property="Data" Value="{StaticResource ManUserIconGeometry}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Path=IsWoman, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsWoman, Mode=OneWay}" Value="True">
                         <Setter Property="Data" Value="{StaticResource WomanUserIconGeometry}"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Path=IsGenderUndefined, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsGenderUndefined, Mode=OneWay}" Value="True">
                         <Setter Property="Data" Value="{StaticResource QuestionIconGeometry}"/>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
@@ -101,7 +100,7 @@
                         </Setter>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Path=IsLibertarian, Mode=OneWay}" Value="True">
+                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsLibertarian, Mode=OneWay}" Value="True">
                         <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>

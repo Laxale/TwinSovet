@@ -49,8 +49,8 @@ namespace TwinSovet.Views
 
         
         public static readonly DependencyProperty DetailedAborigenDecoratorProperty =
-            DependencyProperty.Register(nameof(DetailedAborigenDecorator), typeof(AborigenViewModel), 
-                typeof(AborigensTabView), new FrameworkPropertyMetadata(DetailedAborigen_OnPropertyChanged));
+            DependencyProperty.Register(nameof(DetailedAborigenDecorator), typeof(AborigenDecoratorViewModel), 
+                typeof(AborigensTabView), new FrameworkPropertyMetadata(DetailedAborigenDecorator_OnChanged));
 
         
         /// <summary>
@@ -63,12 +63,12 @@ namespace TwinSovet.Views
         }
 
 
-        private static void DetailedAborigen_OnPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
+        private static void DetailedAborigenDecorator_OnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
             var view = (AborigensTabView) sender;
             var aborigenModel = (AborigenDecoratorViewModel) e.NewValue;
             
-            view.SaveButton.Command = aborigenModel.CommandSave;
+            //view.DetailedAborigenPanel.Save.Command = aborigenModel.CommandSave;
 
             aborigenModel.AborigenEditable.EventExecutedSaveAborigen += () => AborigenModel_OnExecutedSaveAborigen(view);
         }
@@ -82,7 +82,7 @@ namespace TwinSovet.Views
         private void AborigensListView_OnEventShowAborigenDetais(AborigenDecoratorViewModel aborigen) 
         {
             DetailedAborigenDecorator = aborigen;
-            BeginEditAborigen(false);
+            BeginEditAborigen();
         }
 
         private void AborigensPage_EscapeCommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e)
@@ -97,7 +97,7 @@ namespace TwinSovet.Views
 
         private void AddNewAborigenButton_OnClick(object sender, RoutedEventArgs e)
         {
-            BeginEditAborigen(true);
+            BeginEditAborigen();
         }
 
         private void AborigensMaskPanel_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
@@ -107,7 +107,7 @@ namespace TwinSovet.Views
 
         private void DetailedAborigen_In_Animation_OnCompleted(object sender, EventArgs e) 
         {
-            DetailedAborigenCard.FocusInnerBox();
+            DetailedAborigenPanel.DetailedAborigenCard.FocusInnerBox();
         }
 
         private void DetailedAborigen_Out_Animation_OnCompleted(object sender, EventArgs e) 
@@ -144,14 +144,9 @@ namespace TwinSovet.Views
             return window;
         }
 
-        private void BeginEditAborigen(bool isNew) 
+        private void BeginEditAborigen() 
         {
             AborigensMaskPanel.Visibility = Visibility.Visible;
-
-            DetailedAborigenDecorator = 
-                isNew ? 
-                    new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(new AborigenModel())) :
-                    DetailedAborigenDecorator;
 
             detailedAborigen_In_Animation.Begin();
         }
@@ -173,12 +168,17 @@ namespace TwinSovet.Views
 
         private void NewAborigenCommandBinding_OnExecuted(object sender, ExecutedRoutedEventArgs e) 
         {
-            BeginEditAborigen(true);
+            BeginEditAborigen();
         }
 
         private void NewAborigenCommandBinding_OnCanExecute(object sender, CanExecuteRoutedEventArgs e) 
         {
             e.CanExecute = AborigensMaskPanel.Visibility == Visibility.Collapsed;
+        }
+
+        private void DetailedAborigenPanel_OnEventCancellationRequest() 
+        {
+            CancelEditingAborigen();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace TwinSovet.Data.Providers
         public static event Action<AborigenModel> EventAborigenAdded = aborigen => { };
         public static event Action<AborigenModel> EventAborigenChanged = aborigen => { };
 
-
+        
         public static void SaveOrUpdateAborigen(AborigenModel aborigen) 
         {
             lock (Locker)
@@ -52,6 +52,14 @@ namespace TwinSovet.Data.Providers
             }
         }
 
+        public static AborigenModel GetAborigen(string aborigenId) 
+        {
+            lock (Locker)
+            {
+                return aborigens.FirstOrDefault(aborigen => aborigen.Id == aborigenId)?.Clone();
+            }
+        }
+
         public static IEnumerable<AborigenModel> GetAborigens() 
         {
             lock (Locker)
@@ -66,7 +74,7 @@ namespace TwinSovet.Data.Providers
             }
         }
 
-
+        
         private static void LoadAborigens() 
         {
             using (var context = new SimpleDbContext<AborigenModel>())

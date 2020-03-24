@@ -17,21 +17,8 @@ namespace TwinSovet.ViewModels
 {
     internal class FlatViewModel : ViewModelBase 
     {
-        private readonly FlatModel flatModel;
-
-        private float area;
-        private int number;
-        private int floorNumber;
-        private bool isHighlighted;
-        private SectionType section;
-        private bool isOrphanHighlighted;
-        private AborigenViewModel owner;
-
-
         public FlatViewModel(FlatModel flatModel) 
         {
-            this.flatModel = flatModel;
-
             Area = flatModel.Area;
             FloorNumber = flatModel.FloorNumber;
             Section = flatModel.Section;
@@ -50,71 +37,18 @@ namespace TwinSovet.ViewModels
         }
 
 
-        public float Area 
-        {
-            get => area;
+        public float Area { get; }
 
-            set
-            {
-                if (Math.Abs(area - value) < 0.01) return;
+        public int FloorNumber { get; }
 
-                area = value;
+        public int Number { get ; }
 
-                OnPropertyChanged();
-            }
-        }
-
-        public int FloorNumber 
-        {
-            get => floorNumber;
-
-            set
-            {
-                if (floorNumber == value) return;
-
-                floorNumber = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public int Number 
-        {
-            get => number;
-
-            set
-            {
-                if (number == value) return;
-
-                number = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public SectionType Section 
-        {
-            get => section;
-
-            set
-            {
-                if (section == value) return;
-
-                section = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public SectionType Section { get; }
 
         public string SectionName { get; }
 
         public string FullFlatLocationInfo => $"{SectionName}; этаж {FloorNumber}; номер {Number}";
 
-
-        public string GetId() 
-        {
-            return flatModel.Id;
-        }
 
         /// <summary>Returns a string that represents the current object.</summary>
         /// <returns>A string that represents the current object.</returns>

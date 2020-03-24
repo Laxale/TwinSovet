@@ -54,7 +54,7 @@ namespace TwinSovet.ViewModels
         {
             get => minFlatNumber;
 
-            set
+            private set
             {
                 if (minFlatNumber == value) return;
 
@@ -68,7 +68,7 @@ namespace TwinSovet.ViewModels
         {
             get => maxFlatNumber;
 
-            set
+            private set
             {
                 if (maxFlatNumber == value) return;
 

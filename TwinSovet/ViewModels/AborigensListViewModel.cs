@@ -16,6 +16,7 @@ using TwinSovet.Properties;
 using PubSub;
 using TwinSovet.Data.Extensions;
 using TwinSovet.Data.Providers;
+using TwinSovet.Extensions;
 using TwinSovet.Providers;
 
 using LocRes = TwinSovet.Localization.Resources;
@@ -48,18 +49,18 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            List<AborigenDecoratorViewModel> decorators =
-                AborigensProvider.GetAborigens()
-                    .Select(aborigenModel => new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(aborigenModel)))
-                    .ToList();
-
-            Task.Run(() => LoadAborigenFlats(decorators));
+            IEnumerable<AborigenDecoratorViewModel> decorators = 
+                AborigensProvider
+                    .GetAborigens()
+                    .Select(AborigenDecoratorViewModel.Create);
 
             DispatcherHelper.InvokeOnDispatcher(() =>
             {
                 //
                 aborigenDecorators.AddRange(decorators);
             });
+
+            Task.Run(() => LoadAborigenFlats(aborigenDecorators));
 
             FilterModel.PropertyChanged += Filter_OnPropertyChanged;
 
@@ -71,12 +72,12 @@ namespace TwinSovet.ViewModels
             DispatcherHelper.InvokeOnDispatcher(() =>
             {
                 //
-                aborigenDecorators.Add(new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(aborigen.Clone())));
+                aborigenDecorators.Add(AborigenDecoratorViewModel.Create(aborigen.Clone()));
             });
         }
 
 
-        internal static void LoadAborigenFlats(List<AborigenDecoratorViewModel> list) 
+        internal static void LoadAborigenFlats(IEnumerable<AborigenDecoratorViewModel> list) 
         {
             //
             foreach (AborigenDecoratorViewModel aborigenDecorator in list)

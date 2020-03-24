@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
+
 using TwinSovet.Data.DataBase;
+using TwinSovet.Data.DataBase.Config;
 
 
 namespace TwinSovet.Data.Models 
@@ -11,10 +10,17 @@ namespace TwinSovet.Data.Models
     /// <summary>
     /// Представляет отношение владения квартирой.
     /// </summary>
+    [Table(DbConst.TableNames.OwnRelationsTableName)]
     public class OwnRelation : DbObject 
     {
-        public FlatModel Flat { get; }
+        /// <summary>
+        /// Возвращает или задаёт номер квартиры.
+        /// </summary>
+        public int FlatNumber { get; set; }
 
-        public AborigenModel Owner { get; set; }
+        /// <summary>
+        /// Возвращает или задаёт идентификатор владельца квартиры.
+        /// </summary>
+        public string OwnerId { get; set; }
     }
 }

@@ -32,6 +32,11 @@ namespace TwinSovet.Data.DataBase.Config
             /// Название таблицы жителей дома.
             /// </summary>
             public const string AborigensTableName = "aborigens";
+
+            /// <summary>
+            /// Название таблицы отношений типа "владение квартирой".
+            /// </summary>
+            public const string OwnRelationsTableName = "flat_own_relations";
         }
     }
 }

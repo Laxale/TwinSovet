@@ -18,7 +18,8 @@ namespace TwinSovet.Views
     {
         private readonly DelayedEventInvoker delayedFocuser = new DelayedEventInvoker(StaticsProvider.SearchDelay);
 
-        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatDecorator => { };
+        internal event Action<AborigenDecoratorViewModel> EventShowAborigenDetails = aborigenDecorator => { };
 
 
         public FirstSectionPlanView() 
@@ -34,14 +35,19 @@ namespace TwinSovet.Views
             FloorsFilter.FocusInnerBox();
         }
 
-        private void FloorView_OnEventShowFlatDetails(FlatDecoratorViewModel flatModel) 
-        {
-            EventShowFlatDetails(flatModel);
-        }
-
         private void FloorsFilter_OnLoaded(object sender, RoutedEventArgs e) 
         {
             delayedFocuser.RequestDelayedEvent();
+        }
+
+        private void FloorView_OnEventShowFlatDetails(FlatDecoratorViewModel flat) 
+        {
+            EventShowFlatDetails(flat);
+        }
+
+        private void FloorView_OnEventShowAborigenDetails(AborigenDecoratorViewModel decorator) 
+        {
+            EventShowAborigenDetails(decorator);
         }
     }
 }

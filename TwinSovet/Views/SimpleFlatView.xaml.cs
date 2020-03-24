@@ -1,28 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 using TwinSovet.ViewModels;
 
 
-namespace TwinSovet.Views
+namespace TwinSovet.Views 
 {
     /// <summary>
-    /// Логика взаимодействия для SimpleFlatView.xaml
+    /// Простая панелька отображения квартиры в списках.
     /// </summary>
     public partial class SimpleFlatView : UserControl 
     {
-        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatDecorator => { };
+        internal event Action<FlatDecoratorViewModel> EventShowOwnerDetails = flatDecorator => { };
 
 
         public SimpleFlatView() 
@@ -35,6 +27,12 @@ namespace TwinSovet.Views
         {
             var flatDecorator = (FlatDecoratorViewModel)DataContext;
             EventShowFlatDetails(flatDecorator);
+        }
+
+        private void EditOwnerButton_OnClick(object sender, RoutedEventArgs e) 
+        {
+            var flatDecorator = (FlatDecoratorViewModel)DataContext;
+            EventShowOwnerDetails(flatDecorator);
         }
     }
 }

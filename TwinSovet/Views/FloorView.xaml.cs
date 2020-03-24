@@ -2,22 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using PubSub;
 
 using TwinSovet.Messages;
 using TwinSovet.ViewModels;
+
+using PubSub;
 
 using LocRes = TwinSovet.Localization.Resources;
 
@@ -32,20 +24,22 @@ namespace TwinSovet.Views
         private const string notesButtonTag = "NotesButtonTag";
         private const string photosButtonTag = "PhotosButtonTag";
 
-        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventShowFlatDetails = flatDecorator => { };
+        internal event Action<AborigenDecoratorViewModel> EventShowAborigenDetails = aborigenDecorator => { };
 
 
-        public FloorView()
+        public FloorView() 
         {
             InitializeComponent();
 
             Loaded += OnLoaded;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
         {
             ViewModel = (FloorViewModel)DataContext;
             this.Subscribe<MessageShowFlatDetails>(OnShowFlatDetailsRequest);
+            this.Subscribe<MessageShowAborigenDetails>(OnShowAborigenDetails);
         }
 
 
@@ -65,9 +59,18 @@ namespace TwinSovet.Views
 
         private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
         {
-            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>().Contains(message.FlatDecorator))
+            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>().Contains(message.ViewModel))
             {
-                EventShowFlatDetails(message.FlatDecorator);
+                EventShowFlatDetails(message.ViewModel);
+            }
+        }
+
+        private void OnShowAborigenDetails(MessageShowAborigenDetails message) 
+        {
+            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>()
+                .Any(flat => flat.Flat.Number == message.ViewModel.Flat.Number))
+            {
+                EventShowAborigenDetails(message.ViewModel);
             }
         }
 

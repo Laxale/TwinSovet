@@ -3,15 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              
              mc:Ignorable="d"
              d:DesignWidth="500">
 
     <UserControl.Resources>
-        <Storyboard x:Key="DetailedFlat_In_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
+        <Storyboard x:Key="DetailedFlat_In_Animation" TargetName="DetailedFlatPanel" TargetProperty="Width">
             <DoubleAnimation From="0" To="{StaticResource SlidePanelWidth}" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
@@ -19,7 +21,23 @@
             </DoubleAnimation>
         </Storyboard>
 
-        <Storyboard x:Key="DetailedFlat_Out_Animation" TargetName="DetailedFlatBorder" TargetProperty="Width">
+        <Storyboard x:Key="DetailedFlat_Out_Animation" TargetName="DetailedFlatPanel" TargetProperty="Width">
+            <DoubleAnimation From="{StaticResource SlidePanelWidth}" To="0" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="DetailedAborigen_In_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
+            <DoubleAnimation From="0" To="{StaticResource SlidePanelWidth}" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+
+        <Storyboard x:Key="DetailedAborigen_Out_Animation" TargetName="DetailedAborigenPanel" TargetProperty="Width">
             <DoubleAnimation From="{StaticResource SlidePanelWidth}" To="0" AutoReverse="False" Duration="{StaticResource SlideAnimDuration}">
                 <DoubleAnimation.EasingFunction>
                     <CubicEase EasingMode="EaseInOut"/>
@@ -58,9 +76,7 @@
 
     <Grid Focusable="False">
         <!-- Контрол вкладок с секциями дома -->
-        <TabControl Grid.Row="0" Grid.Column="0" 
-                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
-                                        Path=IsShowingFlatDetails, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}">
+        <TabControl Grid.Row="0" Grid.Column="0">
             <!-- Вкладка плана мебельной секции -->
             <TabItem>
                 <TabItem.Header>
@@ -122,7 +138,8 @@
                 </TabItem.Header>
 
                 <local:FirstSectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
-                                            EventShowFlatDetails="FirstSectionPlanView_OnEventShowFlatDetails"/>
+                                            EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
+                                            EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails"/>
             </TabItem>
 
             <!-- Вкладка плана больничной секции -->
@@ -137,23 +154,30 @@
             </TabItem>
         </TabControl>
 
+        <!-- Панель - затемняющая страницу маска -->
         <Border Style="{StaticResource MaskBorderStyle}" x:Name="HomePlanMaskPanel" Visibility="Collapsed"
                 MouseLeftButtonDown="SectionsMaskPanel_OnPreviewMouseLeftButtonDown"/>
 
         <!-- Панель отображения деталей квартиры -->
         <Border HorizontalAlignment="Right" CornerRadius="{StaticResource InListBorderCornerRadius}" 
-                Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatBorder">
+                Background="{StaticResource PanelGrayBrush}" Width="0" x:Name="DetailedFlatPanel">
             <StackPanel Orientation="Vertical" Margin="{StaticResource All4Margin}">
                 <local:FlatCardView DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
                                                           Path=DetailedFlatDecorator, Mode=OneWay}"
-                                    x:Name="DetailedFlatCard" EventRequestOwnerCreation="FlatCardView_OnEventRequestOwnerCreation"/>
+                                    x:Name="DetailedFlatCard" 
+                                    EventRequestEditOwner="DetailedFlatCard_OnEventRequestEditOwner"/>
 
-                <DockPanel HorizontalAlignment="Right">
-                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"/>
-                    <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
-                                    Content="{x:Static loc:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
-                                    Click="CancelFlatDetailsButton_OnClick"/>
-                </DockPanel>
+                <!-- Панель кнопок Сохранения и Отмены данных квартиры -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                            DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
+                                                  Path=DetailedFlatDecorator, Mode=OneWay}">
+                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"
+                            Command="{x:Static providers:FlatsProvider.CommandSave}" CommandParameter="{Binding Mode=OneWay}"/>
+                    <!-- Кнопка Отмены редактирования квартиры -->
+                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
+                            Content="{x:Static loc:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
+                            Click="CancelFlatDetailsButton_OnClick" HorizontalAlignment="Right"/>
+                </StackPanel>
 
                 <!-- Панель указания/создания владельца выбранной квартиры -->
                 <Border x:Name="CreateOwnerPanel" Visibility="Hidden" Margin="{StaticResource All4Margin}"
@@ -165,13 +189,14 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-
-                        <local:AborigenCardView Grid.Row="0" 
+                        <local:AborigenCardView Grid.Row="0" x:Name="InnerAborigenCard"
                                                 DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
-                                                                      Path=DetailedFlatDecorator.Owner, Mode=OneWay}"/>
+                                                                      Path=DetailedFlatDecorator.OwnerDecorator, Mode=OneWay}"/>
 
+                        <!-- Панель кнопок Сохранения или Отмены редактирования владельца квартиры -->
                         <DockPanel Grid.Row="1" HorizontalAlignment="Right">
-                            <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"/>
+                            <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}"
+                                    Command="{Binding ElementName=DetailedFlatCard, Path=DataContext.OwnerDecorator.AborigenEditable.CommandSave, Mode=OneWay}"/>
                             <Button DockPanel.Dock="Left" Style="{StaticResource TrimmedLinkButtonStyle}" Margin="{StaticResource 8LeftMargin}"
                                             Content="{x:Static loc:Resources.Cancellation}" Foreground="{StaticResource RedBrush}"
                                             Click="CancelOwnerCreationButton_OnClick"/>
@@ -180,5 +205,11 @@
                 </Border>
             </StackPanel>
         </Border>
+
+        <!-- Панель редактирования деталей жителя -->
+        <local:EditAborigenView HorizontalAlignment="Right" Width="0" x:Name="DetailedAborigenPanel"
+                                EventCancellationRequest="DetailedAborigenPanel_OnEventCancellationRequest"
+                                DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:HousePlanTabView},
+                                                      Path=DetailedAborigenDecorator, Mode=OneWay}"/>
     </Grid>
 </UserControl>

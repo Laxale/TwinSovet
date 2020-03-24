@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
-using TwinSovet.Data.Models;
+using TwinSovet.Providers;
 using TwinSovet.ViewModels;
 
 
@@ -17,8 +17,10 @@ namespace TwinSovet.Views
     {
         private readonly Storyboard inFlatAnimation;
         private readonly Storyboard outFlatAnimation;
-        private readonly Storyboard createOwner_In_Animation;
-        private readonly Storyboard createOwner_Out_Animation;
+        private readonly Storyboard innerEditOwner_In_Animation;
+        private readonly Storyboard innerEditOwner_Out_Animation;
+        private readonly Storyboard detailedAborigen_In_Animation;
+        private readonly Storyboard detailedAborigen_Out_Animation;
         
 
         public HousePlanTabView() 
@@ -27,11 +29,16 @@ namespace TwinSovet.Views
 
             inFlatAnimation = (Storyboard)Resources["DetailedFlat_In_Animation"];
             outFlatAnimation = (Storyboard)Resources["DetailedFlat_Out_Animation"];
-            createOwner_In_Animation = (Storyboard)Resources["CreateOwner_In_Animation"];
-            createOwner_Out_Animation = (Storyboard)Resources["CreateOwner_Out_Animation"];
+            innerEditOwner_In_Animation = (Storyboard)Resources["CreateOwner_In_Animation"];
+            innerEditOwner_Out_Animation = (Storyboard)Resources["CreateOwner_Out_Animation"];
+            detailedAborigen_In_Animation = (Storyboard)Resources["DetailedAborigen_In_Animation"];
+            detailedAborigen_Out_Animation = (Storyboard)Resources["DetailedAborigen_Out_Animation"];
 
             inFlatAnimation.Completed += InFlatAnimation_OnCompleted;
-            createOwner_Out_Animation.Completed += CreateOwnerOutAnimation_OnCompleted;
+            outFlatAnimation.Completed += OutFlatAnimation_OnCompleted;
+            innerEditOwner_Out_Animation.Completed += InnerEditOwnerOutAnimation_OnCompleted;
+            detailedAborigen_In_Animation.Completed += DetailedAborigenInAnimation_OnCompleted;
+            detailedAborigen_Out_Animation.Completed += DetailedAborigenOutAnimation_OnCompleted;
         }
 
 
@@ -39,11 +46,19 @@ namespace TwinSovet.Views
             DependencyProperty.Register(nameof(OwnerPanelHeight), typeof(double), typeof(HousePlanTabView));
 
         public static readonly DependencyProperty DetailedFlatDecoratorProperty =
-            DependencyProperty.Register(nameof(DetailedFlatDecorator), typeof(FlatDecoratorViewModel), typeof(HousePlanTabView));
+            DependencyProperty.Register(nameof(DetailedFlatDecorator), typeof(FlatDecoratorViewModel), 
+                typeof(HousePlanTabView), new FrameworkPropertyMetadata(DetailedFlatDecorator_OnChanged));
 
-        public static readonly DependencyProperty IsShowingFlatDetailsProperty =
-            DependencyProperty.Register(nameof(IsShowingFlatDetails), typeof(bool), typeof(HousePlanTabView), new FrameworkPropertyMetadata(OnIsShowingDetailsChanged));
+        public static readonly DependencyProperty DetailedAborigenDecoratorProperty = 
+            DependencyProperty.Register(nameof(DetailedAborigenDecorator), typeof(AborigenDecoratorViewModel), 
+                typeof(HousePlanTabView), new FrameworkPropertyMetadata(DetailedAborigen_OnChanged));
 
+        
+        internal AborigenDecoratorViewModel DetailedAborigenDecorator 
+        {
+            get => (AborigenDecoratorViewModel) GetValue(DetailedAborigenDecoratorProperty);
+            set => SetValue(DetailedAborigenDecoratorProperty, value);
+        }
 
         public double OwnerPanelHeight 
         {
@@ -60,29 +75,46 @@ namespace TwinSovet.Views
             set => SetValue(DetailedFlatDecoratorProperty, value);
         }
 
-        /// <summary>
-        /// Возвращает или задаёт флаг - отображаются ли сейчас детали той или иной выбранной квартиры.
-        /// </summary>
-        public bool IsShowingFlatDetails 
+
+        private static void DetailedFlatDecorator_OnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
-            get => (bool)GetValue(IsShowingFlatDetailsProperty);
-            set => SetValue(IsShowingFlatDetailsProperty, value);
+            var planView = (HousePlanTabView)sender;
+
+            void AborigenEditable_OnExecutedSaveAborigen()
+            {
+                planView.innerEditOwner_Out_Animation.Begin();
+                FlatsProvider.CommandSave.RaiseCanExecuteChanged();
+            }
+
+            void FlatDecorator_OnFlatSaved(FlatDecoratorViewModel decorator)
+            {
+                planView.outFlatAnimation.Begin();
+            }
+
+            if (e.OldValue is FlatDecoratorViewModel oldDecorator)
+            {
+                oldDecorator.EventFlatSaved -= FlatDecorator_OnFlatSaved;
+                oldDecorator.OwnerDecorator.AborigenEditable.EventExecutedSaveAborigen -= AborigenEditable_OnExecutedSaveAborigen;
+            }
+
+            var flatDecorator = (FlatDecoratorViewModel) e.NewValue;
+
+            flatDecorator.EventFlatSaved += FlatDecorator_OnFlatSaved;
+            flatDecorator.OwnerDecorator.AborigenEditable.EventExecutedSaveAborigen += 
+                AborigenEditable_OnExecutedSaveAborigen;
         }
 
-
-        private static void OnIsShowingDetailsChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
+        private static void DetailedAborigen_OnChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) 
         {
-            var view = (HousePlanTabView)sender;
-
-            if ((bool)e.NewValue)
+            var planView = (HousePlanTabView)sender;
+            if (e.OldValue is AborigenDecoratorViewModel oldDecor)
             {
-                view.inFlatAnimation.Begin();
-                view.HomePlanMaskPanel.Visibility = Visibility.Visible;
+                oldDecor.AborigenEditable.EventExecutedSaveAborigen -= planView.AborigenEditable_OnExecutedSaveAborigen;
             }
-            else
+
+            if (e.NewValue is AborigenDecoratorViewModel newDecor)
             {
-                view.outFlatAnimation.Begin();
-                view.HomePlanMaskPanel.Visibility = Visibility.Collapsed;
+                newDecor.AborigenEditable.EventExecutedSaveAborigen += planView.AborigenEditable_OnExecutedSaveAborigen;
             }
         }
 
@@ -91,11 +123,16 @@ namespace TwinSovet.Views
         {
             if (CreateOwnerPanel.ActualHeight > 10 && CreateOwnerPanel.Visibility == Visibility.Visible)
             {
-                createOwner_Out_Animation.Begin();
+                innerEditOwner_Out_Animation.Begin();
             }
-            else if (IsShowingFlatDetails)
+            else if (DetailedFlatPanel.Width > 10)
             {
-                IsShowingFlatDetails = false;
+                outFlatAnimation.Begin();
+            }
+            else
+            {
+                DetailedAborigenDecorator = null;
+                detailedAborigen_Out_Animation.Begin();
             }
         }
 
@@ -105,22 +142,32 @@ namespace TwinSovet.Views
             DetailedFlatCard.FocusInnerBox();
         }
 
-        private void CreateOwnerOutAnimation_OnCompleted(object sender, EventArgs eventArgs) 
+        private void OutFlatAnimation_OnCompleted(object sender, EventArgs e) 
         {
+            HideMask();
+        }
+
+        private void InnerEditOwnerOutAnimation_OnCompleted(object sender, EventArgs eventArgs) 
+        {
+            DetailedFlatCard.FocusInnerBox();
             CreateOwnerPanel.Visibility = Visibility.Hidden;
         }
 
-        private void FirstSectionPlanView_OnEventShowFlatDetails(FlatDecoratorViewModel flatDecorator) 
+        private void DetailedAborigenInAnimation_OnCompleted(object sender, EventArgs e) 
         {
-            IsShowingFlatDetails = true;
-            DetailedFlatDecorator = flatDecorator;
+            DetailedAborigenPanel.FocusInnerBox();
         }
 
-        private void FlatCardView_OnEventRequestOwnerCreation(FlatViewModel flatModel) 
+        private void DetailedAborigenOutAnimation_OnCompleted(object sender, EventArgs e) 
+        {
+            HideMask();
+        }
+        
+        private void DetailedFlatCard_OnEventRequestEditOwner(FlatDecoratorViewModel flatDecorator) 
         {
             if (CreateOwnerPanel.Visibility == Visibility.Visible)
             {
-                createOwner_Out_Animation.Begin();
+                innerEditOwner_Out_Animation.Begin();
             }
             else
             {
@@ -135,28 +182,68 @@ namespace TwinSovet.Views
 
         private void CancelOwnerCreationButton_OnClick(object sender, RoutedEventArgs e) 
         {
-            createOwner_Out_Animation.Begin();
+            innerEditOwner_Out_Animation.Begin();
         }
 
         private void CancelFlatDetailsButton_OnClick(object sender, RoutedEventArgs e) 
         {
-            IsShowingFlatDetails = false;
+            outFlatAnimation.Begin();
         }
 
         private void SectionsMaskPanel_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e) 
         {
-            IsShowingFlatDetails = false;
+            if (DetailedFlatPanel.Width > 10)
+            {
+                outFlatAnimation.Begin();
+            }
+            else 
+            {
+                DetailedAborigenDecorator = null;
+                detailedAborigen_Out_Animation.Begin();
+            }
+        }
+
+        private void DetailedAborigenPanel_OnEventCancellationRequest() 
+        {
+            DetailedAborigenDecorator = null;
+            detailedAborigen_Out_Animation.Begin();
+        }
+
+        private void FirstSectionView_OnEventShowFlatDetails(FlatDecoratorViewModel flat) 
+        {
+            ShowMask();
+            DetailedFlatDecorator = flat;
+            inFlatAnimation.Begin();
+        }
+
+        private void FirstSectionView_OnEventShowAborigenDetails(AborigenDecoratorViewModel aborigen) 
+        {
+            ShowMask();
+            DetailedAborigenDecorator = aborigen;
+            detailedAborigen_In_Animation.Begin();
+        }
+
+        private void AborigenEditable_OnExecutedSaveAborigen() 
+        {
+            DetailedAborigenDecorator = null;
+            detailedAborigen_Out_Animation.Begin();
         }
 
 
+        private void ShowMask() 
+        {
+            HomePlanMaskPanel.Visibility = Visibility.Visible;
+        }
+
+        private void HideMask() 
+        {
+            HomePlanMaskPanel.Visibility = Visibility.Collapsed;
+        }
+
         private void AnimateOwnerCreationIn() 
         {
-            if (!DetailedFlatDecorator.HasOwner)
-            {
-                DetailedFlatDecorator.Owner = new AborigenDecoratorViewModel(AborigenViewModel.CreateEditable(new AborigenModel()));
-            }
             CreateOwnerPanel.Visibility = Visibility.Visible;
-            createOwner_In_Animation.Begin();
+            innerEditOwner_In_Animation.Begin();
         }
     }
 }

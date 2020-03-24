@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using TwinSovet.ViewModels;
-
 
 namespace TwinSovet.Messages 
 {
-    internal class MessageShowFlatDetails : MessageShowDetails<FlatDecoratorViewModel> 
+    internal class MessageShowAborigenDetails : MessageShowDetails<AborigenDecoratorViewModel> 
     {
-        public MessageShowFlatDetails(FlatDecoratorViewModel flatDecorator) : base(flatDecorator) 
+        public MessageShowAborigenDetails(AborigenDecoratorViewModel aborigenDecorator) : base(aborigenDecorator)
         {
-
+            
         }
     }
 }

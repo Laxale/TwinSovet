@@ -21,13 +21,21 @@ namespace TwinSovet.ViewModels
 
         private readonly string originalModelId;
 
+        private bool isFake;
         private string name;
         private string email;
         private string surname;
         private string otchestvo;
         private GenderType gender;
         private string phoneNumber;
+        /// <summary>
+        /// Флаг для пропуска проверки на readonly - нужен для задания свойств readonly вьмодели из кода в строго определённых кейсах.
+        /// </summary>
+        private bool skipEditableVerification;
 
+        /// <summary>
+        /// Событие успешного сохранения данных пользователя.
+        /// </summary>
         public event Action EventExecutedSaveAborigen = () => { };
 
 
@@ -36,22 +44,30 @@ namespace TwinSovet.ViewModels
             IsReadOnly = isReadOnly;
             originalModelId = originalModel.Id;
 
+            CommandSave = new DelegateCommand(SaveImpl, CanSave);
+
+            skipEditableVerification = true;
             Name = originalModel.Name;
             Email = originalModel.Email;
             Surname = originalModel.Surname;
             Otchestvo = originalModel.Otchestvo;
             Gender = originalModel.Gender;
             PhoneNumber = originalModel.PhoneNumber;
+            skipEditableVerification = false;
 
             LocalizedGender = (string)genderConverter.Convert(Gender, null, null, null);
-
-            CommandSave = new DelegateCommand(SaveImpl);
         }
 
-
+        
+        /// <summary>
+        /// Возвращает команду сохранения данных пользователя.
+        /// </summary>
         public DelegateCommand CommandSave { get; }
 
 
+        /// <summary>
+        /// Возвращает флаг - является ли данная вьюмодель закрытой для изменений, то есть readonly.
+        /// </summary>
         public bool IsReadOnly { get; }
 
         public bool HasPhoto { get; } = false;
@@ -63,20 +79,35 @@ namespace TwinSovet.ViewModels
         public bool IsGenderUndefined => Gender == GenderType.None;
 
         public bool IsLibertarian => Gender == GenderType.Libertarian;
-        
+
+        public bool HasName => !string.IsNullOrWhiteSpace(Name);
+
+        public bool HasPhone => !string.IsNullOrWhiteSpace(PhoneNumber);
+
+        public string FullNameInfo => $"{Surname} {Name} {Otchestvo}";
+
+        /// <summary>
+        /// Возвращает флаг - содержит ли вьюмодель минимальный набор данных жителя - Имя и Телефон.
+        /// </summary>
+        public bool HasAtLeastMinimumInfo => HasName && HasPhone;
+
         public string Name 
         {
             get => name;
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
+
                 if (name == value) return;
 
                 name = value;
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(FullNameInfo));
+                OnPropertyChanged(nameof(HasAtLeastMinimumInfo));
+
+                CommandSave.RaiseCanExecuteChanged();
             }
         }
 
@@ -86,7 +117,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
                 if (surname == value) return;
 
                 surname = value;
@@ -102,7 +133,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
                 if (otchestvo == value) return;
 
                 otchestvo = value;
@@ -112,20 +143,21 @@ namespace TwinSovet.ViewModels
             }
         }
 
-        public string FullNameInfo => $"{Surname} {Name} {Otchestvo}";
-
         public string PhoneNumber 
         {
             get => phoneNumber;
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
                 if (phoneNumber == value) return;
 
                 phoneNumber = value;
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasAtLeastMinimumInfo));
+
+                CommandSave.RaiseCanExecuteChanged();
             }
         }
 
@@ -135,7 +167,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
                 if (email == value) return;
 
                 email = value;
@@ -150,7 +182,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                VerifyIsEditable();
+                if (!skipEditableVerification) VerifyIsEditable();
                 if (gender == value) return;
 
                 gender = value;
@@ -163,17 +195,50 @@ namespace TwinSovet.ViewModels
             }
         }
 
+        /// <summary>
+        /// Возвращает флаг - является ли данный житель пустышкой, то Empty объектом, не сохранённым в базе.
+        /// Используется дли избежания мороки с null жителями.
+        /// </summary>
+        public bool IsFake 
+        {
+            get => isFake;
+
+            private set
+            {
+                if (isFake == value) return;
+
+                isFake = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         public string LocalizedGender { get; }
 
 
+        public static AborigenViewModel CreateFake(AborigenModel model) 
+        {
+            return new AborigenViewModel(model, false) { IsFake = true };
+        }
+
+        /// <summary>
+        /// Создать редактируемую вьюмодель жителя.
+        /// </summary>
+        /// <param name="model">Модель жителя.</param>
+        /// <returns>Редактируемая вьюмодель жителя.</returns>
         public static AborigenViewModel CreateEditable(AborigenModel model) 
         {
             return new AborigenViewModel(model, false);
         }
 
+        /// <summary>
+        /// Создать readonly вьюмодель жителя - нередактируемую.
+        /// </summary>
+        /// <param name="model">Модель жителя.</param>
+        /// <returns>Readonly вьюмодель жителя.</returns>
         public static AborigenViewModel CreateReadOnly(AborigenModel model) 
         {
-            return new AborigenViewModel(model, false);
+            return new AborigenViewModel(model, true);
         }
 
 
@@ -206,12 +271,14 @@ namespace TwinSovet.ViewModels
                 throw new InvalidOperationException($"Нельзя принимать свойства от посторонней модели");
             }
 
+            skipEditableVerification = true;
             Name = editableModel.Name;
             Surname = editableModel.Surname;
             Otchestvo = editableModel.Otchestvo;
             Email = editableModel.Email;
             PhoneNumber = editableModel.PhoneNumber;
             Gender = editableModel.Gender;
+            skipEditableVerification = false;
         }
 
 
@@ -221,7 +288,14 @@ namespace TwinSovet.ViewModels
 
             AborigensProvider.SaveOrUpdateAborigen(model);
 
+            IsFake = false;
+
             EventExecutedSaveAborigen();
+        }
+
+        private bool CanSave() 
+        {
+            return HasAtLeastMinimumInfo;
         }
 
         private void VerifyIsEditable() 

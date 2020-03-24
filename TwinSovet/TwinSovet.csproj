@@ -101,11 +101,14 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Helpers\AborigenDecoratorsCache.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
+    <Compile Include="Messages\MessageShowAborigenDetails.cs" />
+    <Compile Include="Messages\MessageShowDetails.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\MessageShowAttachables.cs" />
     <Compile Include="Messages\MessageShowPhotos.cs" />
@@ -138,6 +141,9 @@
     </Compile>
     <Compile Include="Views\AborigensTabView.xaml.cs">
       <DependentUpon>AborigensTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EditAborigenView.xaml.cs">
+      <DependentUpon>EditAborigenView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\FirstSectionPlanView.xaml.cs">
       <DependentUpon>FirstSectionPlanView.xaml</DependentUpon>
@@ -190,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AborigensTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\EditAborigenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.ComponentModel;
+using System.Windows;
 
 using TwinSovet.Extensions;
 using TwinSovet.Properties;
@@ -11,27 +13,24 @@ using LocRes = TwinSovet.Localization.Resources;
 
 namespace TwinSovet.ViewModels 
 {
-    internal class FlatDecoratorViewModel : ViewModelBase 
+    internal class FlatDecoratorViewModel : ViewModelBase  
     {
         private bool isHighlighted;
         private bool isOrphanHighlighted;
-        private AborigenDecoratorViewModel owner;
+        private AborigenDecoratorViewModel ownerDecorator;
+
+        public event Action<FlatDecoratorViewModel> EventFlatSaved = flatDecorator => { };
 
 
         public FlatDecoratorViewModel(FlatViewModel flat) 
         {
             Flat = flat;
-
-            CommandSelectOwner = new DelegateCommand(SelectOwnerImpl, () => !HasOwner);
         }
 
-
+        
         /// <summary>
-        /// Возвращает команду выбора существующего жителя в качестве владельца данной квартиры.
+        /// Возвращает или задаёт флаг - выделена ли данная квартира в списке, если она не имеет владельца. Способ выделения отличен от <see cref="IsHighlighted"/>.
         /// </summary>
-        public DelegateCommand CommandSelectOwner { get; }
-
-
         public bool IsOrphanHighlighted 
         {
             get => isOrphanHighlighted;
@@ -46,6 +45,9 @@ namespace TwinSovet.ViewModels
             }
         }
 
+        /// <summary>
+        /// Возвращает или задаёт флаг - выделена ли данная квартира в списке.
+        /// </summary>
         public bool IsHighlighted 
         {
             get => isHighlighted;
@@ -62,17 +64,23 @@ namespace TwinSovet.ViewModels
 
         public FlatViewModel Flat { get; }
         
-        public bool HasOwner => Owner != null;
+        /// <summary>
+        /// Возвращает флаг - задан ли сейчас для данной квартиры житель-собственник с валидными данными.
+        /// </summary>
+        public bool HasOwner => OwnerDecorator != null && OwnerDecorator.AborigenEditable.HasAtLeastMinimumInfo;
 
-        public AborigenDecoratorViewModel Owner 
+        /// <summary>
+        /// Возвращает или задаёт декоратор жителя-владельца данной квартиры.
+        /// </summary>
+        public AborigenDecoratorViewModel OwnerDecorator 
         {
-            get => owner;
+            get => ownerDecorator;
 
-            set
+            private set
             {
-                if (owner == value) return;
+                if (ownerDecorator == value) return;
 
-                owner = value;
+                ownerDecorator = value;
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasOwner));
@@ -80,31 +88,59 @@ namespace TwinSovet.ViewModels
         }
 
 
-        private void SelectOwnerImpl() 
+        public bool Save() 
         {
-            Window window = Extensions.WindowExtensions.CreateEmptyVerticalWindow();
-            window.MakeSticky();
-
-            AborigenDecoratorViewModel selectedDecorator = null;
-            void SelectView_OntAborigenSelected(AborigenDecoratorViewModel decorator)
+            if (OwnerDecorator.AborigenEditable.CommandSave.CanExecute())
             {
-                selectedDecorator = decorator;
-                window.DialogResult = true;
+                OwnerDecorator.AborigenEditable.CommandSave.Execute();
+
+                return true;
             }
 
-            var selectView = new SelectAborigenView();
-            selectView.EventAborigenSelected += SelectView_OntAborigenSelected;
-            window.Title = LocRes.AborigensSelection;
-            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            window.Owner = Application.Current.MainWindow;
-            window.Content = selectView;
-            window.ShowDialog();
+            return false;
+        }
 
-            selectView.EventAborigenSelected -= SelectView_OntAborigenSelected;
-            if (selectedDecorator != null)
+        public void OnSaved() 
+        {
+            OwnerDecorator.Flat = this.Flat;
+            EventFlatSaved(this);
+        }
+
+        /// <summary>
+        /// Задать декоратор владельца данной квартиры.
+        /// </summary>
+        /// <param name="aborigenDecorator">Декоратор владельца данной квартиры. Может быть null.</param>
+        public void SetOwner(AborigenDecoratorViewModel aborigenDecorator) 
+        {
+            if (OwnerDecorator != null)
             {
-                Owner = selectedDecorator;
+                OwnerDecorator.AborigenReadOnly.PropertyChanged -= AborigenEditable_OnPropertyChanged;
             }
+
+            OwnerDecorator = aborigenDecorator;
+
+            if (OwnerDecorator != null)
+            {
+                OwnerDecorator.AborigenReadOnly.PropertyChanged += AborigenEditable_OnPropertyChanged;
+            }
+
+            RaiseHasOwnerPropertyChanged();
+        }
+
+
+        private void AborigenEditable_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        {
+            // readonly модель меняется после сохранения editable модели
+            if (e.PropertyName == nameof(AborigenDecoratorViewModel.AborigenReadOnly.HasAtLeastMinimumInfo))
+            {
+                RaiseHasOwnerPropertyChanged();
+            }
+        }
+
+
+        private void RaiseHasOwnerPropertyChanged() 
+        {
+            OnPropertyChanged(nameof(HasOwner));
         }
     }
 }

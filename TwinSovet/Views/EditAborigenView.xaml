@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="TwinSovet.Views.EditAborigenView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TwinSovet.Views"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:AborigenDecoratorViewModel}">
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="EscapeCommandBinding_OnExecuted"/>
+    </UserControl.CommandBindings>
+
+    <UserControl.InputBindings>
+        <StaticResource ResourceKey="EscapeKeyBinding"/>
+    </UserControl.InputBindings>
+
+    <Border BorderBrush="{StaticResource SteelGrayBrush}"
+            CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1" 
+            Background="{StaticResource PanelGrayBrush}" Padding="{StaticResource All4Margin}">
+        <StackPanel Orientation="Vertical">
+            <local:AborigenCardView x:Name="DetailedAborigenCard"/>
+
+            <!-- Панелька кнопок -->
+            <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
+                <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}" 
+                        Command="{Binding Path=CommandSave, Mode=OneWay}"/>
+
+                <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
+                        Foreground="{StaticResource RedBrush}" Margin="{StaticResource 4LeftMargin}"
+                        Content="{x:Static loc:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
+            </DockPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

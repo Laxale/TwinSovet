@@ -9,7 +9,10 @@ using TwinSovet.Data.Enums;
 
 namespace TwinSovet.Data.Models 
 {
-    public class FlatModel : DbObject 
+    /// <summary>
+    /// Модель квартиры. Не наследует <see cref="DbObject"/>, ибо не хранится в базе. Является полностью логически константной.
+    /// </summary>
+    public class FlatModel 
     {
         /// <summary>
         /// Возвращает или задаёт номер квартиры.

@@ -14,16 +14,11 @@ namespace TwinSovet.Views
     public partial class FlatCardView : UserControl 
     {
         /// <summary>
-        /// Событие запроса на показ инфы о владельце квартиры.
+        /// Событие запроса на редактирование инфы о владельце квартиры.
         /// </summary>
-        internal event Action<FlatViewModel> EventRequestShowOwner = flatModel => { };
+        internal event Action<FlatDecoratorViewModel> EventRequestEditOwner = flatModel => { };
         
-        /// <summary>
-        /// Событие запроса на создание владельца квартиры.
-        /// </summary>
-        internal event Action<FlatViewModel> EventRequestOwnerCreation = flatModel => { };
-
-
+        
         public FlatCardView() 
         {
             InitializeComponent();
@@ -39,14 +34,7 @@ namespace TwinSovet.Views
         private void OwnerButton_OnClick(object sender, RoutedEventArgs e) 
         {
             var flatDecorator = (FlatDecoratorViewModel)DataContext;
-            if (flatDecorator.HasOwner)
-            {
-                EventRequestShowOwner(flatDecorator.Flat);
-            }
-            else
-            {
-                EventRequestOwnerCreation(flatDecorator.Flat);
-            }
+            EventRequestEditOwner(flatDecorator);
         }
     }
 }

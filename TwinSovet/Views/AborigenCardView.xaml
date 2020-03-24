@@ -42,20 +42,30 @@
         <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource GenderPathIconStyle}"
               Visibility="{Binding Path=AborigenReadOnly.HasPhoto, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
 
-        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=AborigenEditable.Name, Mode=TwoWay}" Name="NameBox"/>
+        <!-- Имя жителя -->
+        <TextBox Grid.Row="0" Grid.Column="1" Name="NameBox"
+                 Text="{Binding Path=AborigenEditable.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
 
+        <!-- Фамилия жителя -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Surname}"/>
-        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=AborigenEditable.Surname, Mode=TwoWay}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=AborigenEditable.Surname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <!-- Отчество жителя -->
         <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:Resources.Otchestvo}"/>
-        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=AborigenEditable.Otchestvo, Mode=TwoWay}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=AborigenEditable.Otchestvo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <!-- Номер телефона жителя -->
         <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:Resources.Phone}"/>
-        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=AborigenEditable.PhoneNumber, Mode=TwoWay}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" 
+                 Text="{Binding Path=AborigenEditable.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                                Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
 
+        <!-- Адрес почты жителя -->
         <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static localization:Resources.Mail}"/>
-        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=AborigenEditable.Email, Mode=TwoWay}"/>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Path=AborigenEditable.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <!-- Пол жителя -->
         <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static localization:Resources.Gender}"/>
         <ComboBox Grid.Row="5" Grid.Column="1" 
                   ItemsSource="{x:Static providers:StaticsProvider.AvailableGenders}"

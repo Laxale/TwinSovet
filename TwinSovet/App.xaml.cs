@@ -68,5 +68,10 @@ namespace TwinSovet
         {
             this.Publish(new MessageShowFlatDetails(flat));
         }
+
+        private void SimpleFlatView_OnEventShowOwnerDetails(FlatDecoratorViewModel flat) 
+        {
+            this.Publish(new MessageShowAborigenDetails(flat.OwnerDecorator));
+        }
     }
 }

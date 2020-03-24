@@ -17,9 +17,17 @@ namespace TwinSovet.Providers
         private static readonly int startMebelFlatNumber = 1;
         private static readonly int startHospitalFlatNumber = 121;
         private static readonly Dictionary<SectionType, List<FloorViewModel>> sectionFloors = new Dictionary<SectionType, List<FloorViewModel>>();
+        private static readonly Dictionary<int, float> mebelFlatAreas = new Dictionary<int, float>
+        {
+            { 1, 30 }, { 2, 35 }, { 3, 40 }, { 4, 45 }, { 5, 50 }, { 6, 55 }
+        };
+        private static readonly Dictionary<int, float> hospitalFlatAreas = new Dictionary<int, float>
+        {
+            { 1, 30 }, { 2, 35 }, { 3, 40 }, { 4, 45 }, { 5, 50 }, { 6, 55 }, {7, 60}
+        };
 
 
-        public static FlatViewModel FindFlatById(string flatId) 
+        public static FlatViewModel FindFlatByNumber(int flatNumber) 
         {
             lock (Locker)
             {
@@ -32,16 +40,16 @@ namespace TwinSovet.Providers
                     GetFloors(SectionType.Hospital);
                 }
 
-                return FindFlat(flatId);
+                return FindFlat(flatNumber);
             }
         }
 
-        private static FlatViewModel FindFlat(string flatId) 
+        private static FlatViewModel FindFlat(int flatNumber) 
         {
             var targetDecorator =
                 sectionFloors[SectionType.Furniture]
                     .SelectMany(floor => floor.FlatsEnumerable)
-                    .FirstOrDefault(flatDecorator => flatDecorator.Flat.GetId() == flatId);
+                    .FirstOrDefault(flatDecorator => flatDecorator.Flat.Number == flatNumber);
             if (targetDecorator != null)
             {
                 return targetDecorator.Flat;
@@ -50,9 +58,14 @@ namespace TwinSovet.Providers
             var hospitalFlat =
                 sectionFloors[SectionType.Hospital]
                     .SelectMany(floor => floor.FlatsEnumerable)
-                    .FirstOrDefault(decorator => decorator.Flat.GetId() == flatId);
+                    .FirstOrDefault(decorator => decorator.Flat.Number == flatNumber);
 
-            return hospitalFlat?.Flat;
+            if (hospitalFlat == null)
+            {
+                throw new InvalidOperationException($"Квартиры с номером '{ flatNumber }' не существует");
+            }
+
+            return hospitalFlat.Flat;
         }
 
         public static IEnumerable<FloorViewModel> GetFloors(SectionType section) 
@@ -91,16 +104,18 @@ namespace TwinSovet.Providers
         {
             int startNumber = startFlatNumber;
             var floorModels = new List<FloorViewModel>();
+            Dictionary<int, float> areasDict = section == SectionType.Furniture ? mebelFlatAreas : hospitalFlatAreas;
+
             for (int floorIndex = 1; floorIndex <= StaticsProvider.FloorsCount; floorIndex++)
             {
                 var floorViewModel = new FloorViewModel { FloorNumber = floorIndex, Section = section };
 
                 var flats = new List<FlatViewModel>();
-                for (int flatIndex = 0; flatIndex < flatsPerFloor; flatIndex++)
+                for (int flatIndex = 1; flatIndex < flatsPerFloor + 1; flatIndex++)
                 {
                     var flatModel = new FlatModel
                     {
-                        Area = 40,
+                        Area = areasDict[flatIndex],
                         FloorNumber = floorViewModel.FloorNumber,
                         Number = startNumber,
                         Section = section

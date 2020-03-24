@@ -7,7 +7,6 @@
              xmlns:prism="http://prismlibrary.com/"
 
              xmlns:views="clr-namespace:TwinSovet.Views"
-             xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
@@ -61,7 +60,9 @@
             <ItemsControl ItemsSource="{Binding Path=FloorsView, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views:FloorView Margin="0, 4, 0, 4" EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
+                        <views:FloorView Margin="0, 4, 0, 4" 
+                                         EventShowAborigenDetails="FloorView_OnEventShowAborigenDetails"
+                                         EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

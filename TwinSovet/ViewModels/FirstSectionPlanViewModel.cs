@@ -15,6 +15,7 @@ using PubSub;
 
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
+using TwinSovet.Data.Providers;
 using TwinSovet.Helpers;
 using TwinSovet.Messages;
 using TwinSovet.Providers;
@@ -28,8 +29,6 @@ namespace TwinSovet.ViewModels
 
         private int minFlatNumber;
         private int maxFlatNumber;
-        private string flatFilterText;
-        private string floorFilterText;
         private bool isOrphanHighlighted = true;
 
 
@@ -104,16 +103,33 @@ namespace TwinSovet.ViewModels
 
             IEnumerable<FloorViewModel> floorModels = FloorsProvider.GetFloors(SectionType.Furniture);
             
-            DispatcherHelper.InvokeOnDispatcher(() =>
-            {
-                SetFloors(floorModels);
-            });
+            DispatcherHelper.InvokeOnDispatcher(() => SetFloors(floorModels));
+
+            Task.Run(() => LoadFlatOwners());
 
             FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
             FloorFilterModel.PropertyChanged += FloorFilterModel_OnPropertyChanged;
         }
 
 
+        private void LoadFlatOwners() 
+        {
+            foreach (FloorViewModel floorViewModel in floors)
+            {
+                foreach (FlatDecoratorViewModel flatDecorator in floorViewModel.FlatsEnumerable)
+                {
+                    AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
+                    
+                    flatDecorator.SetOwner(owner);
+
+                    if (owner != null)
+                    {
+                        Console.WriteLine("set flat to owner?");
+                    }
+                }
+            }
+        }
+        
         private void HighlightOrphanFlatsImpl() 
         {
             floors.ForEach(floor => floor.FlatsEnumerable.ForEach(flatDecorator =>

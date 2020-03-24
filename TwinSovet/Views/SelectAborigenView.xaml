@@ -50,7 +50,7 @@
                         <TextBlock Text="{Binding Path=AborigenEditable.FullNameInfo, Mode=OneWay}"/>
                         <TextBlock>
                             <Run Text="{x:Static localization:Resources.Flat}"/>
-                            <Run Text="{Binding Path=Flat.Number, Mode=OneWay}"/>
+                            <Run Text="{Binding Path=Flat.FullFlatLocationInfo, Mode=OneWay}"/>
                         </TextBlock>
                     </StackPanel>
                 </DataTemplate>

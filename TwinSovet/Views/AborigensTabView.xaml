@@ -60,24 +60,10 @@
         <Border Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource MaskBorderStyle}" Name="AborigensMaskPanel" 
                 Visibility="Collapsed" MouseLeftButtonDown="AborigensMaskPanel_OnMouseLeftButtonDown"/>
 
-        <!-- Панель отображения деталей жителя -->
-        <Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="{StaticResource SteelGrayBrush}"
-                CornerRadius="{StaticResource InListBorderCornerRadius}" BorderThickness="1" Width="0" 
-                x:Name="DetailedAborigenPanel" Background="{StaticResource PanelGrayBrush}" Padding="{StaticResource All4Margin}">
-            <StackPanel Orientation="Vertical">
-                <local:AborigenCardView x:Name="DetailedAborigenCard"
-                                        DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
-                                                              Path=DetailedAborigenDecorator, Mode=OneWay}"/>
-
-                <!-- Панелька кнопок -->
-                <DockPanel HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
-                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoSave}" Name="SaveButton"/>
-
-                    <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
-                            Foreground="{StaticResource RedBrush}" Margin="{StaticResource 4LeftMargin}"
-                            Content="{x:Static loc:Resources.Cancellation}" Click="CancelAborigenDetailsButton_OnClick"/>
-                </DockPanel>
-            </StackPanel>
-        </Border>
+        <!-- Панель редактирования деталей жителя -->
+        <local:EditAborigenView Grid.Row="2" HorizontalAlignment="Right" Width="0" 
+                                DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AborigensTabView},
+                                                      Path=DetailedAborigenDecorator, Mode=OneWay}"
+                                x:Name="DetailedAborigenPanel" EventCancellationRequest="DetailedAborigenPanel_OnEventCancellationRequest"/>
     </Grid>
 </UserControl>
