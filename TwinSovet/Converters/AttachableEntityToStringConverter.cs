@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+
+using TwinSovet.Data.Enums;
+
 using LocRes = TwinSovet.Localization.Resources;
 
 

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataVirtualization;
+
+using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 
 
