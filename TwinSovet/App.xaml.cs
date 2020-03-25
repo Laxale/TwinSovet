@@ -10,9 +10,13 @@ using TwinSovet.Helpers;
 using Prism.Mvvm;
 
 using PubSub;
-
+using TwinSovet.Data.Enums;
+using TwinSovet.Extensions;
+using TwinSovet.Interfaces;
 using TwinSovet.Messages;
+using TwinSovet.Providers;
 using TwinSovet.ViewModels;
+using TwinSovet.Views;
 
 
 namespace TwinSovet 
@@ -20,7 +24,7 @@ namespace TwinSovet
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application 
     {
         private readonly SingleInstancesCache instancesCache;
         private readonly ILogger logger = LogManager.GetCurrentClassLogger();
@@ -34,11 +38,9 @@ namespace TwinSovet
 
 
         /// <summary>
-        ///   Вызывает событие <see cref="E:System.Windows.Application.Startup" />.
+        /// Вызывает событие <see cref="Application.Startup" />.
         /// </summary>
-        /// <param name="e">
-        ///   Объект <see cref="T:System.Windows.StartupEventArgs" />, содержащий данные события.
-        /// </param>
+        /// <param name="e">Объект <see cref="StartupEventArgs" />, содержащий данные события.</param>
         protected override void OnStartup(StartupEventArgs e) 
         {
             DispatcherUnhandledException += OnDispatcherUnhandledException;
@@ -47,8 +49,15 @@ namespace TwinSovet
 
             var initer = ViewModelInitializer.Instance;
 
+            MainContainer.Instance.RegisterInstance<AllFloorsProvider>(AllFloorsProvider.Instance);
+            MainContainer.Instance.RegisterInstance<IFloorsProvider>(nameof(SectionType.Furniture), AllFloorsProvider.Instance.FurnitureFloorsProvider);
+            MainContainer.Instance.RegisterInstance<IFloorsProvider>(nameof(SectionType.Hospital), AllFloorsProvider.Instance.HospitalFloorsProvider);
+
             ViewModelLocationProvider.SetDefaultViewModelFactory(instancesCache.GetOrCreateInstance);
             ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewMappingCache.GetViewModelType);
+
+            this.Subscribe<MessageShowNotes<SubjectEntityViewModel>>(OnShowNotesRequest);
+            this.Subscribe<MessageShowPhotos<SubjectEntityViewModel>>(OnShowFloorPhotosRequest);
         }
 
 
@@ -72,6 +81,39 @@ namespace TwinSovet
         private void SimpleFlatView_OnEventShowOwnerDetails(FlatDecoratorViewModel flat) 
         {
             this.Publish(new MessageShowAborigenDetails(flat.OwnerDecorator));
+        }
+
+
+        private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModel> message) 
+        {
+            Window window = CreateHostWindow();
+
+            var notesView = new NotesView();
+            window.Content = notesView;
+
+            var context = (NotesViewModel)notesView.DataContext;
+            context.SetNotesOwner(message.AttachablesOwner);
+
+            window.Show();
+        }
+
+        private void OnShowFloorPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
+        {
+            Window window = CreateHostWindow();
+
+            window.Content = "страница фотографий";
+
+            window.Show();
+        }
+
+
+        private Window CreateHostWindow() 
+        {
+            Window window = Extensions.WindowExtensions.CreateEmptyHorizontalWindow();
+
+            window.MakeSticky();
+
+            return window;
         }
     }
 }

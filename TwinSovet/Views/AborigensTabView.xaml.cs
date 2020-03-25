@@ -42,9 +42,6 @@ namespace TwinSovet.Views
 
             detailedAborigen_In_Animation.Completed += DetailedAborigen_In_Animation_OnCompleted;
             detailedAborigen_Out_Animation.Completed += DetailedAborigen_Out_Animation_OnCompleted;
-
-            this.Subscribe<MessageShowNotes<FloorViewModel>>(OnShowNotesRequest);
-            this.Subscribe<MessageShowPhotos<FloorViewModel>>(OnShowPhotosRequest);
         }
 
         
@@ -115,34 +112,6 @@ namespace TwinSovet.Views
             AborigensMaskPanel.Visibility = Visibility.Collapsed;
         }
 
-
-        private void OnShowNotesRequest(MessageShowNotes<FloorViewModel> message) 
-        {
-            Window window = CreateHostWindow();
-
-            window.Content = new NotesView();
-
-            window.Show();
-        }
-
-        private void OnShowPhotosRequest(MessageShowPhotos<FloorViewModel> message) 
-        {
-            Window window = CreateHostWindow();
-
-            window.Content = "страница фотографий";
-
-            window.Show();
-        }
-
-
-        private Window CreateHostWindow() 
-        {
-            Window window = Extensions.WindowExtensions.CreateEmptyHorizontalWindow();
-
-            window.MakeSticky();
-
-            return window;
-        }
 
         private void BeginEditAborigen() 
         {

@@ -12,5 +12,6 @@
     <converters:SectionTypeToStringConverter x:Key="SectionTypeToStringConverter"/>
     <converters:SectionToSectionNumberConverter x:Key="SectionToSectionNumberConverter"/>
     <converters:ReversedNullToVisibilityConverter x:Key="ReversedNullToVisibilityConverter"/>
+    <converters:AttachableEntityToStringConverter x:Key="AttachableEntityToStringConverter"/>
     <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter"/>
 </ResourceDictionary>

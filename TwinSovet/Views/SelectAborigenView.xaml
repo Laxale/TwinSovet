@@ -59,10 +59,7 @@
                 <DataTemplate DataType="viewModels:AborigenDecoratorViewModel">
                     <StackPanel Style="{StaticResource StackPanelInListAlternatedStyle}" Orientation="Vertical">
                         <TextBlock Text="{Binding Path=AborigenEditable.FullNameInfo, Mode=OneWay}"/>
-                        <TextBlock>
-                            <Run Text="{x:Static localization:Resources.Flat}"/>
-                            <Run Text="{Binding Path=Flat.FullFlatLocationInfo, Mode=OneWay}"/>
-                        </TextBlock>
+                        <TextBlock Text="{Binding Path=Flat.FullFlatLocationInfo, Mode=OneWay}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 
-namespace TwinSovet.Helpers
+namespace Common.Helpers 
 {
-    internal static class DispatcherHelper 
+    public static class DispatcherHelper 
     {
-        public static void InvokeOnDispatcher(Action method)
+        public static void InvokeOnDispatcher(Action method) 
         {
             Application.Current?.Dispatcher.Invoke(method);
         }

@@ -231,4 +231,7 @@
   <data name="AborigensSelection" xml:space="preserve">
       <value>Выбор жителей</value>
   </data>
+  <data name="Documents" xml:space="preserve">
+      <value>Документы</value>
+  </data>
 </root>

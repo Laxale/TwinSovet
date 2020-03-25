@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Extensions;
 using Prism.Commands;
 using TwinSovet.Data.Extensions;
 using TwinSovet.Data.Models;
+using TwinSovet.Enums;
 using TwinSovet.Extensions;
 using TwinSovet.Helpers;
 
 
 namespace TwinSovet.ViewModels 
 {
-    internal class AborigenDecoratorViewModel : ViewModelBase 
+    internal class AborigenDecoratorViewModel : SubjectEntityViewModel 
     {
         private static readonly object Locker = new object();
         private static readonly AborigenDecoratorsCache cache = new AborigenDecoratorsCache();
@@ -72,6 +73,16 @@ namespace TwinSovet.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
+        /// </summary>
+        public override SubjectType TypeOfSubject { get; } = SubjectType.Aborigen;
+
+        /// <summary>
+        /// Возвращает строку некой общей информации о субъекте.
+        /// </summary>
+        public override string SubjectFriendlyInfo => $"{AborigenReadOnly.Name} {AborigenReadOnly.Otchestvo}; квартира { Flat?.Number }";
 
 
         public static AborigenDecoratorViewModel Create(AborigenModel model) 

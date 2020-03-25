@@ -37,29 +37,6 @@
             <KeyBinding x:Key="EnterKeyBinding" Key="Enter" Command="helpers:ClientCommands.Enter"/>
             <KeyBinding x:Key="EscapeKeyBinding" Key="Escape" Command="helpers:ClientCommands.Cancel"/>
 
-            <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource InListBorderStyle}">
-                <d:Style.DataContext>
-                    <x:Type Type="viewModels:FlatDecoratorViewModel"/>
-                </d:Style.DataContext>
-
-                <Setter Property="BorderThickness" Value="4, 4, 0, 0"/>
-                <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=IsHighlighted, Mode=OneWay}" Value="True">
-                        <Setter Property="Effect">
-                            <Setter.Value>
-                                <DropShadowEffect BlurRadius="2" RenderingBias="Performance" ShadowDepth="6" Color="{StaticResource GreenColor}"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=IsOrphanHighlighted, Mode=OneWay}" Value="True">
-                        <Setter Property="BorderBrush" Value="{StaticResource RedBrush}"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
             <DataTemplate x:Key="FlatInListTemplate" DataType="viewModels:FlatViewModel">
                 <Border Style="{StaticResource FlatBorderInListStyle}">
                     <Grid>

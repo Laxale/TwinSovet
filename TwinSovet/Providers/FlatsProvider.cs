@@ -64,7 +64,7 @@ namespace TwinSovet.Providers
                     return null;
                 }
 
-                FlatViewModel flat = FloorsProvider.FindFlatByNumber(flatNumber);
+                FlatViewModel flat = AllFloorsProvider.Instance.FindFlatByNumber(flatNumber);
 
                 aborigenFlats.Add(aborigenId, flat);
 

@@ -1,36 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
-using Microsoft.Practices.ObjectBuilder2;
+using TwinSovet.Data.Enums;
+using TwinSovet.Messages;
+using TwinSovet.Providers;
 
-using Prism.Commands;
+using TwinSovet.Enums;
 
 using PubSub;
 
-using TwinSovet.Data.Enums;
-using TwinSovet.Data.Models;
-using TwinSovet.Data.Providers;
-using TwinSovet.Helpers;
-using TwinSovet.Messages;
-using TwinSovet.Providers;
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.ViewModels 
 {
     internal class FurnitureSectionPlanViewModel : SectionViewModelBase 
     {
-        public FurnitureSectionPlanViewModel() 
+        public FurnitureSectionPlanViewModel(AllFloorsProvider floorsProvider) : base(floorsProvider) 
         {
             this.Publish(new MessageInitializeModelRequest(this, "Загружаем план мебельной секции"));
         }
 
 
         public override SectionType TypeOfSection { get; } = SectionType.Furniture;
+
+        /// <summary>
+        /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
+        /// </summary>
+        public override SubjectType TypeOfSubject { get; } = SubjectType.Section;
+
+        /// <summary>
+        /// Возвращает строку некой общей информации о субъекте.
+        /// </summary>
+        public override string SubjectFriendlyInfo { get; } = LocRes.Mebelnaya;
     }
 }

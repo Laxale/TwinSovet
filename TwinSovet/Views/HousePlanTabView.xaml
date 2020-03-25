@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
+             xmlns:prism="http://prismlibrary.com/"
+
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
@@ -94,13 +96,14 @@
                     </DockPanel>
                 </TabItem.Header>
 
-                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="FirstSectionView"
-                                            EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
-                                            EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails">
-                    <local:SectionPlanView.DataContext>
-                        <viewModels:FurnitureSectionPlanViewModel/>
-                    </local:SectionPlanView.DataContext>
-                </local:SectionPlanView>
+                <!--
+                <ContentControl prism:RegionManager.RegionName="{x:Static helpers:Regions.FurnitureSectionRegionName}"
+                                Margin="{StaticResource 4TopMargin}"/>
+                -->
+                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" 
+                                       x:Name="FirstSectionView" TypeOFSection="Furniture"
+                                       EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
+                                       EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails"/>
             </TabItem>
 
             <!-- Вкладка плана больничной секции -->
@@ -119,13 +122,10 @@
                     </DockPanel>
                 </TabItem.Header>
 
-                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" x:Name="HospitalSectionView"
+                <local:SectionPlanView Margin="{StaticResource 4TopMargin}" 
+                                       x:Name="HospitalSectionView" TypeOFSection="Hospital"
                                        EventShowFlatDetails="FirstSectionView_OnEventShowFlatDetails"
-                                       EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails">
-                    <local:SectionPlanView.DataContext>
-                        <viewModels:HospitalSectionPlanViewModel/>
-                    </local:SectionPlanView.DataContext>
-                </local:SectionPlanView>
+                                       EventShowAborigenDetails="FirstSectionView_OnEventShowAborigenDetails"/>
             </TabItem>
         </TabControl>
 

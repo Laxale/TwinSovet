@@ -5,12 +5,12 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-
+using DataVirtualization;
 using TwinSovet.Messages;
 using TwinSovet.ViewModels;
 
 using PubSub;
-
+using TwinSovet.Helpers;
 using LocRes = TwinSovet.Localization.Resources;
 
 
@@ -35,31 +35,17 @@ namespace TwinSovet.Views
             Loaded += OnLoaded;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
-        {
-            ViewModel = (FloorViewModel)DataContext;
-            this.Subscribe<MessageShowFlatDetails>(OnShowFlatDetailsRequest);
-            this.Subscribe<MessageShowAborigenDetails>(OnShowAborigenDetails);
-        }
 
-
-        public static readonly DependencyProperty RoomsViewProperty = 
-            DependencyProperty.Register(nameof(RoomsView), typeof(ICollectionView), typeof(FloorView));
-
-
-        public ICollectionView RoomsView 
-        {
-            get => (ICollectionView) GetValue(RoomsViewProperty);
-            set => SetValue(RoomsViewProperty, value);
-        }
-
-
-        private FloorViewModel ViewModel { get; set; }
+        private DataVirtualizeWrapper<FloorDecoratorViewModel> ViewModel { get; set; }
 
 
         private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
         {
-            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>().Contains(message.ViewModel))
+            if (ViewModel.IsLoading)
+            {
+                InformAboutLoadingFloor();
+            }
+            else if (ViewModel.Data.OriginaFloorViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>().Contains(message.ViewModel))
             {
                 EventShowFlatDetails(message.ViewModel);
             }
@@ -67,14 +53,25 @@ namespace TwinSovet.Views
 
         private void OnShowAborigenDetails(MessageShowAborigenDetails message) 
         {
-            if (ViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>()
+            if (ViewModel.IsLoading)
+            {
+                InformAboutLoadingFloor();
+            }
+            else if (ViewModel.Data.OriginaFloorViewModel.FlatsView.SourceCollection.OfType<FlatDecoratorViewModel>()
                 .Any(flat => flat.Flat.Number == message.ViewModel.Flat.Number))
             {
                 EventShowAborigenDetails(message.ViewModel);
             }
         }
 
-        
+
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs) 
+        {
+            ViewModel = (DataVirtualizeWrapper<FloorDecoratorViewModel>)DataContext;
+            this.Subscribe<MessageShowFlatDetails>(OnShowFlatDetailsRequest);
+            this.Subscribe<MessageShowAborigenDetails>(OnShowAborigenDetails);
+        }
+
         private void FloorView_OnMouseEnter(object sender, MouseEventArgs e) 
         {
             Button notesButton = CreateNotesButton();
@@ -104,14 +101,31 @@ namespace TwinSovet.Views
 
         private void NotesButton_OnClick(object sender, RoutedEventArgs e) 
         {
-            this.Publish(new MessageShowNotes<FloorViewModel>(ViewModel));
+            if (ViewModel.IsLoading)
+            {
+                InformAboutLoadingFloor();
+                return;
+            }
+
+            this.Publish(new MessageShowNotes<SubjectEntityViewModel>(ViewModel.Data.OriginaFloorViewModel));
         }
 
         private void ShowPhotosButtonOnClick(object sender, RoutedEventArgs e) 
         {
-            this.Publish(new MessageShowPhotos<FloorViewModel>(ViewModel));
+            if (ViewModel.IsLoading)
+            {
+                InformAboutLoadingFloor();
+                return;
+            }
+
+            this.Publish(new MessageShowPhotos<SubjectEntityViewModel>(ViewModel.Data.OriginaFloorViewModel));
         }
 
+
+        private void InformAboutLoadingFloor() 
+        {
+            MessageBox.Show("Этаж загружается");
+        }
 
         private Button CreateNotesButton() 
         {

@@ -115,6 +115,15 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Документы.
+        /// </summary>
+        public static string Documents {
+            get {
+                return ResourceManager.GetString("Documents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Выделить квартиры без хозяина.
         /// </summary>
         public static string DoHighlightFlatsWithoutOwner {

@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
+using TwinSovet.ViewModels;
+
+using Prism.Commands;
+using PubSub;
+using TwinSovet.Messages;
 using LocRes = TwinSovet.Localization.Resources;
 
 
@@ -16,6 +17,9 @@ namespace TwinSovet.Helpers
         {
             Enter = new RoutedUICommand(LocRes.ToDoAccept, nameof(Enter), typeof(ClientCommands));
             Cancel = new RoutedUICommand(LocRes.Cancellation, nameof(Cancel), typeof(ClientCommands));
+
+            CommandShowNotes = new DelegateCommand<SubjectEntityViewModel>(ShowNotesImpl);
+            CommandShowPhotos = new DelegateCommand<SubjectEntityViewModel>(ShowPhotosImpl);
         }
 
 
@@ -25,5 +29,21 @@ namespace TwinSovet.Helpers
         /// Возвращает команду ввода или принятия чего-либо (<see cref="Key.Enter"/>).
         /// </summary>
         public static RoutedUICommand Enter { get; }
+
+
+        public static DelegateCommand<SubjectEntityViewModel> CommandShowNotes { get; }
+
+        public static DelegateCommand<SubjectEntityViewModel> CommandShowPhotos { get; }
+
+
+        private static void ShowNotesImpl(SubjectEntityViewModel owner) 
+        {
+            owner.Publish(new MessageShowNotes<SubjectEntityViewModel>(owner));
+        }
+
+        private static void ShowPhotosImpl(SubjectEntityViewModel owner) 
+        {
+            owner.Publish(new MessageShowPhotos<SubjectEntityViewModel>(owner));
+        }
     }
 }

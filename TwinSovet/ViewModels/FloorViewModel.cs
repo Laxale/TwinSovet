@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 using TwinSovet.Data.Enums;
+using TwinSovet.Enums;
 using TwinSovet.Helpers;
 
 
@@ -93,6 +94,16 @@ namespace TwinSovet.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        /// <summary>
+        /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
+        /// </summary>
+        public override SubjectType TypeOfSubject { get; } = SubjectType.Floor;
+
+        /// <summary>
+        /// Возвращает строку некой общей информации о субъекте.
+        /// </summary>
+        public override string SubjectFriendlyInfo => $"{Section}; этаж {FloorNumber}";
 
 
         public void SetFlats(IEnumerable<FlatViewModel> flats) 

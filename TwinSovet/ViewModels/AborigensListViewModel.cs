@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using Common.Helpers;
 using Prism.Commands;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
@@ -92,9 +93,9 @@ namespace TwinSovet.ViewModels
             var decorator = (AborigenDecoratorViewModel)aborigenObj;
 
             return 
-                decorator.AborigenEditable.FullNameInfo.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
-                decorator.AborigenEditable.Email.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
-                decorator.AborigenEditable.PhoneNumber.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ||
+                decorator.AborigenEditable.FullNameInfo?.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ?? 
+                decorator.AborigenEditable.Email?.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ??
+                decorator.AborigenEditable.PhoneNumber?.ToLowerInvariant().Contains(FilterModel.LoweredFilter) ??
                 decorator.AborigenEditable.LocalizedGender.ToLowerInvariant().Contains(FilterModel.LoweredFilter);
         }
 

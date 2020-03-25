@@ -4,16 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using TwinSovet.ViewModels;
+
+
 namespace TwinSovet.Messages 
 {
-    internal abstract class MessageShowAttachables<TObject> 
+    internal abstract class MessageShowAttachables<TSubjectEntity> where TSubjectEntity : SubjectEntityViewModel 
     {
-        protected MessageShowAttachables(TObject attachablesOwner) 
+        protected MessageShowAttachables(TSubjectEntity attachablesOwner) 
         {
             AttachablesOwner = attachablesOwner;
         }
 
 
-        public TObject AttachablesOwner { get; }
+        public TSubjectEntity AttachablesOwner { get; }
     }
 }

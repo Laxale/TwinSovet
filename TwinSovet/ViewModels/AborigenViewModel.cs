@@ -11,6 +11,7 @@ using TwinSovet.Data.Providers;
 
 using Prism.Commands;
 using TwinSovet.Data.Extensions;
+using TwinSovet.Enums;
 
 
 namespace TwinSovet.ViewModels 
@@ -215,7 +216,7 @@ namespace TwinSovet.ViewModels
 
         public string LocalizedGender { get; }
 
-
+        
         public static AborigenViewModel CreateFake(AborigenModel model) 
         {
             return new AborigenViewModel(model, false) { IsFake = true };

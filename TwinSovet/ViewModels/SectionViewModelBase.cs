@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Data;
 
-using Microsoft.Practices.ObjectBuilder2;
-
-using Prism.Commands;
+using Common.Helpers;
+using DataVirtualization;
 
 using TwinSovet.Data.Enums;
 using TwinSovet.Helpers;
+using TwinSovet.Interfaces;
 using TwinSovet.Providers;
+
+using Prism.Commands;
+
+using Microsoft.Practices.ObjectBuilder2;
 
 
 namespace TwinSovet.ViewModels
 {
     internal abstract class SectionViewModelBase : SubjectEntityViewModel 
     {
-        private readonly ObservableCollection<FloorViewModel> floors = new ObservableCollection<FloorViewModel>();
+        private const int pageSize = 4;
+        private const int pageTimeout = 5000;
+
+        private readonly IFloorsProvider floorsProvider;
 
         private int minFlatNumber;
         private int maxFlatNumber;
@@ -28,11 +30,12 @@ namespace TwinSovet.ViewModels
         private bool isOrphanHighlighted = true;
 
 
-        public SectionViewModelBase()
+        protected SectionViewModelBase(AllFloorsProvider allFloorsProvider) 
         {
-            FloorsView = CollectionViewSource.GetDefaultView(floors);
-
-            FloorsEnumerable = floors;
+            floorsProvider = 
+                SectionTypeWrapper == SectionType.Furniture ? 
+                    allFloorsProvider.FurnitureFloorsProvider :
+                    allFloorsProvider.HospitalFloorsProvider;
 
             CommandHighlightOrphanFlats = new DelegateCommand(HighlightOrphanFlatsImpl, () => IsReady);
         }
@@ -41,12 +44,8 @@ namespace TwinSovet.ViewModels
         public DelegateCommand CommandHighlightOrphanFlats { get; }
 
 
-        public ICollectionView FloorsView { get; }
-
-        public IEnumerable<FloorViewModel> FloorsEnumerable { get; }
-
         /// <summary>
-        /// 
+        /// Возвращает текущий прогресс загрузки.
         /// </summary>
         public int LoadProgress 
         {
@@ -97,6 +96,15 @@ namespace TwinSovet.ViewModels
         public abstract SectionType TypeOfSection { get; }
 
 
+        private SectionType SectionTypeWrapper => TypeOfSection;
+
+
+        /// <summary>
+        /// Возвращает ссылку на виртуальную коллекцию этажей.
+        /// </summary>
+        public AsyncVirtualizingCollection<FloorDecoratorViewModel> FloorWrappersCollection { get; private set; }
+
+
         /// <summary>
         /// Непосредственно логика инициализации, которая выполняется в <see cref="ViewModelBase.Initialize"/>.
         /// </summary>
@@ -104,11 +112,18 @@ namespace TwinSovet.ViewModels
         {
             base.InitializeImpl();
 
-            IEnumerable<FloorViewModel> floorModels = FloorsProvider.GetFloors(TypeOfSection).ToList();
+            SetFlatNumbersRange();
 
-            LoadFlatOwners(floorModels);
-            DispatcherHelper.InvokeOnDispatcher(() => SetFloors(floorModels));
-            //Task.Run(() => LoadFlatOwners());
+            DispatcherHelper.InvokeOnDispatcher(() =>
+            {
+                FloorWrappersCollection = new AsyncVirtualizingCollection<FloorDecoratorViewModel>(floorsProvider, pageSize, pageTimeout);
+            });
+            
+            OnPropertyChanged(nameof(FloorWrappersCollection));
+
+            floorsProvider.ForEach(LoadFlatOwners);
+
+            RefreshCollection();
 
             PropertyChanged += Self_OnPropertyChanged;
             FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
@@ -116,30 +131,28 @@ namespace TwinSovet.ViewModels
         }
 
 
-        private void LoadFlatOwners(IEnumerable<FloorViewModel> incomingFloors) 
+        private void LoadFlatOwners(FloorDecoratorViewModel floorDecorator) 
         {
             int currentCount = 0;
-            foreach (FloorViewModel floorViewModel in incomingFloors)
+
+            foreach (FlatDecoratorViewModel flatDecorator in floorDecorator.OriginaFloorViewModel.FlatsEnumerable)
             {
-                foreach (FlatDecoratorViewModel flatDecorator in floorViewModel.FlatsEnumerable)
+                AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
+
+                flatDecorator.SetOwner(owner);
+                currentCount++;
+                LoadProgress = 100 * currentCount / StaticsProvider.FlatsInFurnitureSection;
+
+                if (owner != null)
                 {
-                    AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
-
-                    flatDecorator.SetOwner(owner);
-                    currentCount++;
-                    LoadProgress = 100 * currentCount / StaticsProvider.FlatsInFurnitureSection;
-
-                    if (owner != null)
-                    {
-                        Console.WriteLine("set flat to owner?");
-                    }
+                    Console.WriteLine("set flat to owner?");
                 }
             }
         }
 
         private void HighlightOrphanFlatsImpl() 
         {
-            floors.ForEach(floor => floor.FlatsEnumerable.ForEach(flatDecorator =>
+            floorsProvider.ForEach(floorDecorator => floorDecorator.OriginaFloorViewModel.FlatsEnumerable.ForEach(flatDecorator =>
             {
                 if (!flatDecorator.HasOwner)
                 {
@@ -148,48 +161,42 @@ namespace TwinSovet.ViewModels
             }));
 
             isOrphanHighlighted = !isOrphanHighlighted;
+
+            RefreshCollection();
         }
 
-        private bool IsFloorInFilter(object floorObj) 
+        private bool IsFloorInFilter(FloorDecoratorViewModel floorDecorator) 
         {
-            var floor = (FloorViewModel)floorObj;
-
-            return floor.FloorNumber.ToString().ToLowerInvariant().Contains(FloorFilterModel.LoweredFilter);
+            return floorDecorator.OriginaFloorViewModel.FloorNumber.ToString().ToLowerInvariant().Contains(FloorFilterModel.LoweredFilter);
         }
 
-        private bool IsFlatInFilter(object floorObj) 
+        private bool IsFlatInFilter(FlatDecoratorViewModel flatDecorator) 
         {
-            var floor = (FloorViewModel)floorObj;
             string loweredFlatFiler = FlatFilterModel.LoweredFilter;
 
-            bool hasAnyFlats = false;
-            foreach (var flatDecorator in floor.FlatsEnumerable)
+            if (flatDecorator.Flat.Number.ToString().ToLowerInvariant().Contains(loweredFlatFiler))
             {
-                if (flatDecorator.Flat.Number.ToString().ToLowerInvariant().Contains(loweredFlatFiler))
-                {
-                    hasAnyFlats = true;
-                    flatDecorator.IsHighlighted = true;
-                }
-                else
-                {
-                    flatDecorator.IsHighlighted = false;
-                }
+                flatDecorator.IsHighlighted = true;
+                return true;
             }
 
-            return hasAnyFlats;
+            flatDecorator.IsHighlighted = false;
+            return false;
         }
 
         private void SetFlatFilters() 
         {
-            foreach (FloorViewModel floor in floors)
+            floorsProvider.ForEach(decorator =>
             {
-                floor.FilterModel.FilterText = FloorFilterModel.FilterText;
-            }
+                decorator.OriginaFloorViewModel.FilterModel.FilterText = FloorFilterModel.FilterText;
+            });
+
+            //FloorWrappersCollection.Refresh();
         }
 
         private void ClearFlatsHighlighting() 
         {
-            FloorsEnumerable.ForEach(floor => floor.FlatsEnumerable.ForEach(flat => flat.IsHighlighted = false));
+            floorsProvider.ForEach(floorDecorator => floorDecorator.OriginaFloorViewModel.FlatsEnumerable.ForEach(flat => flat.IsHighlighted = false));
         }
 
 
@@ -212,15 +219,17 @@ namespace TwinSovet.ViewModels
 
             if (FlatFilterModel.HasFilter)
             {
-                FloorsView.Filter = IsFlatInFilter;
+                floorsProvider.SetFilter(decorator => decorator.OriginaFloorViewModel.FlatsEnumerable.Any(IsFlatInFilter));
             }
             else
             {
-                FloorsView.Filter = null;
+                floorsProvider.SetFilter(null);
                 ClearFlatsHighlighting();
             }
 
             SetFlatFilters();
+
+            RefreshCollection();
         }
 
         private void FloorFilterModel_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
@@ -234,24 +243,35 @@ namespace TwinSovet.ViewModels
 
             if (FloorFilterModel.HasFilter)
             {
-                FloorsView.Filter = IsFloorInFilter;
+                floorsProvider.SetFilter(IsFloorInFilter);
             }
             else
             {
-                FloorsView.Filter = null;
+                floorsProvider.SetFilter(null);
             }
 
             ClearFlatsHighlighting();
+            RefreshCollection();
         }
 
 
-        private void SetFloors(IEnumerable<FloorViewModel> floorModels) 
+        private void RefreshCollection() 
         {
-            floors.Clear();
-            floors.AddRange(floorModels);
+            FloorWrappersCollection.Refresh();
+        }
 
-            MinFlatNumber = floors.Min(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Min(flatDecorator => flatDecorator.Flat.Number));
-            MaxFlatNumber = floors.Max(floor => floor.FlatsView.OfType<FlatDecoratorViewModel>().Max(flatDecorator => flatDecorator.Flat.Number));
+        private void SetFlatNumbersRange() 
+        {
+            if (TypeOfSection == SectionType.Furniture)
+            {
+                MinFlatNumber = StaticsProvider.MinFlatNumber;
+                MaxFlatNumber = StaticsProvider.FlatsInFurnitureSection;
+            }
+            else
+            {
+                MinFlatNumber = StaticsProvider.FlatsInFurnitureSection + 1;
+                MaxFlatNumber = StaticsProvider.MaxFlatNumber;
+            }
         }
     }
 }

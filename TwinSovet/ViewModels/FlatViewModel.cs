@@ -7,6 +7,7 @@ using System.Windows;
 using Prism.Commands;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
+using TwinSovet.Enums;
 using TwinSovet.Extensions;
 using TwinSovet.Views;
 
@@ -15,7 +16,7 @@ using LocRes = TwinSovet.Localization.Resources;
 
 namespace TwinSovet.ViewModels 
 {
-    internal class FlatViewModel : ViewModelBase 
+    internal class FlatViewModel : SubjectEntityViewModel 
     {
         public FlatViewModel(FlatModel flatModel) 
         {
@@ -47,7 +48,17 @@ namespace TwinSovet.ViewModels
 
         public string SectionName { get; }
 
-        public string FullFlatLocationInfo => $"{SectionName}; этаж {FloorNumber}; номер {Number}";
+        /// <summary>
+        /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
+        /// </summary>
+        public override SubjectType TypeOfSubject { get; } = SubjectType.Flat;
+
+        /// <summary>
+        /// Возвращает строку некой общей информации о субъекте.
+        /// </summary>
+        public override string SubjectFriendlyInfo => FullFlatLocationInfo;
+
+        public string FullFlatLocationInfo => $"{SectionName}; этаж {FloorNumber}; квартира {Number}";
 
 
         /// <summary>Returns a string that represents the current object.</summary>

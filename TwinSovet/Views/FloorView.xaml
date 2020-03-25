@@ -8,12 +8,13 @@
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
 
              mc:Ignorable="d"
              MouseEnter="FloorView_OnMouseEnter"
              MouseLeave="FloorView_OnMouseLeave"
              Background="{StaticResource AlmostTransparent}"
-             d:DataContext="{d:DesignInstance viewModels:FloorViewModel}">
+             d:DataContext="{d:DesignInstance helpers:VirtualFloorWrapper}">
 
     <Border BorderThickness="1" CornerRadius="{StaticResource InListBorderCornerRadius}">
         <Border.Style>
@@ -38,20 +39,21 @@
             <DockPanel Grid.Row="0" x:Name="HeaderPanel" MinHeight="20">
                 <TextBlock DockPanel.Dock="Left">
                     <Run Text="{x:Static localization:Resources.Floor}"/>
-                    <Run Text="{Binding Path=FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
+                    <Run Text="{Binding Path=Data.OriginaFloorViewModel.FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                     <Run Text="  "/>
                     <Run Text="{x:Static localization:Resources.Section}"/>
-                    <Run Text="{Binding Path=Section, Mode=OneWay, Converter={StaticResource SectionTypeToStringConverter}}" FontStyle="Italic" FontWeight="Medium"/>
+                    <Run FontStyle="Italic" FontWeight="Medium"
+                         Text="{Binding Path=Data.OriginaFloorViewModel.Section, Mode=OneWay, Converter={StaticResource SectionTypeToStringConverter}}"/>
                     <Run Text="  "/>
                     <Run Text="Квартиры с "/>
-                    <Run Text="{Binding Path=MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
+                    <Run Text="{Binding Path=Data.OriginaFloorViewModel.MinFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                     <Run Text="по"/>
-                    <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
+                    <Run Text="{Binding Path=Data.OriginaFloorViewModel.MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
                 </TextBlock>
             </DockPanel>
 
             <Viewbox Grid.Row="1">
-                <ItemsControl ItemsSource="{Binding Path=FlatsView, Mode=OneWay}" ItemTemplate="{StaticResource FlatInListTemplate}">
+                <ItemsControl ItemsSource="{Binding Path=Data.OriginaFloorViewModel.FlatsView, Mode=OneWay}" ItemTemplate="{StaticResource FlatInListTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <DockPanel/>

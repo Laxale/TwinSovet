@@ -91,6 +91,7 @@
     <Compile Include="Controls\FilterView.xaml.cs">
       <DependentUpon>FilterView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\AttachableEntityToStringConverter.cs" />
     <Compile Include="Converters\GenderEnumToStringConverter.cs" />
     <Compile Include="Converters\ReversedBooleanConverter.cs" />
     <Compile Include="Converters\ReversedBooleanToVisibilityConverter.cs" />
@@ -98,23 +99,27 @@
     <Compile Include="Converters\SectionToSectionNumberConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
     <Compile Include="Enums\AttachableEntityType.cs" />
-    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Enums\SubjectType.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\AborigenDecoratorsCache.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
-    <Compile Include="Helpers\DispatcherHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\Regions.cs" />
+    <Compile Include="Helpers\VirtualFloorWrapper.cs" />
+    <Compile Include="Interfaces\IFloorsProvider.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
     <Compile Include="Messages\MessageShowAborigenDetails.cs" />
     <Compile Include="Messages\MessageShowDetails.cs" />
+    <Compile Include="Providers\AllFloorsProvider.cs" />
+    <Compile Include="ViewModels\AttachableViewModel.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\MessageShowAttachables.cs" />
     <Compile Include="Messages\MessageShowPhotos.cs" />
     <Compile Include="Messages\MessageShowNotes.cs" />
     <Compile Include="Providers\FlatsProvider.cs" />
-    <Compile Include="Providers\FloorsProvider.cs" />
+    <Compile Include="Providers\SectionFloorsProvider.cs" />
     <Compile Include="Providers\RelationsProvider.cs" />
     <Compile Include="Providers\StaticsProvider.cs" />
     <Compile Include="Helpers\MainContainer.cs" />
@@ -126,6 +131,7 @@
     <Compile Include="ViewModels\AborigenDecoratorViewModel.cs" />
     <Compile Include="ViewModels\AborigensListViewModel.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
+    <Compile Include="ViewModels\FloorDecoratorViewModel.cs" />
     <Compile Include="ViewModels\FurnitureSectionPlanViewModel.cs" />
     <Compile Include="ViewModels\AborigenViewModel.cs" />
     <Compile Include="ViewModels\FlatViewModel.cs" />
@@ -319,6 +325,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{1C5D948D-8BF2-44C6-88D9-647806DD51B3}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataVirtualization\DataVirtualization.csproj">
+      <Project>{0B11EBAC-0803-462B-A7B1-6E2CD96DB981}</Project>
+      <Name>DataVirtualization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PubSub\PubSub.csproj">
       <Project>{C73D1486-C5C4-4BF0-AE0B-D0A214E2CCB9}</Project>
       <Name>PubSub</Name>

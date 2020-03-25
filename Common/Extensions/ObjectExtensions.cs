@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 
-namespace TwinSovet.Extensions 
+namespace Common.Extensions 
 {
     /// <summary>
     /// Расширения для произвольного типа.

@@ -11,6 +11,7 @@
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
 
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:SectionViewModelBase}">
@@ -36,10 +37,12 @@
             </TextBlock>
             
             <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Notes}" 
-                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowNotes}"/>
+                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowNotes}"
+                    Command="{x:Static helpers:ClientCommands.CommandShowNotes}" CommandParameter="{Binding Mode=OneWay}"/>
 
             <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Photos}" 
-                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowPhotos}"/>
+                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowPhotos}"
+                    Command="{x:Static helpers:ClientCommands.CommandShowPhotos}" CommandParameter="{Binding Mode=OneWay}"/>
         </WrapPanel>
 
         <!-- Панелька фильтров -->
@@ -60,18 +63,47 @@
                                                       Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
         </Grid>
 
-        <ScrollViewer Grid.Row="2" Grid.Column="0" HorizontalScrollBarVisibility="Disabled" 
-                      VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}">
-            <ItemsControl ItemsSource="{Binding Path=FloorsView, Mode=OneWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <views:FloorView Margin="0, 4, 0, 4" 
-                                         EventShowAborigenDetails="FloorView_OnEventShowAborigenDetails"
-                                         EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <!--
+        <VirtualizingStackPanel Grid.Row="2"  Visibility="Collapsed"
+                                VirtualizingStackPanel.ScrollUnit="Pixel"
+                                VirtualizingStackPanel.IsVirtualizing="True" 
+                                VirtualizingStackPanel.IsContainerVirtualizable="True" 
+                                />
+        -->
+        <ListBox Grid.Row="2" Grid.Column="0" 
+                 Name="FloorsListBox"
+                 BorderThickness="0"
+                 HorizontalContentAlignment="Stretch"
+                 Margin="{StaticResource 4TopMargin}"
+                 Background="{StaticResource AlmostTransparent}"
+                 VirtualizingStackPanel.ScrollUnit="Pixel"
+                 VirtualizingStackPanel.IsVirtualizing="True" 
+                 VirtualizingStackPanel.IsContainerVirtualizable="True" 
+                 ScrollViewer.IsDeferredScrollingEnabled="True"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                 ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Style="{StaticResource InListBorderStyle}">
+                                    <ContentPresenter/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <views:FloorView Margin="0, 4, 0, 4" 
+                                     EventShowAborigenDetails="FloorView_OnEventShowAborigenDetails"
+                                     EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         
         <!-- Панелька загрузки -->
         <Border Grid.Row="0" Grid.RowSpan="3" Background="{StaticResource WhiteBrush}" Opacity="0.9"

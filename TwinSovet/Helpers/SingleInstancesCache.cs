@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Extensions;
 using TwinSovet.Attributes;
 using TwinSovet.Extensions;
 
@@ -27,7 +27,7 @@ namespace TwinSovet.Helpers
         /// Конструирует <see cref="SingleInstancesCache"/> с заданной дефолтной фабрикой объектов.
         /// </summary>
         /// <param name="defaultFactory">Дефолтная фабрика объектов.</param>
-        public SingleInstancesCache(Func<Type, object> defaultFactory)
+        public SingleInstancesCache(Func<Type, object> defaultFactory) 
         {
             this.defaultFactory = defaultFactory ?? throw new ArgumentNullException(nameof(defaultFactory));
         }
