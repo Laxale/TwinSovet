@@ -7,7 +7,6 @@ using System.Windows;
 using Prism.Commands;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
-using TwinSovet.Enums;
 using TwinSovet.Extensions;
 using TwinSovet.Views;
 

@@ -98,22 +98,25 @@
     <Compile Include="Converters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SectionToSectionNumberConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
-    <Compile Include="Enums\AttachableEntityType.cs" />
-    <Compile Include="Enums\SubjectType.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\AborigenDecoratorsCache.cs" />
+    <Compile Include="Helpers\AttachmentProviderConfig.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
+    <Compile Include="Helpers\NotesProvider.cs" />
     <Compile Include="Helpers\Regions.cs" />
     <Compile Include="Helpers\VirtualFloorWrapper.cs" />
+    <Compile Include="Interfaces\IAttachmentsProvider.cs" />
     <Compile Include="Interfaces\IFloorsProvider.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
     <Compile Include="Messages\MessageShowAborigenDetails.cs" />
     <Compile Include="Messages\MessageShowDetails.cs" />
     <Compile Include="Providers\AllFloorsProvider.cs" />
-    <Compile Include="ViewModels\AttachableViewModel.cs" />
+    <Compile Include="ViewModels\AttachmentPanelDecoratorBase.cs" />
+    <Compile Include="ViewModels\AttachmentViewModelBase.cs" />
+    <Compile Include="ViewModels\AttachmentAcceptorViewModel.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\MessageShowAttachables.cs" />
     <Compile Include="Messages\MessageShowPhotos.cs" />
@@ -138,7 +141,9 @@
     <Compile Include="ViewModels\FloorViewModel.cs" />
     <Compile Include="ViewModels\HospitalSectionPlanViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\NotesViewModel.cs" />
+    <Compile Include="ViewModels\NotePanelDecorator.cs" />
+    <Compile Include="ViewModels\NotePanelViewModel.cs" />
+    <Compile Include="ViewModels\NotesViewModelBase.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
     <Compile Include="ViewModels\SectionViewModelBase.cs" />
     <Compile Include="ViewModels\SelectAborigenViewModel.cs" />
@@ -152,6 +157,9 @@
     </Compile>
     <Compile Include="Views\EditAborigenView.xaml.cs">
       <DependentUpon>EditAborigenView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NotePanelView.xaml.cs">
+      <DependentUpon>NotePanelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SectionPlanView.xaml.cs">
       <DependentUpon>SectionPlanView.xaml</DependentUpon>
@@ -208,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EditAborigenView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NotePanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -350,7 +362,9 @@
       <Name>TwinSovet.Localization</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Enums\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

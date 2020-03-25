@@ -6,14 +6,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
-
-using TwinSovet.Enums;
 using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet.Converters 
 {
-    [ValueConversion(typeof(AttachableEntityType), typeof(string))]
+    [ValueConversion(typeof(AttachmentType), typeof(string))]
     internal class AttachableEntityToStringConverter : IValueConverter 
     {
         /// <summary>Преобразует значение.</summary>
@@ -33,20 +31,20 @@ namespace TwinSovet.Converters
         /// </returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) 
         {
-            var attachableType = (AttachableEntityType) value;
+            var attachableType = (AttachmentType) value;
 
             switch (attachableType)
             {
-                case AttachableEntityType.None:
+                case AttachmentType.None:
                     return LocRes.He_IsNotDefined;
 
-                case AttachableEntityType.Note:
+                case AttachmentType.Note:
                     return LocRes.Notes;
 
-                case AttachableEntityType.Photo:
+                case AttachmentType.Photo:
                     return LocRes.Photos;
 
-                case AttachableEntityType.Document:
+                case AttachmentType.Document:
                     return LocRes.Documents;
 
                 default:

@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 using TwinSovet.Data.Enums;
-using TwinSovet.Enums;
 using TwinSovet.Helpers;
 
 

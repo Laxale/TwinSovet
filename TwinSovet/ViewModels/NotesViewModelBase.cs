@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TwinSovet.Enums;
 
 
 namespace TwinSovet.ViewModels 
 {
-    internal class NotesViewModel : AttachableViewModel 
+    internal class NotesViewModelBase : AttachmentViewModelBase 
     {
         private SubjectEntityViewModel currentNotesOwner;
 
@@ -36,7 +35,7 @@ namespace TwinSovet.ViewModels
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
         /// </summary>
-        public override AttachableEntityType EntityType { get; } = AttachableEntityType.Note;
+        public override AttachmentType EntityType { get; } = AttachmentType.Note;
 
 
         public void SetNotesOwner(SubjectEntityViewModel owner) 

@@ -36,13 +36,9 @@
                 <Run Text="{Binding Path=MaxFlatNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Medium"/>
             </TextBlock>
             
-            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Notes}" 
-                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowNotes}"
-                    Command="{x:Static helpers:ClientCommands.CommandShowNotes}" CommandParameter="{Binding Mode=OneWay}"/>
+            <Button Style="{StaticResource TrimmedNotesButtonsStyle}" Margin="{StaticResource 8LeftMargin}"/>
 
-            <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.Photos}" 
-                    Margin="{StaticResource 8LeftMargin}" ToolTip="{x:Static loc:Resources.ToDoShowPhotos}"
-                    Command="{x:Static helpers:ClientCommands.CommandShowPhotos}" CommandParameter="{Binding Mode=OneWay}"/>
+            <Button Style="{StaticResource TrimmedPhotosButtonsStyle}" Margin="{StaticResource 8LeftMargin}"/>
         </WrapPanel>
 
         <!-- Панелька фильтров -->
@@ -71,31 +67,8 @@
                                 />
         -->
         <ListBox Grid.Row="2" Grid.Column="0" 
-                 Name="FloorsListBox"
-                 BorderThickness="0"
-                 HorizontalContentAlignment="Stretch"
-                 Margin="{StaticResource 4TopMargin}"
-                 Background="{StaticResource AlmostTransparent}"
-                 VirtualizingStackPanel.ScrollUnit="Pixel"
-                 VirtualizingStackPanel.IsVirtualizing="True" 
-                 VirtualizingStackPanel.IsContainerVirtualizable="True" 
-                 ScrollViewer.IsDeferredScrollingEnabled="True"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="ListBoxItem">
-                                <Border Style="{StaticResource InListBorderStyle}">
-                                    <ContentPresenter/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-
+                 Style="{StaticResource NonSelectableListBoxStyle}" 
+                 Name="FloorsListBox" Margin="{StaticResource 4TopMargin}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <views:FloorView Margin="0, 4, 0, 4" 

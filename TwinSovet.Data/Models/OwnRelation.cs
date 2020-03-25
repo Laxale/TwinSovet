@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 using TwinSovet.Data.DataBase;
+using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
 
 

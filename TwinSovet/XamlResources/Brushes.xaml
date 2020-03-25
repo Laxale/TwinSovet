@@ -6,7 +6,7 @@
     <Color x:Key="GreenColor">LimeGreen</Color>
     <Color x:Key="GrayColor">#909092</Color>
     <Color x:Key="SelectedGrayColor">#D9DBDF</Color>
-    <Color x:Key="PanelGrayColor">#BBBBBB</Color>
+    <Color x:Key="PanelGrayColor">#DCDCDC</Color>
     <Color x:Key="SteelGrayColor">#434D60</Color>
     <Color x:Key="RedColor">#E64E4E</Color>
     <Color x:Key="LinkForegroundColor">#0093C4</Color>

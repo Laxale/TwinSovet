@@ -51,12 +51,18 @@
     <Compile Include="DataBase\Base\DbObject.cs" />
     <Compile Include="DataBase\SimpleDbContext.cs" />
     <Compile Include="DataBase\Base\SimpleDbObject.cs" />
+    <Compile Include="Enums\AttachmentHostType.cs" />
+    <Compile Include="Enums\AttachmentType.cs" />
     <Compile Include="Enums\GenderType.cs" />
     <Compile Include="Enums\SectionType.cs" />
+    <Compile Include="Enums\SubjectType.cs" />
     <Compile Include="Extensions\ModelExtensions.cs" />
+    <Compile Include="Helpers\DbValidator.cs" />
+    <Compile Include="Models\AttachmentModelBase.cs" />
     <Compile Include="Models\BookRelation.cs" />
     <Compile Include="Models\FlatModel.cs" />
     <Compile Include="Models\AborigenModel.cs" />
+    <Compile Include="Models\NoteAttachmentModel.cs" />
     <Compile Include="Models\OwnRelation.cs" />
     <Compile Include="Providers\AborigensProvider.cs" />
   </ItemGroup>

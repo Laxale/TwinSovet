@@ -11,6 +11,7 @@ using Prism.Mvvm;
 
 using PubSub;
 using TwinSovet.Data.Enums;
+using TwinSovet.Data.Helpers;
 using TwinSovet.Extensions;
 using TwinSovet.Interfaces;
 using TwinSovet.Messages;
@@ -44,6 +45,8 @@ namespace TwinSovet
         protected override void OnStartup(StartupEventArgs e) 
         {
             DispatcherUnhandledException += OnDispatcherUnhandledException;
+
+            DbValidator.VerifyDatabase();
 
             base.OnStartup(e);
 
@@ -86,12 +89,12 @@ namespace TwinSovet
 
         private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModel> message) 
         {
-            Window window = CreateHostWindow();
+            Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
             var notesView = new NotesView();
             window.Content = notesView;
 
-            var context = (NotesViewModel)notesView.DataContext;
+            var context = (NotesViewModelBase)notesView.DataContext;
             context.SetNotesOwner(message.AttachablesOwner);
 
             window.Show();
@@ -99,7 +102,7 @@ namespace TwinSovet
 
         private void OnShowFloorPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
         {
-            Window window = CreateHostWindow();
+            Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
             window.Content = "страница фотографий";
 
@@ -107,9 +110,10 @@ namespace TwinSovet
         }
 
 
-        private Window CreateHostWindow() 
+        private Window CreateHostWindow(string title) 
         {
             Window window = Extensions.WindowExtensions.CreateEmptyHorizontalWindow();
+            window.Title = title;
 
             window.MakeSticky();
 

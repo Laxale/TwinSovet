@@ -20,7 +20,7 @@ namespace TwinSovet.Data.DataBase.Config
         /// <summary>
         /// Дефолтное значение для строк (<see cref="string.Empty"/>, дабы не путать null с пустой строкой).
         /// </summary>
-        public static readonly string DefaulStringValue = string.Empty;
+        public const string DefaulStringValue = "";
 
 
         /// <summary>
@@ -37,6 +37,11 @@ namespace TwinSovet.Data.DataBase.Config
             /// Название таблицы отношений типа "владение квартирой".
             /// </summary>
             public const string OwnRelationsTableName = "flat_own_relations";
+
+            /// <summary>
+            /// Название таблицы заметок.
+            /// </summary>
+            public const string NotesTableName = "notes";
         }
     }
 }

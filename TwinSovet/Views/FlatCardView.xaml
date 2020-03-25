@@ -23,7 +23,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition MinHeight="0"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -92,5 +92,12 @@
 
         <!-- Площадь квартиры -->
         <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding Path=Flat.Area, Mode=OneWay}" IsReadOnly="True"/>
+
+        <!-- Панелька кнопок аттачей -->
+        <DockPanel Grid.Row="4" Grid.Column="4">
+            <Button Style="{StaticResource TrimmedNotesButtonsStyle}" CommandParameter="{Binding Path=Flat, Mode=OneWay}"/>
+            <Button Style="{StaticResource TrimmedPhotosButtonsStyle}" 
+                    Margin="{StaticResource 8LeftMargin}" CommandParameter="{Binding Path=Flat, Mode=OneWay}"/>
+        </DockPanel>
     </Grid>
 </UserControl>

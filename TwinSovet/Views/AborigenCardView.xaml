@@ -39,7 +39,7 @@
                Visibility="{Binding Path=AborigenReadOnly.HasPhoto, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
         <!-- Иконка отсутствующего аватара -->
-        <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource GenderPathIconStyle}"
+        <Path Grid.Row="0" Grid.Column="0" Style="{StaticResource EditableGenderPathIconStyle}"
               Visibility="{Binding Path=AborigenReadOnly.HasPhoto, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
 
         <!-- Имя жителя -->

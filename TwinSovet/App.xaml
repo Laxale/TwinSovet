@@ -51,7 +51,7 @@
                 </Border>
             </DataTemplate>
 
-            <Style x:Key="GenderPathIconStyle" TargetType="Path">
+            <Style x:Key="EditableGenderPathIconStyle" TargetType="Path">
                 <d:Style.DataContext>
                     <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
                 </d:Style.DataContext>
@@ -79,6 +79,44 @@
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Path=AborigenEditable.IsLibertarian, Mode=OneWay}" Value="True">
+                        <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="0.05" ScaleY="0.05"/>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
+            <Style x:Key="ReadonlyGenderPathIconStyle" TargetType="Path">
+                <d:Style.DataContext>
+                    <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
+                </d:Style.DataContext>
+
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
+
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsMan, Mode=OneWay}" Value="True">
+                        <Setter Property="Data" Value="{StaticResource ManUserIconGeometry}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsWoman, Mode=OneWay}" Value="True">
+                        <Setter Property="Data" Value="{StaticResource WomanUserIconGeometry}"/>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsGenderUndefined, Mode=OneWay}" Value="True">
+                        <Setter Property="Data" Value="{StaticResource QuestionIconGeometry}"/>
+                        <Setter Property="LayoutTransform">
+                            <Setter.Value>
+                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+                            </Setter.Value>
+                        </Setter>
+                    </DataTrigger>
+
+                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsLibertarian, Mode=OneWay}" Value="True">
                         <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
                         <Setter Property="LayoutTransform">
                             <Setter.Value>
@@ -165,6 +203,34 @@
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="NonSelectableListBoxStyle" TargetType="ListBox">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
+                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
+                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+                <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel"/>
+                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.IsContainerVirtualizable" Value="True"/>
+
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border Style="{StaticResource InListBorderStyle}">
+                                            <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
                     </Setter.Value>
                 </Setter>
             </Style>

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace TwinSovet.Data.DataBase 
+namespace TwinSovet.Data.DataBase.Base 
 {
     /// <summary>
     /// Базовый класс для наследования объектов сложных настроек. 

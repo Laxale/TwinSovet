@@ -11,7 +11,6 @@ using TwinSovet.Data.Providers;
 
 using Prism.Commands;
 using TwinSovet.Data.Extensions;
-using TwinSovet.Enums;
 
 
 namespace TwinSovet.ViewModels 

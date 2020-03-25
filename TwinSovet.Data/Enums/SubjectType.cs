@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TwinSovet.Enums 
+﻿namespace TwinSovet.Data.Enums 
 {
     /// <summary>
     /// Содержит возможные значения типа субъекта в пределах дома.
     /// </summary>
-    internal enum SubjectType 
+    public enum SubjectType 
     {
         None,
 

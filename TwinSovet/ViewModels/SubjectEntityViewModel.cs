@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using TwinSovet.Enums;
+using TwinSovet.Data.Enums;
 
 
 namespace TwinSovet.ViewModels 
@@ -9,7 +8,7 @@ namespace TwinSovet.ViewModels
     /// <summary>
     /// Класс для обозначения вьюмоделей тех или иных сущностей дома. Будь то жители, квартиры, этажи, секции..
     /// </summary>
-    internal abstract class SubjectEntityViewModel : ViewModelBase 
+    internal abstract class SubjectEntityViewModel : AttachmentAcceptorViewModel 
     {
         /// <summary>
         /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
