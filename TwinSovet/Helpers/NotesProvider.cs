@@ -126,11 +126,11 @@ namespace TwinSovet.Helpers
 
             using (var context = new SimpleDbContext<NoteAttachmentModel>())
             {
-                var filteredNotes = 
+                var filteredNotes =
                     context.Objects
-                        .Where(selector)
-                        .Select(model => new ())
-                allNotes.AddRange()
+                           .Where(selector)
+                           .Select(model => new NotePanelDecorator(new NotePanelViewModel(model)));
+                allNotes.AddRange(filteredNotes);
             }
         }
 

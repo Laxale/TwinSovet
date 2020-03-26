@@ -32,7 +32,9 @@
 
         <ListBox Grid.Row="1" Margin="{StaticResource 4TopMargin}" Style="{StaticResource NonSelectableListBoxStyle}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType=""></DataTemplate>
+                <DataTemplate DataType="viewModels:NotePanelDecorator">
+                    <TextBlock Text="{Binding Path=AttachmentViewModel.EntityType, Mode=OneWay}"/>
+                </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
     </Grid>
