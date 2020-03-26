@@ -19,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./XamlResources/Brushes.xaml"/>
                 <ResourceDictionary Source="./XamlResources/Margins.xaml"/>
+                <ResourceDictionary Source="./XamlResources/PathStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/Converters.xaml"/>
                 <ResourceDictionary Source="./XamlResources/GridStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/BorderStyles.xaml"/>
@@ -40,9 +41,11 @@
             <DataTemplate x:Key="FlatInListTemplate" DataType="viewModels:FlatViewModel">
                 <Border Style="{StaticResource FlatBorderInListStyle}">
                     <Grid>
+                        <!--
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" SharedSizeGroup="FlatInListSharedGroup"/>
+                            <ColumnDefinition Width="*" SharedSizeGroup="FlatInListSharedGroup"/>
                         </Grid.ColumnDefinitions>
+                        -->
 
                         <views:SimpleFlatView Margin="{StaticResource All4Margin}"
                                               EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"
@@ -51,114 +54,17 @@
                 </Border>
             </DataTemplate>
 
-            <Style x:Key="EditableGenderPathIconStyle" TargetType="Path">
-                <d:Style.DataContext>
-                    <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
-                </d:Style.DataContext>
-
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsMan, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource ManUserIconGeometry}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsWoman, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource WomanUserIconGeometry}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsGenderUndefined, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource QuestionIconGeometry}"/>
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenEditable.IsLibertarian, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="0.05" ScaleY="0.05"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="ReadonlyGenderPathIconStyle" TargetType="Path">
-                <d:Style.DataContext>
-                    <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
-                </d:Style.DataContext>
-
-                <Setter Property="VerticalAlignment" Value="Center"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsMan, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource ManUserIconGeometry}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsWoman, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource WomanUserIconGeometry}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsGenderUndefined, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource QuestionIconGeometry}"/>
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding Path=AborigenReadOnly.IsLibertarian, Mode=OneWay}" Value="True">
-                        <Setter Property="Data" Value="{StaticResource LibertarianIconGeometry}"/>
-                        <Setter Property="LayoutTransform">
-                            <Setter.Value>
-                                <ScaleTransform ScaleX="0.05" ScaleY="0.05"/>
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="HighlightOrphansPathStyle" TargetType="Path">
-                <Setter Property="Data" Value="{StaticResource UnknownIconGeometry}"/>
-                <Setter Property="LayoutTransform">
-                    <Setter.Value>
-                        <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
-                    </Setter.Value>
-                </Setter>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
-                                                   Path=IsChecked, Mode=OneWay}"
-                                 Value="True">
-                        <Setter Property="StrokeThickness" Value="2"/>
-                        <Setter Property="Fill" Value="{StaticResource RedBrush}"/>
-                        <Setter Property="Stroke" Value="{StaticResource RedBrush}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
-                                                   Path=IsChecked, Mode=OneWay}"
-                                 Value="False">
-                        <Setter Property="StrokeThickness" Value="1"/>
-                        <Setter Property="Fill" Value="{StaticResource GrayBrush}"/>
-                        <Setter Property="Stroke" Value="{StaticResource GrayBrush}"/>
-                    </DataTrigger>
-
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
-                                                   Path=IsMouseOver, Mode=OneWay}"
-                                 Value="True">
-                        <Setter Property="StrokeThickness" Value="2"/>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
+            <!--
+            TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+            TargetProperty="(FrameworkElement.LayoutTransform).(RotateTransform.Angle)"
+            TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(Angle)"
+            TargetProperty="(FrameworkElement.LayoutTransform).(TransformGroup.Children)[0].(Angle)"
+            -->
+            <Storyboard x:Key="RotationStoryBoard" RepeatBehavior="Forever"
+                        TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                        >
+                <DoubleAnimation From="0" To="360" Duration="0:0:1.5"/>
+            </Storyboard>
 
             <Style x:Key="StackPanelInListAlternatedStyle" TargetType="StackPanel">
                 <Style.Triggers>
@@ -207,6 +113,7 @@
                 </Setter>
             </Style>
 
+            <VirtualizingStackPanel x:Key="test" IsContainerVirtualizable="True" VirtualizationMode="Recycling" />
             <Style x:Key="NonSelectableListBoxStyle" TargetType="ListBox">
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -216,6 +123,7 @@
                 <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
                 <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel"/>
                 <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
+                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
                 <Setter Property="VirtualizingStackPanel.IsContainerVirtualizable" Value="True"/>
 
                 <Setter Property="ItemContainerStyle">

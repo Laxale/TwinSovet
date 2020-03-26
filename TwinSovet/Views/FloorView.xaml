@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             
+
+             xmlns:rib="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon"
+
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
@@ -53,7 +55,8 @@
             </DockPanel>
 
             <Viewbox Grid.Row="1">
-                <ItemsControl ItemsSource="{Binding Path=Data.OriginaFloorViewModel.FlatsView, Mode=OneWay}" ItemTemplate="{StaticResource FlatInListTemplate}">
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=Data.OriginaFloorViewModel.FlatsView, Mode=OneWay}" 
+                              ItemTemplate="{StaticResource FlatInListTemplate}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <DockPanel/>
@@ -61,6 +64,14 @@
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </Viewbox>
+            
+
+
+
+
+            <!--
+
+            -->
         </Grid>
     </Border>
 </UserControl>

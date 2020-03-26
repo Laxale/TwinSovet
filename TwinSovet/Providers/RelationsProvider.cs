@@ -16,8 +16,8 @@ namespace TwinSovet.Providers
     internal static class RelationsProvider 
     {
         private static readonly object Locker = new object();
-        private static readonly List<OwnRelation> ownRelations = new List<OwnRelation>();
-        private static readonly List<OwnRelation> bookRelations = new List<OwnRelation>();
+        private static readonly List<OwnRelationModel> ownRelations = new List<OwnRelationModel>();
+        private static readonly List<OwnRelationModel> bookRelations = new List<OwnRelationModel>();
 
         private static bool loadedOwns;
         private static bool loadedBooks;
@@ -36,10 +36,10 @@ namespace TwinSovet.Providers
             {
                 LoadRelations();
 
-                OwnRelation ownRelation = ownRelations.FirstOrDefault(relation => relation.OwnerId == aborigenId);
-                if (ownRelation != null)
+                OwnRelationModel ownRelationModel = ownRelations.FirstOrDefault(relation => relation.OwnerId == aborigenId);
+                if (ownRelationModel != null)
                 {
-                    return ownRelation.FlatNumber;
+                    return ownRelationModel.FlatNumber;
                 }
 
                 return InvalidFlatNumber;
@@ -55,17 +55,17 @@ namespace TwinSovet.Providers
 
                 LoadRelations();
 
-                OwnRelation ownRelation = ownRelations.FirstOrDefault(relation => relation.OwnerId == aborigenId);
-                if (ownRelation != null)
+                OwnRelationModel ownRelationModel = ownRelations.FirstOrDefault(relation => relation.OwnerId == aborigenId);
+                if (ownRelationModel != null)
                 {
-                    ownRelation.FlatNumber = flatNumber;
+                    ownRelationModel.FlatNumber = flatNumber;
                 }
                 else
                 {
-                    ownRelations.Add(new OwnRelation { FlatNumber = flatNumber, OwnerId = aborigenId });
+                    ownRelations.Add(new OwnRelationModel { FlatNumber = flatNumber, OwnerId = aborigenId });
                 }
 
-                using (var context = new SimpleDbContext<OwnRelation>())
+                using (var context = new SimpleDbContext<OwnRelationModel>())
                 {
                     context.Objects.RemoveRange(context.Objects);
                     context.Objects.AddRange(ownRelations);
@@ -83,13 +83,13 @@ namespace TwinSovet.Providers
                 LoadRelations();
 
                 //FlatViewModel flat = FloorsProvider.FindFlatByNumber(flatNumber);
-                OwnRelation ownRelation = ownRelations.FirstOrDefault(relation => relation.FlatNumber == flatNumber);
-                if (ownRelation == null)
+                OwnRelationModel ownRelationModel = ownRelations.FirstOrDefault(relation => relation.FlatNumber == flatNumber);
+                if (ownRelationModel == null)
                 {
                     return AborigenDecoratorViewModel.CreateEmptyFake();
                 }
 
-                AborigenModel ownerModel = AborigensProvider.GetAborigen(ownRelation.OwnerId);
+                AborigenModel ownerModel = AborigensProvider.GetAborigen(ownRelationModel.OwnerId);
 
                 if (ownerModel == null)
                 {
@@ -118,15 +118,16 @@ namespace TwinSovet.Providers
 
         private static void LoadOwnRelations() 
         {
-            using (var ownContext = new SimpleDbContext<OwnRelation>())
+            using (var ownContext = new SimpleDbContext<OwnRelationModel>())
             {
+                //System.Threading.Thread.Sleep(int.MaxValue);
                 ownRelations.AddRange(ownContext.Objects.ToList());
             }
         }
 
         private static void LoadBookRelations() 
         {
-            using (var bookContext = new SimpleDbContext<OwnRelation>())
+            using (var bookContext = new SimpleDbContext<OwnRelationModel>())
             {
                 bookRelations.AddRange(bookContext.Objects.ToList());
             }

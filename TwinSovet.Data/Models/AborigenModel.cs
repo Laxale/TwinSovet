@@ -26,5 +26,13 @@ namespace TwinSovet.Data.Models
         public string Email { get; set; }
 
         public GenderType Gender { get; set; }
+
+
+        /// <summary>Возвращает строку, представляющую текущий объект.</summary>
+        /// <returns>Строка, представляющая текущий объект.</returns>
+        public override string ToString() 
+        {
+            return $"Owner '{ Name }' | '{ PhoneNumber }'";
+        }
     }
 }

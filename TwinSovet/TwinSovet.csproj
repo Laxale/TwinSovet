@@ -111,16 +111,19 @@
     <Compile Include="Interfaces\IAttachmentsProvider.cs" />
     <Compile Include="Interfaces\IFloorsProvider.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
-    <Compile Include="Messages\MessageShowAborigenDetails.cs" />
-    <Compile Include="Messages\MessageShowDetails.cs" />
+    <Compile Include="Messages\Details\MessageShowAborigenDetails.cs" />
+    <Compile Include="Messages\Details\MessageShowDetails.cs" />
+    <Compile Include="Messages\Indications\MessageShowFlatIndications.cs" />
+    <Compile Include="Messages\Indications\MessageShowFloorIndications.cs" />
+    <Compile Include="Messages\Indications\MessageShowIndications.cs" />
     <Compile Include="Providers\AllFloorsProvider.cs" />
     <Compile Include="ViewModels\AttachmentPanelDecoratorBase.cs" />
     <Compile Include="ViewModels\AttachmentViewModelBase.cs" />
     <Compile Include="ViewModels\AttachmentAcceptorViewModel.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
-    <Compile Include="Messages\MessageShowAttachables.cs" />
-    <Compile Include="Messages\MessageShowPhotos.cs" />
-    <Compile Include="Messages\MessageShowNotes.cs" />
+    <Compile Include="Messages\Attachments\MessageShowAttachments.cs" />
+    <Compile Include="Messages\Attachments\MessageShowPhotos.cs" />
+    <Compile Include="Messages\Attachments\MessageShowNotes.cs" />
     <Compile Include="Providers\FlatsProvider.cs" />
     <Compile Include="Providers\SectionFloorsProvider.cs" />
     <Compile Include="Providers\RelationsProvider.cs" />
@@ -130,7 +133,7 @@
     <Compile Include="Helpers\ViewMappingCache.cs" />
     <Compile Include="Helpers\ViewModelInitializer.cs" />
     <Compile Include="Messages\MessageInitializeModelRequest.cs" />
-    <Compile Include="Messages\MessageShowFlatDetails.cs" />
+    <Compile Include="Messages\Details\MessageShowFlatDetails.cs" />
     <Compile Include="ViewModels\AborigenDecoratorViewModel.cs" />
     <Compile Include="ViewModels\AborigensListViewModel.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
@@ -295,6 +298,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="XamlResources\PathStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="XamlResources\TetxBlockStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -362,9 +369,7 @@
       <Name>TwinSovet.Localization</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

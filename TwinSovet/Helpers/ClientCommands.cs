@@ -6,6 +6,8 @@ using TwinSovet.ViewModels;
 using Prism.Commands;
 using PubSub;
 using TwinSovet.Messages;
+using TwinSovet.Messages.Attachments;
+using TwinSovet.Messages.Indications;
 using LocRes = TwinSovet.Localization.Resources;
 
 
@@ -20,9 +22,14 @@ namespace TwinSovet.Helpers
 
             CommandShowNotes = new DelegateCommand<SubjectEntityViewModel>(ShowNotesImpl);
             CommandShowPhotos = new DelegateCommand<SubjectEntityViewModel>(ShowPhotosImpl);
+            CommandShowFlatIndications = new DelegateCommand<FlatDecoratorViewModel>(ShowFlatIndicationsImpl);
+            CommandShowFloorIndications = new DelegateCommand<FloorDecoratorViewModel>(ShowFloorIndicationsImpl);
         }
 
 
+        /// <summary>
+        /// Возвращает команду отмены чего-либо (<see cref="Key.Escape"/>).
+        /// </summary>
         public static RoutedUICommand Cancel { get; }
 
         /// <summary>
@@ -30,6 +37,16 @@ namespace TwinSovet.Helpers
         /// </summary>
         public static RoutedUICommand Enter { get; }
 
+
+        /// <summary>
+        /// Возвращает команду показать показания счётчиков данной квартиры.
+        /// </summary>
+        public static DelegateCommand<FlatDecoratorViewModel> CommandShowFlatIndications { get; }
+
+        /// <summary>
+        /// Возвращает команду показать показания счётчиков этажа.
+        /// </summary>
+        public static DelegateCommand<FloorDecoratorViewModel> CommandShowFloorIndications { get; }
 
         public static DelegateCommand<SubjectEntityViewModel> CommandShowNotes { get; }
 
@@ -44,6 +61,16 @@ namespace TwinSovet.Helpers
         private static void ShowPhotosImpl(SubjectEntityViewModel owner) 
         {
             owner.Publish(new MessageShowPhotos<SubjectEntityViewModel>(owner));
+        }
+
+        private static void ShowFlatIndicationsImpl(FlatDecoratorViewModel flat) 
+        {
+            flat.Publish(new MessageShowFlatIndications(flat));
+        }
+
+        private static void ShowFloorIndicationsImpl(FloorDecoratorViewModel floor) 
+        {
+            floor.Publish(new MessageShowFloorIndications(floor));
         }
     }
 }

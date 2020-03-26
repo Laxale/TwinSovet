@@ -178,6 +178,15 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Показания.
+        /// </summary>
+        public static string Indications {
+            get {
+                return ResourceManager.GetString("Indications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Загружаем список жителей.
         /// </summary>
         public static string LoadingAborigensList {
@@ -385,6 +394,15 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Показать визитку жителя.
+        /// </summary>
+        public static string ToDoShowAborigenCard {
+            get {
+                return ResourceManager.GetString("ToDoShowAborigenCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Показать заметки.
         /// </summary>
         public static string ToDoShowNotes {
@@ -408,6 +426,15 @@ namespace TwinSovet.Localization {
         public static string UK_short {
             get {
                 return ResourceManager.GetString("UK_short", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Узреть историю показаний.
+        /// </summary>
+        public static string ViewIndicationsHistory {
+            get {
+                return ResourceManager.GetString("ViewIndicationsHistory", resourceCulture);
             }
         }
         

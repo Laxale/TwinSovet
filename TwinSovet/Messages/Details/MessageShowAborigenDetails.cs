@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwinSovet.ViewModels;
+﻿using TwinSovet.ViewModels;
 
-namespace TwinSovet.Messages 
+
+namespace TwinSovet.Messages.Details 
 {
     internal class MessageShowAborigenDetails : MessageShowDetails<AborigenDecoratorViewModel> 
     {

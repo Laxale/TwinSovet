@@ -41,6 +41,8 @@ namespace TwinSovet.Views
 
                 FloorsListBox.SetBinding(ItemsControl.ItemsSourceProperty, binding);
             });
+
+            IsVisibleChanged += OnIsVisibleChanged;
         }
 
 
@@ -61,13 +63,9 @@ namespace TwinSovet.Views
             var view = (SectionPlanView) sender;
             var sectionType = (SectionType)e.NewValue;
 
-            if (sectionType == SectionType.Furniture)
+            if (view.IsVisible)
             {
-                view.DataContext = MainContainer.Instance.Resolve<FurnitureSectionPlanViewModel>();
-            }
-            else if (sectionType == SectionType.Hospital)
-            {
-                view.DataContext = MainContainer.Instance.Resolve<HospitalSectionPlanViewModel>();
+                view.SetContext();
             }
         }
 
@@ -90,6 +88,26 @@ namespace TwinSovet.Views
         private void FloorView_OnEventShowAborigenDetails(AborigenDecoratorViewModel decorator) 
         {
             EventShowAborigenDetails(decorator);
+        }
+
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) 
+        {
+            if ((bool)e.NewValue == false || DataContext is SectionViewModelBase) return;
+
+            SetContext();
+        }
+
+
+        private void SetContext() 
+        {
+            if (TypeOFSection == SectionType.Furniture)
+            {
+                DataContext = MainContainer.Instance.Resolve<FurnitureSectionPlanViewModel>();
+            }
+            else if (TypeOFSection == SectionType.Hospital)
+            {
+                DataContext = MainContainer.Instance.Resolve<HospitalSectionPlanViewModel>();
+            }
         }
     }
 }

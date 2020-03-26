@@ -4,6 +4,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 using Prism.Regions;
+using PubSub;
+using TwinSovet.Messages.Details;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels;
 
@@ -39,6 +41,14 @@ namespace TwinSovet.Views
             innerEditOwner_Out_Animation.Completed += InnerEditOwnerOutAnimation_OnCompleted;
             detailedAborigen_In_Animation.Completed += DetailedAborigenInAnimation_OnCompleted;
             detailedAborigen_Out_Animation.Completed += DetailedAborigenOutAnimation_OnCompleted;
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e) 
+        {
+            this.Subscribe<MessageShowFlatDetails>(OnShowFlatDetailsRequest);
+            this.Subscribe<MessageShowAborigenDetails>(OnShowAborigenDetails);
         }
 
 
@@ -161,8 +171,9 @@ namespace TwinSovet.Views
         private void DetailedAborigenOutAnimation_OnCompleted(object sender, EventArgs e) 
         {
             HideMask();
+            DetailedAborigenDecorator = null;
         }
-        
+
         private void DetailedFlatCard_OnEventRequestEditOwner(FlatDecoratorViewModel flatDecorator) 
         {
             if (CreateOwnerPanel.Visibility == Visibility.Visible)
@@ -205,28 +216,34 @@ namespace TwinSovet.Views
 
         private void DetailedAborigenPanel_OnEventCancellationRequest() 
         {
-            DetailedAborigenDecorator = null;
             detailedAborigen_Out_Animation.Begin();
         }
 
         private void FirstSectionView_OnEventShowFlatDetails(FlatDecoratorViewModel flat) 
         {
-            ShowMask();
-            DetailedFlatDecorator = flat;
-            inFlatAnimation.Begin();
+            ShowFlatDetails(flat);
         }
 
         private void FirstSectionView_OnEventShowAborigenDetails(AborigenDecoratorViewModel aborigen) 
         {
-            ShowMask();
-            DetailedAborigenDecorator = aborigen;
-            detailedAborigen_In_Animation.Begin();
+            ShowAborigenDetails(aborigen);
         }
 
         private void AborigenEditable_OnExecutedSaveAborigen() 
         {
             DetailedAborigenDecorator = null;
             detailedAborigen_Out_Animation.Begin();
+        }
+
+
+        private void OnShowFlatDetailsRequest(MessageShowFlatDetails message) 
+        {
+            ShowFlatDetails(message.ViewModel);
+        }
+
+        private void OnShowAborigenDetails(MessageShowAborigenDetails message) 
+        {
+            ShowAborigenDetails(message.ViewModel);
         }
 
 
@@ -244,6 +261,20 @@ namespace TwinSovet.Views
         {
             CreateOwnerPanel.Visibility = Visibility.Visible;
             innerEditOwner_In_Animation.Begin();
+        }
+
+        private void ShowFlatDetails(FlatDecoratorViewModel flat) 
+        {
+            ShowMask();
+            DetailedFlatDecorator = flat;
+            inFlatAnimation.Begin();
+        }
+
+        private void ShowAborigenDetails(AborigenDecoratorViewModel aborigen) 
+        {
+            ShowMask();
+            DetailedAborigenDecorator = aborigen;
+            detailedAborigen_In_Animation.Begin();
         }
     }
 }

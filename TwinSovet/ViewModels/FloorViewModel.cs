@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 using TwinSovet.Data.Enums;
+using TwinSovet.Data.Models;
 using TwinSovet.Helpers;
 
 
@@ -17,16 +18,16 @@ namespace TwinSovet.ViewModels
     {
         private readonly ObservableCollection<FlatDecoratorViewModel> flatDecorators = new ObservableCollection<FlatDecoratorViewModel>();
 
-        private int floorNumber;
-        private int minFlatNumber;
-        private int maxFlatNumber;
-        private SectionType section;
-
-
-        public FloorViewModel() 
+        
+        public FloorViewModel(FloorModel floorModel) 
         {
             FlatsView = CollectionViewSource.GetDefaultView(flatDecorators);
             FlatsEnumerable = flatDecorators;
+
+            Section = floorModel.Section;
+            FloorNumber = floorModel.FloorNumber;
+            MinFlatNumber = floorModel.MinFlatNumber;
+            MaxFlatNumber = floorModel.MaxFlatNumber;
 
             PropertyChanged += Self_OnPropertyChanged;
         }
@@ -36,63 +37,15 @@ namespace TwinSovet.ViewModels
 
         public IEnumerable<FlatDecoratorViewModel> FlatsEnumerable { get; }
 
-        public int FloorNumber 
-        {
-            get => floorNumber;
-
-            set
-            {
-                if (floorNumber == value) return;
-
-                floorNumber = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public int FloorNumber { get; }
         
-        public int MinFlatNumber 
-        {
-            get => minFlatNumber;
+        public int MinFlatNumber { get; }
 
-            private set
-            {
-                if (minFlatNumber == value) return;
+        public int MaxFlatNumber { get; }
 
-                minFlatNumber = value;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public int MaxFlatNumber 
-        {
-            get => maxFlatNumber;
-
-            private set
-            {
-                if (maxFlatNumber == value) return;
-
-                maxFlatNumber = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public SectionType Section { get; }
 
         public FilterViewModel FilterModel { get; } = new FilterViewModel();
-
-        public SectionType Section 
-        {
-            get => section;
-
-            set
-            {
-                if (section == value) return;
-
-                section = value;
-
-                OnPropertyChanged();
-            }
-        }
 
         /// <summary>
         /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
@@ -105,15 +58,11 @@ namespace TwinSovet.ViewModels
         public override string SubjectFriendlyInfo => $"{Section}; этаж {FloorNumber}";
 
 
-        public void SetFlats(IEnumerable<FlatViewModel> flats) 
+        public void PopulateFlats(IEnumerable<FlatViewModel> flats) 
         {
+            Console.WriteLine($">>> populating flats for '{ this }'");
             flatDecorators.Clear();
             flatDecorators.AddRange(flats.Select(flat => new FlatDecoratorViewModel(flat)));
-
-            List<int> flatNumbers = flatDecorators.Select(decorator => decorator.Flat.Number).ToList();
-
-            MinFlatNumber = flatNumbers.Min();
-            MaxFlatNumber = flatNumbers.Max();
         }
 
         /// <summary>Returns a string that represents the current object.</summary>

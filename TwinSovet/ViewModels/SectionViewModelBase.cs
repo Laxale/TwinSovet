@@ -20,7 +20,7 @@ namespace TwinSovet.ViewModels
     internal abstract class SectionViewModelBase : SubjectEntityViewModel 
     {
         private const int pageSize = 4;
-        private const int pageTimeout = 5000;
+        private const int pageTimeout = int.MaxValue;
 
         private readonly IFloorsProvider floorsProvider;
 
@@ -118,10 +118,8 @@ namespace TwinSovet.ViewModels
             {
                 FloorWrappersCollection = new AsyncVirtualizingCollection<FloorDecoratorViewModel>(floorsProvider, pageSize, pageTimeout);
             });
-            
-            OnPropertyChanged(nameof(FloorWrappersCollection));
 
-            floorsProvider.ForEach(LoadFlatOwners);
+            OnPropertyChanged(nameof(FloorWrappersCollection));
 
             RefreshCollection();
 
@@ -131,24 +129,11 @@ namespace TwinSovet.ViewModels
         }
 
 
-        private void LoadFlatOwners(FloorDecoratorViewModel floorDecorator) 
+        void PrintTime(int entry)
         {
-            int currentCount = 0;
-
-            foreach (FlatDecoratorViewModel flatDecorator in floorDecorator.OriginaFloorViewModel.FlatsEnumerable)
-            {
-                AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
-
-                flatDecorator.SetOwner(owner);
-                currentCount++;
-                LoadProgress = 100 * currentCount / StaticsProvider.FlatsInFurnitureSection;
-
-                if (owner != null)
-                {
-                    Console.WriteLine("set flat to owner?");
-                }
-            }
+            Console.WriteLine($"{ TypeOfSection } [{ entry }] : { DateTime.Now:O}");
         }
+       
 
         private void HighlightOrphanFlatsImpl() 
         {

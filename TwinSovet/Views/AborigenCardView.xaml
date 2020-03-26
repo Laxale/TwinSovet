@@ -28,6 +28,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -77,5 +78,11 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
+
+        <!-- Панелька кнопок аттачей -->
+        <DockPanel Grid.Row="6" Grid.Column="1">
+            <Button Style="{StaticResource TrimmedNotesButtonsStyle}" />
+            <Button Style="{StaticResource TrimmedPhotosButtonsStyle}" Margin="{StaticResource 8LeftMargin}" />
+        </DockPanel>
     </Grid>
 </UserControl>

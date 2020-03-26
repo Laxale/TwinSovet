@@ -40,6 +40,7 @@ namespace TwinSovet.ViewModels
 
         public DelegateCommand CommandSave { get; }
 
+
         /// <summary>
         /// Возвращает флаг - является ли данный декоратор НЕсохранённым в базе, то есть созданным только в памяти.
         /// </summary>

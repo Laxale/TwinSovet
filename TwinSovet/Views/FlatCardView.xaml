@@ -8,7 +8,8 @@
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:enums="clr-namespace:TwinSovet.Data.Enums;assembly=TwinSovet.Data"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
-             
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
 
@@ -34,11 +35,24 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Path Grid.Row="0" Grid.Column="0" Data="{StaticResource RoomIconGeometry}" Fill="{StaticResource SteelGrayBrush}">
-            <Path.LayoutTransform>
-                <ScaleTransform ScaleX="0.08" ScaleY="0.08"/>
-            </Path.LayoutTransform>
-        </Path>
+        <Border Grid.Row="0" Grid.Column="0" CornerRadius="4" Cursor="Hand" Background="{StaticResource AlmostTransparent}"
+                ToolTip="Выберите файл плана квартиры или перетащите его сюда" BorderThickness="1" Padding="2">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource SteelGrayBrush}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+
+            <Path Data="{StaticResource RoomIconGeometry}" Fill="{StaticResource SteelGrayBrush}" IsHitTestVisible="False">
+                <Path.LayoutTransform>
+                    <ScaleTransform ScaleX="0.08" ScaleY="0.08"/>
+                </Path.LayoutTransform>
+            </Path>
+        </Border>
 
         <!-- Номер квартиры -->
         <TextBlock Grid.Row="0" Grid.Column="2" Text="{x:Static loc:Resources.Number}"/>
@@ -93,11 +107,12 @@
         <!-- Площадь квартиры -->
         <TextBox Grid.Row="3" Grid.Column="4" Text="{Binding Path=Flat.Area, Mode=OneWay}" IsReadOnly="True"/>
 
-        <!-- Панелька кнопок аттачей -->
+        <!-- Панелька кнопок аттачей или показаний -->
         <DockPanel Grid.Row="4" Grid.Column="4">
             <Button Style="{StaticResource TrimmedNotesButtonsStyle}" CommandParameter="{Binding Path=Flat, Mode=OneWay}"/>
             <Button Style="{StaticResource TrimmedPhotosButtonsStyle}" 
                     Margin="{StaticResource 8LeftMargin}" CommandParameter="{Binding Path=Flat, Mode=OneWay}"/>
+            <Button Style="{StaticResource FlatIndicationsButtonsStyle}" Margin="{StaticResource 8LeftMargin}"/>
         </DockPanel>
     </Grid>
 </UserControl>

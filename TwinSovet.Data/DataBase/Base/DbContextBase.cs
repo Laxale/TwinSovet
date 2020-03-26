@@ -51,8 +51,14 @@ namespace TwinSovet.Data.DataBase.Base
         /// <summary>
         /// Конструирует контекст базы данных со строкой подключения по умолчанию.
         /// </summary>
-        protected DbContextBase() : base(CreateConnection(), true)
+        protected DbContextBase() : base(CreateConnection(), true) 
         {
+            // запрет логирования таким образом не работает. всё равно ошибки валятся к консоль
+            //Database.Log = message =>
+            //{
+                //Console.WriteLine(message);
+                //logger.Debug(message);
+            //};
             // убирает появление ошибки "требуется поле ххх" - EF не всегда загружает все свойства проксей
             //Configuration.ValidateOnSaveEnabled = false;
             //Configuration.LazyLoadingEnabled = false;
@@ -74,7 +80,10 @@ namespace TwinSovet.Data.DataBase.Base
                 BinaryGUID = false,
                 SyncMode = SynchronizationModes.Full,
                 // таймаут ожидания завершения другой операции в случае лока
-                BusyTimeout = busyTimeout
+                BusyTimeout = busyTimeout,
+                //JournalMode = SQLiteJournalModeEnum.Wal
+                //HexPassword = pass
+                //Password = pass
             };
 
             var conn = new SQLiteConnection(builder.ConnectionString);

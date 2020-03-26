@@ -12,7 +12,7 @@ namespace TwinSovet.Data.Models
     /// Представляет отношение владения квартирой.
     /// </summary>
     [Table(DbConst.TableNames.OwnRelationsTableName)]
-    public class OwnRelation : DbObject 
+    public class OwnRelationModel : DbObject 
     {
         /// <summary>
         /// Возвращает или задаёт номер квартиры.
@@ -23,5 +23,13 @@ namespace TwinSovet.Data.Models
         /// Возвращает или задаёт идентификатор владельца квартиры.
         /// </summary>
         public string OwnerId { get; set; }
+
+
+        /// <summary>Возвращает строку, представляющую текущий объект.</summary>
+        /// <returns>Строка, представляющая текущий объект.</returns>
+        public override string ToString() 
+        {
+            return $"Flat { FlatNumber } is owned by { OwnerId }";
+        }
     }
 }

@@ -234,4 +234,13 @@
   <data name="Documents" xml:space="preserve">
       <value>Документы</value>
   </data>
+  <data name="Indications" xml:space="preserve">
+      <value>Показания</value>
+  </data>
+  <data name="ViewIndicationsHistory" xml:space="preserve">
+      <value>Узреть историю показаний</value>
+  </data>
+  <data name="ToDoShowAborigenCard" xml:space="preserve">
+      <value>Показать визитку жителя</value>
+  </data>
 </root>

@@ -62,8 +62,9 @@
     <Compile Include="Models\BookRelation.cs" />
     <Compile Include="Models\FlatModel.cs" />
     <Compile Include="Models\AborigenModel.cs" />
+    <Compile Include="Models\FloorModel.cs" />
     <Compile Include="Models\NoteAttachmentModel.cs" />
-    <Compile Include="Models\OwnRelation.cs" />
+    <Compile Include="Models\OwnRelationModel.cs" />
     <Compile Include="Providers\AborigensProvider.cs" />
   </ItemGroup>
   <ItemGroup>

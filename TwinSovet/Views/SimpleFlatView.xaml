@@ -34,8 +34,9 @@
 
         <!-- Владелец квартиры -->
         <Button Grid.Row="1" Grid.Column="2" 
-                Style="{StaticResource TrimmedLinkButtonStyle}" Click="EditOwnerButton_OnClick"
+                ToolTip="{x:Static localization:Resources.ToDoShowAborigenCard}"
                 Content="{Binding Path=OwnerDecorator.AborigenReadOnly.Name, Mode=OneWay}"
+                Style="{StaticResource TrimmedLinkButtonStyle}" Click="EditOwnerButton_OnClick"
                 Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </Grid>
 </UserControl>

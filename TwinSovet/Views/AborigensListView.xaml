@@ -13,7 +13,7 @@
              xmlns:providers="clr-namespace:TwinSovet.Providers"
 
              mc:Ignorable="d"
-             prism:ViewModelLocator.AutoWireViewModel="True"
+             prism:ViewModelLocator.AutoWireViewModel="False"
              d:DataContext="{d:DesignInstance viewModels:AborigensListViewModel}">
 
     <Grid>

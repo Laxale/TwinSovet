@@ -5,6 +5,7 @@
 
     <Thickness Top="4" x:Key="4TopMargin"/>
     <Thickness Left="4" x:Key="4LeftMargin"/>
+    <Thickness Right="4" x:Key="4RightMargin"/>
     <Thickness Left="8" x:Key="8LeftMargin"/>
     <Thickness x:Key="All4Margin">4</Thickness>
     

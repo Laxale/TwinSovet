@@ -126,6 +126,9 @@ namespace TwinSovet.Providers
                 overallCount = predicatedFloors.Count;
                 List<FloorDecoratorViewModel> decorators = predicatedFloors.Skip(startIndex).Take(itemsCount).ToList();
 
+                //System.Threading.Thread.Sleep(1000);
+                OnBeforeFetching(decorators);
+
                 return decorators;
             }
         }
@@ -160,12 +163,21 @@ namespace TwinSovet.Providers
 
         private void FillFloorsForSection(int flatsPerFloor, int startFlatNumber) 
         {
-            int startNumber = startFlatNumber;
+            const int startFloorNumber = 2;
+
+            int sectionStartFlatNumber = startFlatNumber;
             Dictionary<int, float> areasDict = sectionType == SectionType.Furniture ? mebelFlatAreas : hospitalFlatAreas;
 
-            for (int floorIndex = 2; floorIndex <= StaticsProvider.TotalFloorsCount; floorIndex++)
+            for (int floorNumber = startFloorNumber; floorNumber <= StaticsProvider.TotalFloorsCount; floorNumber++)
             {
-                var floorViewModel = new FloorViewModel { FloorNumber = floorIndex, Section = sectionType };
+                var floorModel = new FloorModel
+                {
+                    FloorNumber = floorNumber, Section = sectionType,
+                    MinFlatNumber = sectionStartFlatNumber + (floorNumber - startFloorNumber) * flatsPerFloor,
+                };
+                floorModel.MaxFlatNumber = floorModel.MinFlatNumber + flatsPerFloor - 1;
+
+                var floorViewModel = new FloorViewModel(floorModel);
 
                 var flats = new List<FlatViewModel>();
                 for (int flatIndex = 1; flatIndex < flatsPerFloor + 1; flatIndex++)
@@ -174,22 +186,40 @@ namespace TwinSovet.Providers
                     {
                         Area = areasDict[flatIndex],
                         FloorNumber = floorViewModel.FloorNumber,
-                        Number = startNumber,
+                        Number = startFlatNumber,
                         Section = sectionType
                     };
                     var flat = new FlatViewModel(flatModel);
                     flats.Add(flat);
 
-                    startNumber++;
+                    startFlatNumber++;
                 }
 
-                floorViewModel.SetFlats(flats);
+                floorViewModel.PopulateFlats(flats);
                 var decorator = new FloorDecoratorViewModel(floorViewModel);
                 allFloors.Add(decorator);
             }
 
             allFloors.Reverse();
             predicatedFloors.AddRange(allFloors);
+        }
+
+        private void OnBeforeFetching(List<FloorDecoratorViewModel> fetchedFloors) 
+        {
+            Console.WriteLine($"fetching '{ fetchedFloors.Count }' floors for '{ fetchedFloors[0].OriginaFloorViewModel.Section }'");
+            foreach (FloorDecoratorViewModel fetchedFloor in fetchedFloors)
+            {
+                LoadFlatOwners(fetchedFloor);
+            }
+        }
+        private void LoadFlatOwners(FloorDecoratorViewModel floorDecorator) 
+        {
+            foreach (FlatDecoratorViewModel flatDecorator in floorDecorator.OriginaFloorViewModel.FlatsEnumerable)
+            {
+                AborigenDecoratorViewModel owner = RelationsProvider.GetFlatOwner(flatDecorator.Flat.Number);
+
+                flatDecorator.SetOwner(owner);
+            }
         }
     }
 }

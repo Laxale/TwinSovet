@@ -116,4 +116,26 @@
         <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}"/>
         <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowPhotos}"/>
     </Style>
+    <!--
+    <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
+                    Content="{x:Static loc:Resources.Indications}" 
+                    ToolTip="{x:Static loc:Resources.ViewIndicationsHistory}"
+                    Margin="{StaticResource 8LeftMargin}" CommandParameter="{Binding Mode=OneWay}"
+                    Command="{x:Static helpers:ClientCommands.CommandShowFlatIndications}"/>
+    -->
+
+    <Style x:Key="TrimmedIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
+        <Setter Property="Content" Value="{x:Static loc:Resources.Indications}"/>
+        <Setter Property="ToolTip" Value="{x:Static loc:Resources.ViewIndicationsHistory}"/>
+        <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}"/>
+        
+    </Style>
+
+    <Style x:Key="FlatIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedIndicationsButtonsStyle}">
+        <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowFlatIndications}"/>
+    </Style>
+
+    <Style x:Key="FloorIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedIndicationsButtonsStyle}">
+        <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowFloorIndications}"/>
+    </Style>
 </ResourceDictionary>

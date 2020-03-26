@@ -2,22 +2,28 @@
 using System.Windows;
 using System.Windows.Threading;
 
-using Microsoft.Practices.Unity;
-
-using NLog;
 using TwinSovet.Helpers;
-
-using Prism.Mvvm;
-
-using PubSub;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Helpers;
 using TwinSovet.Extensions;
 using TwinSovet.Interfaces;
 using TwinSovet.Messages;
+using TwinSovet.Messages.Attachments;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels;
 using TwinSovet.Views;
+using TwinSovet.Messages.Details;
+using TwinSovet.Messages.Indications;
+
+using NLog;
+
+using PubSub;
+
+using Prism.Mvvm;
+
+using Microsoft.Practices.Unity;
+
+using LocRes = TwinSovet.Localization.Resources;
 
 
 namespace TwinSovet 
@@ -59,6 +65,8 @@ namespace TwinSovet
             ViewModelLocationProvider.SetDefaultViewModelFactory(instancesCache.GetOrCreateInstance);
             ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver(viewMappingCache.GetViewModelType);
 
+            this.Subscribe<MessageShowFlatIndications>(OnShowFlatIndicationsRequest);
+            this.Subscribe<MessageShowFloorIndications>(OnShowFloorIndicationsRequest);
             this.Subscribe<MessageShowNotes<SubjectEntityViewModel>>(OnShowNotesRequest);
             this.Subscribe<MessageShowPhotos<SubjectEntityViewModel>>(OnShowFloorPhotosRequest);
         }
@@ -86,6 +94,21 @@ namespace TwinSovet
             this.Publish(new MessageShowAborigenDetails(flat.OwnerDecorator));
         }
 
+
+        private void OnShowFlatIndicationsRequest(MessageShowFlatIndications message) 
+        {
+            var win = CreateHostWindow($"{ LocRes.Indications } квартиры { message.FlatDecorator.Flat.Number }");
+            win.Show();
+        }
+
+        private void OnShowFloorIndicationsRequest(MessageShowFloorIndications message) 
+        {
+            var win = CreateHostWindow(
+                $"{ LocRes.Indications } { message.FloorDecorator.OriginaFloorViewModel.FloorNumber} этажа " +
+                $"секции '{ message.FloorDecorator.OriginaFloorViewModel.Section }'");
+
+            win.Show();
+        }
 
         private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModel> message) 
         {

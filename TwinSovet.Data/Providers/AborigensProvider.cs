@@ -56,6 +56,12 @@ namespace TwinSovet.Data.Providers
         {
             lock (Locker)
             {
+                if(!aborigens.Any())
+                {
+                    LoadAborigens();
+                    //_LoadAborigens();
+                }
+
                 return aborigens.FirstOrDefault(aborigen => aborigen.Id == aborigenId)?.Clone();
             }
         }

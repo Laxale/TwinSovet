@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Microsoft.Practices.Unity;
 using TwinSovet.Attributes;
 using TwinSovet.Helpers;
 using TwinSovet.ViewModels;
@@ -29,11 +29,11 @@ namespace TwinSovet.Views
         internal event Action<AborigenDecoratorViewModel> EventShowAborigenDetais = aborigen => { };
 
 
-        public AborigensListView()
+        public AborigensListView() 
         {
             InitializeComponent();
 
-            Loaded += OnLoaded;
+            IsVisibleChanged += OnIsVisibleChanged;
         }
 
 
@@ -46,10 +46,13 @@ namespace TwinSovet.Views
         }
 
 
-        private void OnLoaded(object sender, RoutedEventArgs e) 
+        private void OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) 
         {
+            if ((bool)e.NewValue == false || DataContext is AborigensListViewModel) return;
+
             NonDesignInvoker.Invoke(this, () =>
             {
+                DataContext = MainContainer.Instance.Resolve<AborigensListViewModel>();
                 ViewModel = (AborigensListViewModel)DataContext;
             });
         }
