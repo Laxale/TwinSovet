@@ -73,7 +73,7 @@
     <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Helpers\DbValidator.cs" />
     <Compile Include="Models\Attachments\AttachmentModelBase.cs" />
-    <Compile Include="Models\Attachments\DescriptableDataAttachmentModel.cs" />
+    <Compile Include="Models\Attachments\BinaryAttachmentModel.cs" />
     <Compile Include="Models\Attachments\DocumentAttachmentModel.cs" />
     <Compile Include="Models\Attachments\OfDocumentChildAttachmentsDescriptor.cs" />
     <Compile Include="Models\Attachments\OfNoteChildAttachmentsDescriptor.cs" />

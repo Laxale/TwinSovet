@@ -13,7 +13,7 @@ namespace TwinSovet.Data.Models.Attachments
 {
     [Table(DbConst.TableNames.DocumentsTableName)]
     [RelationalContext(typeof(DocumentAttachmentsContext))]
-    public class DocumentAttachmentModel : DescriptableDataAttachmentModel 
+    public class DocumentAttachmentModel : BinaryAttachmentModel 
     {
         public string DataType { get; set; }
 

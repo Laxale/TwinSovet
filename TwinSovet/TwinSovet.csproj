@@ -115,6 +115,7 @@
     <Compile Include="Interfaces\IAttachmentsProvider.cs" />
     <Compile Include="Interfaces\IFloorsProvider.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
+    <Compile Include="Interfaces\IReadonlyFlagged.cs" />
     <Compile Include="Messages\Details\MessageShowAborigenDetails.cs" />
     <Compile Include="Messages\Details\MessageShowDetails.cs" />
     <Compile Include="Messages\Indications\MessageShowFlatIndications.cs" />
@@ -125,10 +126,13 @@
     <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase_NonGeneric.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentViewModelBase.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentAcceptorViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\AttachmentViewModelFactory.cs" />
     <Compile Include="ViewModels\Attachments\DocumentAttachmentViewModel.cs" />
     <Compile Include="ViewModels\Attachments\DocumentPanelDecorator.cs" />
     <Compile Include="ViewModels\Attachments\PhotoAttachmentViewModel.cs" />
     <Compile Include="ViewModels\Attachments\PhotoPanelDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\SubjectAttachmentsViewModelBase.cs" />
+    <Compile Include="ViewModels\Attachments\VirtualNoteDecorator.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\Attachments\MessageShowAttachments.cs" />
     <Compile Include="Messages\Attachments\MessageShowPhotos.cs" />
@@ -193,6 +197,9 @@
     </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SimpleNoteView.xaml.cs">
+      <DependentUpon>SimpleNoteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SubjectNotesView.xaml.cs">
       <DependentUpon>SubjectNotesView.xaml</DependentUpon>
@@ -263,6 +270,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SimpleNoteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

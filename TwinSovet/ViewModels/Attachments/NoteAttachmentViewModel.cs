@@ -6,9 +6,20 @@ namespace TwinSovet.ViewModels.Attachments
 {
     internal class NoteAttachmentViewModel : AttachmentViewModelBase 
     {
-        public NoteAttachmentViewModel(NoteAttachmentModel noteModel) 
+        private NoteAttachmentViewModel(NoteAttachmentModel noteModel, bool isReadonly) : base(noteModel, isReadonly) 
         {
             
+        }
+
+
+        public static NoteAttachmentViewModel CreateReadonly(NoteAttachmentModel noteModel) 
+        {
+            return new NoteAttachmentViewModel(noteModel, true);
+        }
+
+        public static NoteAttachmentViewModel CreateEditable(NoteAttachmentModel noteModel) 
+        {
+            return new NoteAttachmentViewModel(noteModel, false);
         }
 
 

@@ -19,12 +19,6 @@ namespace TwinSovet.Data.Models.Attachments
     public class NoteAttachmentModel : AttachmentModelBase 
     {
         /// <summary>
-        /// Возвращает или задаёт текст заметки.
-        /// </summary>
-        [DefaultValue(DbConst.DefaulStringValue)]
-        public string Text { get; set; }
-
-        /// <summary>
         /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
         /// </summary>
         public List<OfNoteChildAttachmentsDescriptor> ChildDescriptors { get; set; } = new List<OfNoteChildAttachmentsDescriptor>();
@@ -34,6 +28,27 @@ namespace TwinSovet.Data.Models.Attachments
         /// </summary>
         public virtual List<OfNoteChildAttachmentsDescriptor> ChildDescriptors_Map { get; set; } = new List<OfNoteChildAttachmentsDescriptor>();
 
+
+        public override AttachmentModelBase Clone() 
+        {
+            var clone = new NoteAttachmentModel
+            {
+                Id = this.Id,
+                Title = this.Title,
+                Description = this.Description,
+                CreationTime = CreationTime,
+                ModificationTime = ModificationTime,
+                HostId = HostId,
+                HostType = HostType,
+                RootSubjectId = RootSubjectId,
+                RootSubjectType = RootSubjectType,
+                TypeOfAttachment = TypeOfAttachment,
+            };
+
+            clone.ChildDescriptors.AddRange(ChildDescriptors);
+
+            return clone;
+        }
 
         /// <summary>
         /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
@@ -58,6 +73,7 @@ namespace TwinSovet.Data.Models.Attachments
 
             return this;
         }
+
 
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).

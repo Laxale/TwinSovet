@@ -10,9 +10,20 @@ namespace TwinSovet.ViewModels.Attachments
 {
     internal class PhotoAttachmentViewModel : AttachmentViewModelBase 
     {
-        public PhotoAttachmentViewModel(PhotoAttachmentModel photoModel) 
+        private PhotoAttachmentViewModel(PhotoAttachmentModel photoModel, bool isReadonly) : base(photoModel, isReadonly) 
         {
             
+        }
+
+
+        public static PhotoAttachmentViewModel CreateReadonly(PhotoAttachmentModel photoModel)
+        {
+            return new PhotoAttachmentViewModel(photoModel, true);
+        }
+
+        public static PhotoAttachmentViewModel CreateEditable(PhotoAttachmentModel photoModel) 
+        {
+            return new PhotoAttachmentViewModel(photoModel, false);
         }
 
 

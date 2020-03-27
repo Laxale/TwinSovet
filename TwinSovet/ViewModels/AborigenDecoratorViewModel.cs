@@ -27,7 +27,7 @@ namespace TwinSovet.ViewModels
         private AborigenDecoratorViewModel(AborigenViewModel aborigenEditable) 
         {
             aborigenEditable.AssertNotNull(nameof(aborigenEditable));
-            if(aborigenEditable.IsReadOnly) throw new InvalidOperationException($"Нельзя использовать readonly модель как редактируемую");
+            if(aborigenEditable.IsReadonly) throw new InvalidOperationException($"Нельзя использовать readonly модель как редактируемую");
 
             AborigenEditable = aborigenEditable;
             AborigenReadOnly = AborigenViewModel.CreateReadOnly(AborigenEditable.GetModel());

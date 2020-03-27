@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 using TwinSovet.Data.DataBase.Base;
+using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Enums;
 
 
@@ -13,6 +15,18 @@ namespace TwinSovet.Data.Models.Attachments
     /// </summary>
     public class AttachmentModelBase : ComplexDbObject 
     {
+        /// <summary>
+        /// Возвращает или задаёт название аттача.
+        /// </summary>
+        [DefaultValue(DbConst.DefaulStringValue)]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Возвращает или задаёт текст описания аттача.
+        /// </summary>
+        [DefaultValue(DbConst.DefaulStringValue)]
+        public string Description { get; set; }
+
         /// <summary>
         /// Возвращает или задаёт идентификатор корневого объекта, к которому приложен данный аттач.
         /// Данный идентификатор описывает ТОЛЬКО субъекты типа <see cref="SubjectType"/>.
@@ -50,6 +64,15 @@ namespace TwinSovet.Data.Models.Attachments
         public DateTime? ModificationTime { get; set; }
 
 
+        public virtual AttachmentModelBase Clone() => throw new NotImplementedException();
+
+        public void AcceptProps(AttachmentModelBase other) 
+        {
+            Title = other.Title;
+            Description = other.Description;
+            ModificationTime = other.ModificationTime;
+        }
+
         /// <summary>
         /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
         /// </summary>
@@ -58,6 +81,7 @@ namespace TwinSovet.Data.Models.Attachments
         {
             throw new NotImplementedException();
         }
+
 
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).

@@ -8,14 +8,25 @@ using TwinSovet.Data.Models.Attachments;
 
 namespace TwinSovet.ViewModels.Attachments
 {
-    internal class DocumentAttachmentViewModel : AttachmentViewModelBase
+    internal class DocumentAttachmentViewModel : AttachmentViewModelBase 
     {
-        public DocumentAttachmentViewModel(DocumentAttachmentModel documentModel) 
+        private DocumentAttachmentViewModel(DocumentAttachmentModel documentModel, bool isReadonly) : base(documentModel, isReadonly) 
         {
             
         }
 
 
+        public static DocumentAttachmentViewModel CreateReadonly(DocumentAttachmentModel documentModel) 
+        {
+            return new DocumentAttachmentViewModel(documentModel, true);
+        }
+
+        public static DocumentAttachmentViewModel CreateEditable(DocumentAttachmentModel documentModel) 
+        {
+            return new DocumentAttachmentViewModel(documentModel, false);
+        }
+
+        
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
         /// </summary>

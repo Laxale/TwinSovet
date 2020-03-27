@@ -122,11 +122,11 @@ namespace TwinSovet
 
             var grid = new Grid();
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
             var notesView = new SubjectNotesView { Margin = (Thickness)Resources["4TopMargin"] };
             var toolBar = new AttachmentsToolbarView();
-            Grid.SetRow(toolBar, 1);
-            Grid.SetRow(notesView, 2);
+            Grid.SetRow(toolBar, 0);
+            Grid.SetRow(notesView, 1);
             grid.Children.Add(toolBar);
             grid.Children.Add(notesView);
             window.Content = grid;

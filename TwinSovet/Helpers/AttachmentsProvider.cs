@@ -28,6 +28,8 @@ namespace TwinSovet.Helpers
     internal class AttachmentsProvider : IAttachmentsProvider 
     {
         private static readonly object Locker = new object();
+        private static readonly object NoteLocker = new object();
+        private static readonly DbContextFactory contextFactory = new DbContextFactory();
 
         private readonly IDbContextFactory dbContextFactory;
         private readonly AttachmentProviderConfigBase config;
@@ -37,13 +39,51 @@ namespace TwinSovet.Helpers
         private bool loadedAttaches;
         private Func<AttachmentPanelDecoratorBase_NonGeneric, bool> predicate;
 
+        public static event Action<NoteAttachmentModel> EventNoteAdded = noteModel => { };
+        public static event Action<PhotoAttachmentModel> EventPhotoAdded = photoModel => { };
+        public static event Action<PhotoAttachmentModel> EventDocumentAdded = documentModel => { };
 
-        public AttachmentsProvider(IDbContextFactory dbContextFactory, AttachmentProviderConfigBase config)
+
+        public AttachmentsProvider(IDbContextFactory dbContextFactory, AttachmentProviderConfigBase config) 
         {
             config.AssertNotNull(nameof(config));
 
             this.dbContextFactory = dbContextFactory;
             this.config = config;
+        }
+
+
+        public static void SaveOrUpdate(NoteAttachmentModel noteModel) 
+        {
+            lock (NoteLocker)
+            {
+                bool addedNote = false;
+                using (var context = contextFactory.CreateContext<NoteAttachmentModel>())
+                {
+                    var existingModel = context.Objects.FirstOrDefault(note => note.Id == noteModel.Id);
+                    if (existingModel != null)
+                    {
+                        existingModel.AcceptProps(noteModel);
+                    }
+                    else
+                    {
+                        addedNote = true;
+                        context.Objects.Add(noteModel);
+                    }
+
+                    context.SaveChanges();
+
+                    if (addedNote)
+                    {
+                        EventNoteAdded(noteModel);
+                    }
+                }
+            }
+        }
+
+        public static void SaveOrUpdate(PhotoAttachmentModel photoModel) 
+        {
+
         }
 
 
@@ -155,7 +195,7 @@ namespace TwinSovet.Helpers
                         var noteDecorators =
                             context.Objects
                                 .AsEnumerable()
-                                .Select(model => new NotePanelDecorator(new NoteAttachmentViewModel(model)));
+                                .Select(model => new NotePanelDecorator(NoteAttachmentViewModel.CreateEditable(model)));
 
                         allAttachments.AddRange(noteDecorators);
                     }
@@ -165,7 +205,7 @@ namespace TwinSovet.Helpers
                     {
                         var photoDecorators =
                             context.Objects
-                                .Select(photoModel => new PhotoPanelDecorator(new PhotoAttachmentViewModel(photoModel)))
+                                .Select(photoModel => new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(photoModel)))
                                 .AsEnumerable();
                         allAttachments.AddRange(photoDecorators);
                     }
@@ -175,7 +215,7 @@ namespace TwinSovet.Helpers
                     {
                         var documentDecorators =
                             context.Objects
-                                .Select(documentModel => new DocumentPanelDecorator(new DocumentAttachmentViewModel(documentModel)))
+                                .Select(documentModel => new DocumentPanelDecorator(DocumentAttachmentViewModel.CreateEditable(documentModel)))
                                 .AsEnumerable();
                         allAttachments.AddRange(documentDecorators);
                     }

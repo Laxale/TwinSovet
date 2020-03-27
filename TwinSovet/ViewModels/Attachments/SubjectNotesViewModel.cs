@@ -16,7 +16,7 @@ namespace TwinSovet.ViewModels.Attachments
     /// <summary>
     /// Вьюмоделей заметок субъекта.
     /// </summary>
-    internal class SubjectNotesViewModel : AttachmentViewModelBase
+    internal class SubjectNotesViewModel : SubjectAttachmentsViewModelBase 
     {
         private readonly int pageSize = 10;
         private readonly int pageTimeout = int.MaxValue;
@@ -26,6 +26,10 @@ namespace TwinSovet.ViewModels.Attachments
         private SubjectEntityViewModel notesOwner;
 
 
+        /// <summary>
+        /// Конструирует <see cref="SubjectNotesViewModel"/> с данными зависимостями.
+        /// </summary>
+        /// <param name="container"><see cref="IUnityContainer"/>.</param>
         public SubjectNotesViewModel(IUnityContainer container) 
         {
             this.container = container;
@@ -51,12 +55,7 @@ namespace TwinSovet.ViewModels.Attachments
                 OnPropertyChanged(nameof(HasOwner));
             }
         }
-
-        /// <summary>
-        /// Возвращает тип данного attachable-объекта.
-        /// </summary>
-        public override AttachmentType EntityType { get; } = AttachmentType.Note;
-
+        
         public AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> NoteDecorators { get; private set; }
 
 

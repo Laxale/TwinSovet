@@ -20,21 +20,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.RowSpan="2" Text="Объект не выбран" VerticalAlignment="Top" HorizontalAlignment="Center"
+        <TextBlock Grid.Row="0" Grid.RowSpan="2" Text="Объект не выбран" VerticalAlignment="Center" HorizontalAlignment="Center"
                    Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
 
-        <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top"
-                   Visibility="{Binding Path=HasOwner, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Run Text="{Binding Path=EntityType, Mode=OneWay, Converter={StaticResource AttachableEntityToStringConverter}}"/>
-            <Run Text="["/>
-            <Run Text="{Binding Path=CurrentNotesOwner.SubjectFriendlyInfo, Mode=OneWay}" FontWeight="Medium"/>
-            <Run Text="]"/>
-        </TextBlock>
-
-        <ListBox Grid.Row="1" Margin="{StaticResource 4TopMargin}" Style="{StaticResource NonSelectableListBoxStyle}">
+        <ListBox Grid.Row="1" Margin="{StaticResource 4TopMargin}" Style="{StaticResource NonSelectableListBoxStyle}" Name="NotesList">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="attachments:NotePanelDecorator">
-                    <TextBlock Text="{Binding Path=AttachmentViewModel.EntityType, Mode=OneWay}"/>
+                    <Border Background="Aquamarine" Margin="2">
+                        <local:SimpleNoteView Margin="2"/>
+                    </Border>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

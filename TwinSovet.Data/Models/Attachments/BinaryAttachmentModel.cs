@@ -7,13 +7,8 @@ using System.Text;
 
 namespace TwinSovet.Data.Models.Attachments 
 {
-    public class DescriptableDataAttachmentModel : AttachmentModelBase 
+    public class BinaryAttachmentModel : AttachmentModelBase 
     {
-        /// <summary>
-        /// Возвращает или задаёт идентификатор блоба данных.
-        /// </summary>
-        public string Description { get; set; }
-
         /// <summary>
         /// Возвращает или задаёт идентификатор блоба данных, соответствующих данному аттачу.
         /// </summary>

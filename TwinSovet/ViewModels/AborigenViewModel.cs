@@ -11,11 +11,13 @@ using TwinSovet.Data.Providers;
 
 using Prism.Commands;
 using TwinSovet.Data.Extensions;
+using TwinSovet.Extensions;
+using TwinSovet.Interfaces;
 
 
 namespace TwinSovet.ViewModels 
 {
-    internal class AborigenViewModel : ViewModelBase 
+    internal class AborigenViewModel : ViewModelBase, IReadonlyFlagged 
     {
         private static readonly GenderEnumToStringConverter genderConverter = new GenderEnumToStringConverter();
 
@@ -39,9 +41,9 @@ namespace TwinSovet.ViewModels
         public event Action EventExecutedSaveAborigen = () => { };
 
 
-        public AborigenViewModel(AborigenModel originalModel, bool isReadOnly) 
+        public AborigenViewModel(AborigenModel originalModel, bool isReadonly) 
         {
-            IsReadOnly = isReadOnly;
+            IsReadonly = isReadonly;
             originalModelId = originalModel.Id;
 
             CommandSave = new DelegateCommand(SaveImpl, CanSave);
@@ -68,7 +70,7 @@ namespace TwinSovet.ViewModels
         /// <summary>
         /// Возвращает флаг - является ли данная вьюмодель закрытой для изменений, то есть readonly.
         /// </summary>
-        public bool IsReadOnly { get; }
+        public bool IsReadonly { get; }
 
         public bool HasPhoto { get; } = false;
 
@@ -97,7 +99,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
 
                 if (name == value) return;
 
@@ -117,7 +119,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
                 if (surname == value) return;
 
                 surname = value;
@@ -133,7 +135,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
                 if (otchestvo == value) return;
 
                 otchestvo = value;
@@ -149,7 +151,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
                 if (phoneNumber == value) return;
 
                 phoneNumber = value;
@@ -167,7 +169,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
                 if (email == value) return;
 
                 email = value;
@@ -182,7 +184,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) VerifyIsEditable();
+                if (!skipEditableVerification) this.VerifyIsEditable();
                 if (gender == value) return;
 
                 gender = value;
@@ -265,7 +267,7 @@ namespace TwinSovet.ViewModels
 
         public void AcceptEditableProps(AborigenViewModel editableModel) 
         {
-            VerifyIsReadonly();
+            this.VerifyIsReadonly();
             if (editableModel.GetId() != this.GetId())
             {
                 throw new InvalidOperationException($"Нельзя принимать свойства от посторонней модели");
@@ -296,16 +298,6 @@ namespace TwinSovet.ViewModels
         private bool CanSave() 
         {
             return HasAtLeastMinimumInfo;
-        }
-
-        private void VerifyIsEditable() 
-        {
-            if (IsReadOnly) throw new InvalidOperationException($"Нельзя редактировать readonly модель");
-        }
-
-        private void VerifyIsReadonly() 
-        {
-            if (!IsReadOnly) throw new InvalidOperationException($"Функция приёма свойств предназначена для readonly модели");
         }
     }
 }
