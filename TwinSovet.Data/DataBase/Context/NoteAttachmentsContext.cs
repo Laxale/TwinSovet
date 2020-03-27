@@ -27,6 +27,8 @@ namespace TwinSovet.Data.DataBase.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new NotesConfiguration());
+
+            CreateTable(modelBuilder);
         }
     }
 }
