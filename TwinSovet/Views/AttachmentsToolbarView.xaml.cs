@@ -13,19 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using TwinSovet.Attributes;
-using TwinSovet.ViewModels;
-
-
 namespace TwinSovet.Views
 {
     /// <summary>
-    /// Interaction logic for NotesView.xaml
+    /// Логика взаимодействия для AttachmentsToolbarView.xaml
     /// </summary>
-    [HasViewModel(typeof(NotesViewModelBase))]
-    public partial class NotesView : UserControl 
+    public partial class AttachmentsToolbarView : UserControl
     {
-        public NotesView()
+        public AttachmentsToolbarView()
         {
             InitializeComponent();
         }

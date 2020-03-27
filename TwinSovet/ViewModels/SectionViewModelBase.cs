@@ -27,6 +27,7 @@ namespace TwinSovet.ViewModels
         private int minFlatNumber;
         private int maxFlatNumber;
         private int loadProgress;
+        private bool isCollapsingAll;
         private bool isOrphanHighlighted = true;
 
 
@@ -37,11 +38,18 @@ namespace TwinSovet.ViewModels
                     allFloorsProvider.FurnitureFloorsProvider :
                     allFloorsProvider.HospitalFloorsProvider;
 
+            CommandSetAllCollapsed = new DelegateCommand<bool?>(SetAllCollapsedImpl);
             CommandHighlightOrphanFlats = new DelegateCommand(HighlightOrphanFlatsImpl, () => IsReady);
         }
 
+        
+        /// <summary>
+        /// Возвращает команду свернуть или развернуть все этажи.
+        /// </summary>
+        public DelegateCommand<bool?> CommandSetAllCollapsed { get; }
 
         public DelegateCommand CommandHighlightOrphanFlats { get; }
+
 
 
         /// <summary>
@@ -95,6 +103,8 @@ namespace TwinSovet.ViewModels
 
         public abstract SectionType TypeOfSection { get; }
 
+        public bool AreAllCollapsed => !floorsProvider.Any(floor => !floor.IsMinimized);
+        
 
         private SectionType SectionTypeWrapper => TypeOfSection;
 
@@ -133,7 +143,7 @@ namespace TwinSovet.ViewModels
         {
             Console.WriteLine($"{ TypeOfSection } [{ entry }] : { DateTime.Now:O}");
         }
-       
+
 
         private void HighlightOrphanFlatsImpl() 
         {
@@ -148,6 +158,22 @@ namespace TwinSovet.ViewModels
             isOrphanHighlighted = !isOrphanHighlighted;
 
             RefreshCollection();
+        }
+
+        private void SetAllCollapsedImpl(bool? areCollapsed) 
+        {
+            if (areCollapsed == null) return;
+
+            isCollapsingAll = true;
+            floorsProvider.ForEach(floor => floor.IsMinimized = areCollapsed.Value);
+            isCollapsingAll = false;
+
+            RaiseAreAllCollapsed();
+        }
+
+        private void RaiseAreAllCollapsed() 
+        {
+            OnPropertyChanged(nameof(AreAllCollapsed));
         }
 
         private bool IsFloorInFilter(FloorDecoratorViewModel floorDecorator) 
@@ -242,7 +268,17 @@ namespace TwinSovet.ViewModels
 
         private void RefreshCollection() 
         {
+            floorsProvider.ForEach(floor => floor.PropertyChanged += FloorDecorator_OnPropertyChanged);
             FloorWrappersCollection.Refresh();
+        }
+
+        private void FloorDecorator_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        {
+            if (e.PropertyName == nameof(FloorDecoratorViewModel.IsMinimized))
+            {
+                if (isCollapsingAll) return;
+                RaiseAreAllCollapsed();
+            }
         }
 
         private void SetFlatNumbersRange() 

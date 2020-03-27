@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace TwinSovet.ViewModels 
+﻿namespace TwinSovet.ViewModels.Attachments 
 {
     /// <summary>
     /// Базовый класс вьюмоделей, способных быть хостами для аттачей. То есть к ним можно прикладывать аттачи.

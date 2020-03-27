@@ -59,6 +59,7 @@ namespace TwinSovet.Data.DataBase.Base
                 //Console.WriteLine(message);
                 //logger.Debug(message);
             //};
+            Configuration.ProxyCreationEnabled = false;
             // убирает появление ошибки "требуется поле ххх" - EF не всегда загружает все свойства проксей
             //Configuration.ValidateOnSaveEnabled = false;
             //Configuration.LazyLoadingEnabled = false;
@@ -125,7 +126,7 @@ namespace TwinSovet.Data.DataBase.Base
         /// Some error occurred attempting to process entities in the context either before or after sending commands
         /// to the database.
         /// </exception>
-        public override int SaveChanges()
+        public override int SaveChanges() 
         {
             SetEntityValidation(false);
 

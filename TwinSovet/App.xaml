@@ -33,6 +33,8 @@
 
             <Duration x:Key="SlideAnimDuration">0:0:0.5</Duration>
             <system:Double x:Key="SlidePanelWidth">400</system:Double>
+            <system:Boolean x:Key="TrueBoolFlag">True</system:Boolean>
+            <system:Boolean x:Key="FalseBoolFlag">False</system:Boolean>
 
             <KeyBinding x:Key="NewKeyBinding" Key="N" Modifiers="Control" Command="New"/>
             <KeyBinding x:Key="EnterKeyBinding" Key="Enter" Command="helpers:ClientCommands.Enter"/>
@@ -111,6 +113,41 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+
+            <Style x:Key="BirdyToggleButtonStyle" TargetType="ToggleButton">
+                <Setter Property="Width" Value="24"/>
+                <Setter Property="Height" Value="24"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border Name="Bord" Background="{TemplateBinding Background}" 
+                                    CornerRadius="{StaticResource InListBorderCornerRadius}"
+                                    Cursor="{TemplateBinding Cursor}" Padding="{TemplateBinding Padding}">
+                                <Path Style="{StaticResource BirdyInButtonPathStyle}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="{StaticResource LightGrayBrush}"/>
+                    </Trigger>
+
+                    <Trigger Property="IsMouseOver" Value="False">
+                        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
+                    </Trigger>
+
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="{StaticResource PanelGrayBrush}"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
 
             <VirtualizingStackPanel x:Key="test" IsContainerVirtualizable="True" VirtualizationMode="Recycling" />

@@ -14,6 +14,7 @@ namespace TwinSovet.ViewModels
     {
         private readonly AcceptSearchHelper searchHelper = new AcceptSearchHelper();
 
+        private bool isMinimized;
         private string searchFilter;
         private bool isFloorNumberSearched;
 
@@ -57,6 +58,20 @@ namespace TwinSovet.ViewModels
         /// Возвращает флаг - заполнен ли сейчас НЕпустой фильтр.
         /// </summary>
         public bool HasFilter { get; private set; }
+
+        public bool IsMinimized 
+        {
+            get => isMinimized;
+
+            set
+            {
+                if (isMinimized == value) return;
+
+                isMinimized = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public bool IsFloorNumberSearched 
         {

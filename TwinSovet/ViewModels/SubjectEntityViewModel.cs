@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using TwinSovet.Data.Enums;
+using TwinSovet.ViewModels.Attachments;
 
 
 namespace TwinSovet.ViewModels 

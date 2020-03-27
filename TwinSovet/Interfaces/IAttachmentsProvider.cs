@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using DataVirtualization;
+
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Attachments;
 
 
 namespace TwinSovet.Interfaces 
 {
-    internal interface _IAttachmentsProvider<TAttachmentDecorator, TAttachmentViewModel> : IItemsProvider<TAttachmentDecorator> 
-        where TAttachmentDecorator : AttachmentPanelDecoratorBase<TAttachmentViewModel>
-        where TAttachmentViewModel : AttachmentViewModelBase 
-        //
+    /// <summary>
+    /// Интерфейс для реализации провайдера аттачей.
+    /// </summary>
+    internal interface IAttachmentsProvider : IItemsProvider<AttachmentPanelDecoratorBase_NonGeneric> 
     {
-        void SetFilter(Func<TAttachmentDecorator, bool> predicate);
-    }
+        /// <summary>
+        /// Обновить кэш аттачей.
+        /// </summary>
+        void Refresh();
 
-    internal interface IAttachmentsProvider : IItemsProvider<AttachmentPanelDecoratorBase<AttachmentViewModelBase>> 
-    //
-    {
-        void SetFilter(Func<AttachmentPanelDecoratorBase<AttachmentViewModelBase>, bool> predicate);
+        /// <summary>
+        /// Задать фильтр выборки отображаемых декораторов.
+        /// </summary>
+        /// <param name="predicate">Функция выборки отображаемых декораторо. Может быть null.</param>
+        void SetFilter(Func<AttachmentPanelDecoratorBase_NonGeneric, bool> predicate);
     }
 }

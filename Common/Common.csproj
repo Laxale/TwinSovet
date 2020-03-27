@@ -46,6 +46,7 @@
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Helpers\AcceptSearchHelper.cs" />
     <Compile Include="Helpers\DispatcherHelper.cs" />
+    <Compile Include="Helpers\GCHelper.cs" />
     <Compile Include="Interfaces\ISearchAcceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

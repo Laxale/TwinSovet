@@ -31,14 +31,23 @@
             </Style>
         </Border.Style>
 
-        <Grid Margin="{StaticResource All4Margin}">
+        <Grid Margin="2">
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ToggleButton Grid.Row="0" Grid.Column="0" 
+                          Style="{StaticResource BirdyToggleButtonStyle}" Margin="{StaticResource 4RightMargin}"
+                          IsChecked="{Binding Path=Data.IsMinimized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
             <!-- Заголовок этажа -->
-            <DockPanel Grid.Row="0" x:Name="HeaderPanel" MinHeight="20">
+            <DockPanel Grid.Row="0" Grid.Column="1" x:Name="HeaderPanel" MinHeight="20">
                 <TextBlock DockPanel.Dock="Left">
                     <Run Text="{x:Static localization:Resources.Floor}"/>
                     <Run Text="{Binding Path=Data.OriginaFloorViewModel.FloorNumber, Mode=OneWay}" FontStyle="Italic" FontWeight="Bold"/>
@@ -54,7 +63,8 @@
                 </TextBlock>
             </DockPanel>
 
-            <Viewbox Grid.Row="1">
+            <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                     Visibility="{Binding Path=Data.IsMinimized, Converter={StaticResource ReversedBooleanToVisibilityConverter}}">
                 <ItemsControl Grid.Row="1" ItemsSource="{Binding Path=Data.OriginaFloorViewModel.FlatsView, Mode=OneWay}" 
                               ItemTemplate="{StaticResource FlatInListTemplate}">
                     <ItemsControl.ItemsPanel>

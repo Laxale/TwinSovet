@@ -150,4 +150,41 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <system:Double x:Key="BirdyScale">0.5</system:Double>
+    <Style x:Key="BirdyInButtonPathStyle" TargetType="Path">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
+        <Setter Property="Data" Value="{StaticResource ArrowUpIconGeometry}"/>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                           Path=IsChecked, Mode=OneWay}"
+                         Value="False">
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <RotateTransform Angle="0"/>
+                            <ScaleTransform ScaleX="{StaticResource BirdyScale}" ScaleY="{StaticResource BirdyScale}"/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ToggleButton},
+                                           Path=IsChecked, Mode=OneWay}"
+                         Value="True">
+                <Setter Property="Margin" Value="0, 1, 0, 0"/>
+                <Setter Property="LayoutTransform">
+                    <Setter.Value>
+                        <TransformGroup>
+                            <RotateTransform Angle="-90"/>
+                            <ScaleTransform ScaleX="{StaticResource BirdyScale}" ScaleY="{StaticResource BirdyScale}"/>
+                        </TransformGroup>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

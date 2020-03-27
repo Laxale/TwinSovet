@@ -4,14 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              
-             xmlns:prism="http://prismlibrary.com/"
-
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
-             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:SectionViewModelBase}">
@@ -20,6 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" MinHeight="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -59,6 +58,22 @@
                                                       Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
         </Grid>
 
+        <WrapPanel Grid.Row="2">
+            <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
+                    Content="{x:Static loc:Resources.ToDoCollapseAll}"
+                    ToolTip="{x:Static loc:Resources.ToDoCollapseAllFloors}"
+                    Command="{Binding Path=CommandSetAllCollapsed, Mode=OneWay}"
+                    CommandParameter="{x:Static helpers:NullableBool.NullableTrue}"/>
+
+            <Button Style="{StaticResource TrimmedLinkButtonStyle}" 
+                    Content="{x:Static loc:Resources.ToDoExpandAll}"
+                    ToolTip="{x:Static loc:Resources.ToDoExpandAllFloors}"
+                    Command="{Binding Path=CommandSetAllCollapsed, Mode=OneWay}"
+                    CommandParameter="{x:Static helpers:NullableBool.NullableFalse}" Margin="{StaticResource 4LeftMargin}"/>
+        </WrapPanel>
+
+        <Separator Grid.Row="2" VerticalAlignment="Bottom" Margin="0"/>
+
         <!--
         <VirtualizingStackPanel Grid.Row="2"  Visibility="Collapsed"
                                 VirtualizingStackPanel.ScrollUnit="Pixel"
@@ -66,20 +81,18 @@
                                 VirtualizingStackPanel.IsContainerVirtualizable="True" 
                                 />
         -->
-        <ListBox Grid.Row="2" Grid.Column="0" 
-                 Style="{StaticResource NonSelectableListBoxStyle}" 
-                 Name="FloorsListBox" Margin="{StaticResource 4TopMargin}">
+        <ListBox Grid.Row="3" Grid.Column="0" Style="{StaticResource NonSelectableListBoxStyle}" Name="FloorsListBox" 
+                 ScrollViewer.IsDeferredScrollingEnabled="{Binding Path=AreAllCollapsed, Converter={StaticResource ReversedBooleanConverter}}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <views:FloorView Margin="0, 4, 0, 4" 
-                                     EventShowAborigenDetails="FloorView_OnEventShowAborigenDetails"
+                    <views:FloorView EventShowAborigenDetails="FloorView_OnEventShowAborigenDetails"
                                      EventShowFlatDetails="FloorView_OnEventShowFlatDetails"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         
         <!-- Панелька загрузки -->
-        <Border Grid.Row="0" Grid.RowSpan="3" Background="{StaticResource WhiteBrush}" Opacity="0.9"
+        <Border Grid.Row="0" Grid.RowSpan="4" Background="{StaticResource WhiteBrush}" Opacity="0.9"
                 Visibility="{Binding Path=IsLoading, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Path=BusyMessage, Mode=OneWay}"/>

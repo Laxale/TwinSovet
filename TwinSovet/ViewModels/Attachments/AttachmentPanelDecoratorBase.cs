@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataVirtualization;
+﻿using DataVirtualization;
 
-namespace TwinSovet.ViewModels 
+
+namespace TwinSovet.ViewModels.Attachments 
 {
-    internal abstract class AttachmentPanelDecoratorBase<TAttachmentViewModel> where TAttachmentViewModel : AttachmentViewModelBase 
+    internal abstract class AttachmentPanelDecoratorBase<TAttachmentViewModel> : AttachmentPanelDecoratorBase_NonGeneric 
+        where TAttachmentViewModel : AttachmentViewModelBase 
     {
         public AttachmentPanelDecoratorBase(TAttachmentViewModel attachmentViewModel) 
         {

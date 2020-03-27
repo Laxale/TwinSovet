@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="TwinSovet.Views.AttachmentsToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+             xmlns:local="clr-namespace:TwinSovet.Views"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:controls="clr-namespace:TwinSovet.Controls"
+
+             mc:Ignorable="d">
+
+    <WrapPanel>
+        <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoAdd}"/>
+        <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="Сортировать" Margin="{StaticResource 4LeftMargin}"/>
+        <controls:FilterView Margin="{StaticResource 4LeftMargin}" WatermarkText="Поиск"/>
+    </WrapPanel>
+</UserControl>

@@ -98,14 +98,18 @@
     <Compile Include="Converters\ReversedNullToVisibilityConverter.cs" />
     <Compile Include="Converters\SectionToSectionNumberConverter.cs" />
     <Compile Include="Converters\SectionTypeToStringConverter.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ViewModelExtensions.cs" />
     <Compile Include="Extensions\WindowExtensions.cs" />
     <Compile Include="Helpers\AborigenDecoratorsCache.cs" />
-    <Compile Include="Helpers\AttachmentProviderConfig.cs" />
+    <Compile Include="Helpers\Attachments\AttachmentProviderConfigBase.cs" />
+    <Compile Include="Helpers\Attachments\ChildAttachmentsProviderConfig.cs" />
+    <Compile Include="Helpers\Attachments\RootAttachmentsProviderConfig.cs" />
+    <Compile Include="Helpers\NullableBool.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
-    <Compile Include="Helpers\NotesProvider.cs" />
+    <Compile Include="Helpers\AttachmentsProvider.cs" />
     <Compile Include="Helpers\Regions.cs" />
     <Compile Include="Helpers\VirtualFloorWrapper.cs" />
     <Compile Include="Interfaces\IAttachmentsProvider.cs" />
@@ -117,9 +121,14 @@
     <Compile Include="Messages\Indications\MessageShowFloorIndications.cs" />
     <Compile Include="Messages\Indications\MessageShowIndications.cs" />
     <Compile Include="Providers\AllFloorsProvider.cs" />
-    <Compile Include="ViewModels\AttachmentPanelDecoratorBase.cs" />
-    <Compile Include="ViewModels\AttachmentViewModelBase.cs" />
-    <Compile Include="ViewModels\AttachmentAcceptorViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase.cs" />
+    <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase_NonGeneric.cs" />
+    <Compile Include="ViewModels\Attachments\AttachmentViewModelBase.cs" />
+    <Compile Include="ViewModels\Attachments\AttachmentAcceptorViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\DocumentAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\DocumentPanelDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\PhotoAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\PhotoPanelDecorator.cs" />
     <Compile Include="ViewModels\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\Attachments\MessageShowAttachments.cs" />
     <Compile Include="Messages\Attachments\MessageShowPhotos.cs" />
@@ -144,9 +153,9 @@
     <Compile Include="ViewModels\FloorViewModel.cs" />
     <Compile Include="ViewModels\HospitalSectionPlanViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\NotePanelDecorator.cs" />
-    <Compile Include="ViewModels\NotePanelViewModel.cs" />
-    <Compile Include="ViewModels\NotesViewModelBase.cs" />
+    <Compile Include="ViewModels\Attachments\NotePanelDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\NoteAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\SubjectNotesViewModel.cs" />
     <Compile Include="ViewModels\NotifyPropertyChangedBase.cs" />
     <Compile Include="ViewModels\SectionViewModelBase.cs" />
     <Compile Include="ViewModels\SelectAborigenViewModel.cs" />
@@ -157,6 +166,9 @@
     </Compile>
     <Compile Include="Views\AborigensTabView.xaml.cs">
       <DependentUpon>AborigensTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AttachmentsToolbarView.xaml.cs">
+      <DependentUpon>AttachmentsToolbarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditAborigenView.xaml.cs">
       <DependentUpon>EditAborigenView.xaml</DependentUpon>
@@ -182,8 +194,8 @@
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NotesView.xaml.cs">
-      <DependentUpon>NotesView.xaml</DependentUpon>
+    <Compile Include="Views\SubjectNotesView.xaml.cs">
+      <DependentUpon>SubjectNotesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SelectAborigenView.xaml.cs">
       <DependentUpon>SelectAborigenView.xaml</DependentUpon>
@@ -215,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AborigensTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AttachmentsToolbarView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,7 +266,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NotesView.xaml">
+    <Page Include="Views\SubjectNotesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -358,6 +358,15 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавить.
+        /// </summary>
+        public static string ToDoAdd {
+            get {
+                return ResourceManager.GetString("ToDoAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Очистить.
         /// </summary>
         public static string ToDoClear {
@@ -367,11 +376,47 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Свернуть все.
+        /// </summary>
+        public static string ToDoCollapseAll {
+            get {
+                return ResourceManager.GetString("ToDoCollapseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Свернуть все этажи.
+        /// </summary>
+        public static string ToDoCollapseAllFloors {
+            get {
+                return ResourceManager.GetString("ToDoCollapseAllFloors", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Создать собственника.
         /// </summary>
         public static string ToDoCreateOwner {
             get {
                 return ResourceManager.GetString("ToDoCreateOwner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Развернуть все.
+        /// </summary>
+        public static string ToDoExpandAll {
+            get {
+                return ResourceManager.GetString("ToDoExpandAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Развернуть все этажи.
+        /// </summary>
+        public static string ToDoExpandAllFloors {
+            get {
+                return ResourceManager.GetString("ToDoExpandAllFloors", resourceCulture);
             }
         }
         

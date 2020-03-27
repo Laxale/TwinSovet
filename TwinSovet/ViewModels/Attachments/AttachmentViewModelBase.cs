@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using TwinSovet.Data.Enums;
+﻿using TwinSovet.Data.Enums;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Attachments 
 {
     /// <summary>
     /// Базовый класс для реализации аттачментов.

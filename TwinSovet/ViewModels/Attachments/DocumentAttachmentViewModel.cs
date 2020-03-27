@@ -3,17 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataVirtualization;
-
 using TwinSovet.Data.Enums;
-using TwinSovet.Data.Models;
+using TwinSovet.Data.Models.Attachments;
 
-
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Attachments
 {
-    internal class NotePanelViewModel : AttachmentViewModelBase 
+    internal class DocumentAttachmentViewModel : AttachmentViewModelBase
     {
-        public NotePanelViewModel(NoteAttachmentModel noteModel) 
+        public DocumentAttachmentViewModel(DocumentAttachmentModel documentModel) 
         {
             
         }
@@ -22,6 +19,6 @@ namespace TwinSovet.ViewModels
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
         /// </summary>
-        public override AttachmentType EntityType { get; } = AttachmentType.Note;
+        public override AttachmentType EntityType { get; } = AttachmentType.Document;
     }
 }

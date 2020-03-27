@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 using TwinSovet.Helpers;
@@ -14,6 +15,9 @@ using TwinSovet.ViewModels;
 using TwinSovet.Views;
 using TwinSovet.Messages.Details;
 using TwinSovet.Messages.Indications;
+using TwinSovet.Data.DataBase;
+using TwinSovet.Data.DataBase.Interfaces;
+using TwinSovet.ViewModels.Attachments;
 
 using NLog;
 
@@ -58,6 +62,8 @@ namespace TwinSovet
 
             var initer = ViewModelInitializer.Instance;
 
+            MainContainer.Instance.RegisterType<IDbContextFactory, DbContextFactory>();
+            MainContainer.Instance.RegisterInstance<IUnityContainer>(MainContainer.Instance);
             MainContainer.Instance.RegisterInstance<AllFloorsProvider>(AllFloorsProvider.Instance);
             MainContainer.Instance.RegisterInstance<IFloorsProvider>(nameof(SectionType.Furniture), AllFloorsProvider.Instance.FurnitureFloorsProvider);
             MainContainer.Instance.RegisterInstance<IFloorsProvider>(nameof(SectionType.Hospital), AllFloorsProvider.Instance.HospitalFloorsProvider);
@@ -114,10 +120,18 @@ namespace TwinSovet
         {
             Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
-            var notesView = new NotesView();
-            window.Content = notesView;
+            var grid = new Grid();
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0, GridUnitType.Star) });
+            var notesView = new SubjectNotesView { Margin = (Thickness)Resources["4TopMargin"] };
+            var toolBar = new AttachmentsToolbarView();
+            Grid.SetRow(toolBar, 1);
+            Grid.SetRow(notesView, 2);
+            grid.Children.Add(toolBar);
+            grid.Children.Add(notesView);
+            window.Content = grid;
 
-            var context = (NotesViewModelBase)notesView.DataContext;
+            var context = (SubjectNotesViewModel)notesView.DataContext;
             context.SetNotesOwner(message.AttachablesOwner);
 
             window.Show();

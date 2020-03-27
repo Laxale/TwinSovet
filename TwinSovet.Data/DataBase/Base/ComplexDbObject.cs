@@ -32,7 +32,7 @@ namespace TwinSovet.Data.DataBase.Base
         /// </summary>
         /// <param name="dbProxy">Прокси-объект, полученный из базы, который нужно превратить в реальный объект.</param>
         /// <returns>Реальный объект <see cref="DbObject"/>.</returns>
-        public abstract DbObject CreateFromProxy(DbObject dbProxy);
+        //public abstract DbObject CreateFromProxy(DbObject dbProxy);
 
         /// <summary>
         /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.

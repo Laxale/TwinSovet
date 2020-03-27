@@ -42,6 +42,26 @@ namespace TwinSovet.Data.DataBase.Config
             /// Название таблицы заметок.
             /// </summary>
             public const string NotesTableName = "notes";
+
+            /// <summary>
+            /// Название таблицы фотографий.
+            /// </summary>
+            public const string PhotosTableName = "photos";
+
+            /// <summary>
+            /// Название таблицы сырых бинарных данных.
+            /// </summary>
+            public const string BlobsTableName = "blobs";
+
+            /// <summary>
+            /// Название таблицы документов.
+            /// </summary>
+            public const string DocumentsTableName = "documents";
+
+            /// <summary>
+            /// Название таблицы дескрипторов дочерних аттачментов.
+            /// </summary>
+            public const string ChildAttachmentDescriptorTableName = "child_attach_descriptors";
         }
     }
 }

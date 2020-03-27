@@ -243,4 +243,19 @@
   <data name="ToDoShowAborigenCard" xml:space="preserve">
       <value>Показать визитку жителя</value>
   </data>
+  <data name="ToDoCollapseAll" xml:space="preserve">
+      <value>Свернуть все</value>
+  </data>
+  <data name="ToDoExpandAll" xml:space="preserve">
+      <value>Развернуть все</value>
+  </data>
+  <data name="ToDoCollapseAllFloors" xml:space="preserve">
+      <value>Свернуть все этажи</value>
+  </data>
+  <data name="ToDoExpandAllFloors" xml:space="preserve">
+      <value>Развернуть все этажи</value>
+  </data>
+  <data name="ToDoAdd" xml:space="preserve">
+      <value>Добавить</value>
+  </data>
 </root>
