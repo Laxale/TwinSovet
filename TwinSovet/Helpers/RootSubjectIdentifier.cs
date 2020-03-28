@@ -32,7 +32,7 @@ namespace TwinSovet.Helpers
 
             if (subjectModel is FloorViewModel floor)
             {
-                return $"{ FloorPrefix }_{ floor.FloorNumber }";
+                return $"{ FloorPrefix }_{ floor.FloorNumber }_{ floor.Section }";
             }
 
             if (subjectModel is FurnitureSectionPlanViewModel)
