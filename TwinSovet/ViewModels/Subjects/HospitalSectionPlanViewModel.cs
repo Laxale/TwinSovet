@@ -1,24 +1,23 @@
-﻿using System;
+﻿using PubSub;
 
 using TwinSovet.Data.Enums;
 using TwinSovet.Messages;
 using TwinSovet.Providers;
-using PubSub;
 
 using LocRes = TwinSovet.Localization.Resources;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
-    internal class FurnitureSectionPlanViewModel : SectionViewModelBase 
+    internal class HospitalSectionPlanViewModel : SectionViewModelBase 
     {
-        public FurnitureSectionPlanViewModel(AllFloorsProvider floorsProvider) : base(floorsProvider) 
+        public HospitalSectionPlanViewModel(AllFloorsProvider floorsProvider) : base(floorsProvider) 
         {
-            this.Publish(new MessageInitializeModelRequest(this, "Загружаем план мебельной секции"));
+            this.Publish(new MessageInitializeModelRequest(this, "Загружаем план больничной секции"));
         }
 
 
-        public override SectionType TypeOfSection { get; } = SectionType.Furniture;
+        public override SectionType TypeOfSection { get; } = SectionType.Hospital;
 
         /// <summary>
         /// Возвращает тип субъекта, которому соответствует данная вьюмодель.
@@ -28,6 +27,6 @@ namespace TwinSovet.ViewModels
         /// <summary>
         /// Возвращает строку некой общей информации о субъекте.
         /// </summary>
-        public override string SubjectFriendlyInfo { get; } = LocRes.Mebelnaya;
+        public override string SubjectFriendlyInfo { get; } = LocRes.Hospital;
     }
 }

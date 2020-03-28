@@ -10,6 +10,7 @@ using TwinSovet.Views;
 
 using Prism.Commands;
 using TwinSovet.Data.Providers;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Providers

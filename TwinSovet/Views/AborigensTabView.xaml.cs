@@ -21,6 +21,8 @@ using TwinSovet.ViewModels;
 
 using PubSub;
 
+using TwinSovet.ViewModels.Subjects;
+
 
 namespace TwinSovet.Views
 {

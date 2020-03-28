@@ -8,6 +8,7 @@ using PubSub;
 using TwinSovet.Messages.Details;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Views 

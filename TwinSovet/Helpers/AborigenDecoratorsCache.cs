@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TwinSovet.Data.Models;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Helpers 

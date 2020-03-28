@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 using Prism.Commands;
 
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Extensions;
+using TwinSovet.Helpers;
 using TwinSovet.Interfaces;
 
 
@@ -18,16 +20,16 @@ namespace TwinSovet.ViewModels.Attachments
     {
         protected readonly AttachmentModelBase originalModel;
 
-        protected bool isAcceptingProps;
-
         private string title;
+        private bool hasTitle;
+        private bool hasDescription;
         private string description;
         private DateTime? modificationTime;
 
         /// <summary>
         /// Событие успешного сохранения данных аттача.
         /// </summary>
-        public event Action EventExecutedAttachmentEdit = () => { };
+        public event Action EventExecutedAttachmentSave = () => { };
 
 
         protected AttachmentViewModelBase(AttachmentModelBase attachmentModel, bool isReadonly) 
@@ -35,25 +37,28 @@ namespace TwinSovet.ViewModels.Attachments
             originalModel = attachmentModel;
             IsReadonly = isReadonly;
 
+            BeginAcceptingProps();
             Title = attachmentModel.Title;
             Description = attachmentModel.Description;
             CreationTime = attachmentModel.CreationTime;
             ModificationTime = attachmentModel.ModificationTime;
+            BeginAcceptingProps();
 
-            CommandSave = new DelegateCommand(SaveImpl);
+            PropertyChanged += Self_OnPropertyChanged;
         }
 
 
-        public DelegateCommand CommandSave { get; }
-
-
         public bool IsReadonly { get; }
+
+        public bool ForceSkipReadonlyCheck { get; private set; }
 
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
         /// </summary>
         public abstract AttachmentType EntityType { get; }
-        
+
+        public bool HasTitle => hasTitle;
+
         public string Title 
         {
             get => title;
@@ -64,10 +69,14 @@ namespace TwinSovet.ViewModels.Attachments
                 if (title == value) return;
 
                 title = value;
+                hasTitle = !string.IsNullOrWhiteSpace(value);
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasTitle));
             }
         }
+
+        public bool HasDescription => hasDescription;
 
         public string Description 
         {
@@ -79,8 +88,10 @@ namespace TwinSovet.ViewModels.Attachments
                 if (description == value) return;
 
                 description = value;
+                hasDescription = !string.IsNullOrWhiteSpace(value);
 
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasDescription));
             }
         }
 
@@ -102,22 +113,75 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
-        public AttachmentModelBase GetModel() => originalModel.Clone();
-        
-        public virtual void AcceptProps(AttachmentViewModelBase editableModel) 
+        public void Save() 
+        {
+            this.VerifyIsEditable();
+
+            AttachmentsProvider.SaveOrUpdate(GetModel());
+
+            EventExecutedAttachmentSave();
+        }
+
+        public bool CanSave() 
+        {
+            return HasTitle && HasDescription;
+        }
+
+        public AttachmentModelBase GetModel() 
+        {
+            var clone = originalModel.Clone();
+            clone.Title = Title;
+            clone.Description = Description;
+            
+            return clone;
+        }
+
+        public virtual void ResetToSaved(AttachmentViewModelBase readonlyModel) 
+        {
+            this.VerifyIsEditable();
+            readonlyModel.VerifyIsReadonly();
+
+            AcceptProps(readonlyModel);
+        }
+
+        public virtual void AcceptEditableProps(AttachmentViewModelBase editableModel) 
         {
             this.VerifyIsReadonly();
             editableModel.VerifyIsEditable();
 
-            Title = editableModel.Title;
-            Description = editableModel.Description;
-            ModificationTime = editableModel.ModificationTime;
+            AcceptProps(editableModel);
         }
 
 
-        private void SaveImpl() 
+        protected void BeginAcceptingProps() 
         {
-            throw new NotImplementedException();
+            ForceSkipReadonlyCheck = true;
+        }
+
+        protected void EndAcceptingProps() 
+        {
+            ForceSkipReadonlyCheck = false;
+        }
+
+
+        private void AcceptProps(AttachmentViewModelBase editableModel) 
+        {
+            BeginAcceptingProps();
+
+            Title = editableModel.Title;
+            Description = editableModel.Description;
+            ModificationTime = editableModel.ModificationTime;
+
+            EndAcceptingProps();
+        }
+
+
+        private void Self_OnPropertyChanged(object sender, PropertyChangedEventArgs e) 
+        {
+            if (e.PropertyName == nameof(Title) || e.PropertyName == nameof(Description))
+            {
+                ClientCommands.CommanSaveAttachment.RaiseCanExecuteChanged();
+            }
         }
     }
 }

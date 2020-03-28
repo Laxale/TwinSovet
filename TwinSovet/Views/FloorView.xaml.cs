@@ -18,6 +18,8 @@ using TwinSovet.Messages.Indications;
 
 using PubSub;
 
+using TwinSovet.ViewModels.Subjects;
+
 using LocRes = TwinSovet.Localization.Resources;
 
 

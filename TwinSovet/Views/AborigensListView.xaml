@@ -11,6 +11,7 @@
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="False"
@@ -30,7 +31,7 @@
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=AborigensView, Mode=OneWay}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="viewModels:AborigenDecoratorViewModel">
+                    <DataTemplate DataType="subjects:AborigenDecoratorViewModel">
                         <Border CornerRadius="{StaticResource InListBorderCornerRadius}" 
                                 Background="{StaticResource PanelGrayBrush}" Margin="{StaticResource All4Margin}">
                             <local:SimpleAborigenView DataContext="{Binding}" EventShowAborigenDetais="SimpleAborigenView_OnShowAborigenDetais"/>

@@ -13,6 +13,7 @@
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -56,7 +57,7 @@
         <ListBox Grid.Row="1" ItemsSource="{Binding Path=AborigensView, Mode=OneWay}" 
                  AlternationCount="2" HorizontalContentAlignment="Stretch" Name="AborigensList">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="viewModels:AborigenDecoratorViewModel">
+                <DataTemplate DataType="subjects:AborigenDecoratorViewModel">
                     <StackPanel Style="{StaticResource StackPanelInListAlternatedStyle}" Orientation="Vertical">
                         <TextBlock Text="{Binding Path=AborigenEditable.FullNameInfo, Mode=OneWay}"/>
                         <TextBlock Text="{Binding Path=Flat.FullFlatLocationInfo, Mode=OneWay}"/>

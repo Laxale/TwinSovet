@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using TwinSovet.Interfaces;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Providers 

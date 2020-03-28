@@ -19,6 +19,7 @@ using TwinSovet.Controls;
 using TwinSovet.Helpers;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Views 

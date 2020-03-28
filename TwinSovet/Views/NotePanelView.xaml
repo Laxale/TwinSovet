@@ -5,17 +5,84 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:TwinSovet.Views"
+             xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
+             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             d:DesignWidth="200"
+             d:DesignHeight="200"
+             d:DataContext="{d:DesignInstance attachments:NotePanelDecorator}">
+
+    <UserControl.InputBindings>
+        <StaticResource ResourceKey="EscapeKeyBinding"/>
+    </UserControl.InputBindings>
+
+    <UserControl.CommandBindings>
+        <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="EscapeCommandBinding_OnExecuted"/>
+    </UserControl.CommandBindings>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <!-- Строка дат -->
         <WrapPanel Grid.Row="0">
+            <TextBlock>
+                <Run Text="Создано"/>
+                <Run Text="{Binding Path=ReadonlyAttachmentViewModel.CreationTime, Mode=OneWay}" Foreground="{StaticResource GrayBrush}"/>
+            </TextBlock>
 
+            <TextBlock Margin="{StaticResource 8LeftMargin}">
+                <Hyperlink Command="{Binding Path=CommandEdit, Mode=OneWay}" 
+                           Foreground="{StaticResource LinkForegroundBrush}" Cursor="Hand">
+                    <Run Text="{x:Static loc:Resources.ToDoEdit}"/>
+                </Hyperlink>
+                <Run Text="{Binding Path=ReadonlyAttachmentViewModel.ModificationTime, Mode=OneWay}" Foreground="{StaticResource GrayBrush}"/>
+            </TextBlock>
         </WrapPanel>
+
+        <TextBox Grid.Row="1" FontWeight="Medium" x:Name="TitleBox"
+                 IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
+                 Text="{Binding Path=EditableAttachmentViewModel.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBox Grid.Row="2" VerticalAlignment="Stretch" TextWrapping="Wrap"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}"
+                 IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
+                 Text="{Binding Path=EditableAttachmentViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <!-- Панелька кнопок -->
+        <DockPanel Grid.Row="3" Margin="{StaticResource 4TopMargin}" HorizontalAlignment="Right"
+                   Visibility="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <!-- Кнопка сохранения -->
+            <Button Style="{StaticResource SaveAttachmentButtonStyle}" 
+                    DataContext="{Binding Path=EditableAttachmentViewModel, Mode=OneWay}"/>
+
+            <!-- Кнопка отмены редактирования -->
+            <Button Style="{StaticResource CancelButtonStyle}" Margin="{StaticResource 8LeftMargin}"
+                    Command="{x:Static helpers:ClientCommands.CommandCancelEditAttachment}" CommandParameter="{Binding Mode=OneWay}"/>
+        </DockPanel>
+
+        <!-- Список вложенных аттачей -->
+        <Expander Grid.Row="4" IsExpanded="False" Header="Вложения" Margin="{StaticResource 4TopMargin}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <Button Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoAdd}" />
+
+                <ListBox Grid.Row="1" Margin="{StaticResource 4TopMargin}" 
+                         Loaded="ChildrenListBox_OnLoaded"
+                         Style="{StaticResource NonSelectableListBoxStyle}" x:Name="ChildrenListBox"
+                         ItemTemplateSelector="{StaticResource ChildAttachmentTemplateSelector}"/>
+            </Grid>
+        </Expander>
     </Grid>
 </UserControl>

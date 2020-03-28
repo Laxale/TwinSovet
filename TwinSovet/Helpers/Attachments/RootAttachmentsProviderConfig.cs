@@ -13,16 +13,21 @@ namespace TwinSovet.Helpers.Attachments
 {
     internal class RootAttachmentsProviderConfig : AttachmentProviderConfigBase 
     {
-        public RootAttachmentsProviderConfig(SubjectType typeOfSubject, AttachmentType attachmentType) 
+        public RootAttachmentsProviderConfig(SubjectType typeOfSubject, string subjectIdentifier, AttachmentType attachmentType) 
         {
             TypeOfSubject = typeOfSubject;
             AttachmentType = attachmentType;
 
-            Predicate = attachmentModel => attachmentModel.HostType == TypeOfSubject.ToAttachmentHostType();
+            Predicate = attachmentModel =>
+            {
+                bool isFiltered = 
+                    attachmentModel.HostType == TypeOfSubject.ToAttachmentHostType() &&
+                    attachmentModel.HostId == subjectIdentifier;
+
+                return isFiltered;
+            };
         }
 
-
-        public SubjectType TypeOfSubject { get; }
 
         public AttachmentType AttachmentType { get; }
 
@@ -30,6 +35,8 @@ namespace TwinSovet.Helpers.Attachments
         /// Возвращает функцию-предикат поиска аттачей в базе.
         /// </summary>
         public override Func<AttachmentModelBase, bool> Predicate { get; }
-            
+
+
+        private SubjectType TypeOfSubject { get; }
     }
 }

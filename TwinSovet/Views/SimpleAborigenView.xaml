@@ -6,9 +6,10 @@
              
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:AborigenDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance subjects:AborigenDecoratorViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>

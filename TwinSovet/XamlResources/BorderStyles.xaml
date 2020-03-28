@@ -7,7 +7,8 @@
 
                     mc:Ignorable="d"
 
-                    xmlns:viewModels="clr-namespace:TwinSovet.ViewModels">
+                    xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+                    xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./Margins.xaml"/>
@@ -18,7 +19,7 @@
 
     <CornerRadius x:Key="InListBorderCornerRadius">10</CornerRadius>
 
-    <Style x:Key="InListBorderStyle" TargetType="Border">
+    <Style x:Key="BasicBorderStyle" TargetType="Border">
         <Setter Property="Margin" Value="{StaticResource All4Margin}"/>
         <Setter Property="CornerRadius" Value="{StaticResource InListBorderCornerRadius}"/>
 
@@ -44,9 +45,28 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource InListBorderStyle}">
+    <Style x:Key="InListBorderStyle" TargetType="Border" BasedOn="{StaticResource BasicBorderStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Cursor" Value="Hand"/>
+                
+                <Setter Property="Background" Value="{StaticResource SelectedGrayBrush}"/>
+                
+            </Trigger>
+
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{StaticResource GrayColor}" Opacity="0.1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="FlatBorderInListStyle" TargetType="Border" BasedOn="{StaticResource BasicBorderStyle}">
         <d:Style.DataContext>
-            <x:Type Type="viewModels:FlatDecoratorViewModel"/>
+            <x:Type Type="subjects:FlatDecoratorViewModel"/>
         </d:Style.DataContext>
 
         <Setter Property="BorderThickness" Value="4, 4, 0, 0"/>

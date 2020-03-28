@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using DataVirtualization;
 
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Helpers 

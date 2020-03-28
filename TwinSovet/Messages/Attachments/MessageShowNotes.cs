@@ -1,4 +1,5 @@
 ﻿using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Messages.Attachments 

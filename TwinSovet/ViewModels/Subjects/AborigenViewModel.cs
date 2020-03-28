@@ -1,21 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Security;
-using System.Text;
+
+using Prism.Commands;
 
 using TwinSovet.Converters;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 using TwinSovet.Data.Providers;
-
-using Prism.Commands;
-using TwinSovet.Data.Extensions;
 using TwinSovet.Extensions;
 using TwinSovet.Interfaces;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
     internal class AborigenViewModel : ViewModelBase, IReadonlyFlagged 
     {
@@ -30,11 +25,7 @@ namespace TwinSovet.ViewModels
         private string otchestvo;
         private GenderType gender;
         private string phoneNumber;
-        /// <summary>
-        /// Флаг для пропуска проверки на readonly - нужен для задания свойств readonly вьмодели из кода в строго определённых кейсах.
-        /// </summary>
-        private bool skipEditableVerification;
-
+        
         /// <summary>
         /// Событие успешного сохранения данных пользователя.
         /// </summary>
@@ -48,14 +39,14 @@ namespace TwinSovet.ViewModels
 
             CommandSave = new DelegateCommand(SaveImpl, CanSave);
 
-            skipEditableVerification = true;
+            ForceSkipReadonlyCheck = true;
             Name = originalModel.Name;
             Email = originalModel.Email;
             Surname = originalModel.Surname;
             Otchestvo = originalModel.Otchestvo;
             Gender = originalModel.Gender;
             PhoneNumber = originalModel.PhoneNumber;
-            skipEditableVerification = false;
+            ForceSkipReadonlyCheck = false;
 
             LocalizedGender = (string)genderConverter.Convert(Gender, null, null, null);
         }
@@ -71,6 +62,8 @@ namespace TwinSovet.ViewModels
         /// Возвращает флаг - является ли данная вьюмодель закрытой для изменений, то есть readonly.
         /// </summary>
         public bool IsReadonly { get; }
+
+        public bool ForceSkipReadonlyCheck { get; private set; }
 
         public bool HasPhoto { get; } = false;
 
@@ -99,7 +92,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
 
                 if (name == value) return;
 
@@ -119,7 +112,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
                 if (surname == value) return;
 
                 surname = value;
@@ -135,7 +128,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
                 if (otchestvo == value) return;
 
                 otchestvo = value;
@@ -151,7 +144,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
                 if (phoneNumber == value) return;
 
                 phoneNumber = value;
@@ -169,7 +162,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
                 if (email == value) return;
 
                 email = value;
@@ -184,7 +177,7 @@ namespace TwinSovet.ViewModels
 
             set
             {
-                if (!skipEditableVerification) this.VerifyIsEditable();
+                this.VerifyIsEditable();
                 if (gender == value) return;
 
                 gender = value;
@@ -273,14 +266,14 @@ namespace TwinSovet.ViewModels
                 throw new InvalidOperationException($"Нельзя принимать свойства от посторонней модели");
             }
 
-            skipEditableVerification = true;
+            ForceSkipReadonlyCheck = true;
             Name = editableModel.Name;
             Surname = editableModel.Surname;
             Otchestvo = editableModel.Otchestvo;
             Email = editableModel.Email;
             PhoneNumber = editableModel.PhoneNumber;
             Gender = editableModel.Gender;
-            skipEditableVerification = false;
+            ForceSkipReadonlyCheck = false;
         }
 
 

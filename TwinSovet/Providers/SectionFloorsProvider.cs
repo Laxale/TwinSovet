@@ -6,6 +6,7 @@ using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 using TwinSovet.Interfaces;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Providers 

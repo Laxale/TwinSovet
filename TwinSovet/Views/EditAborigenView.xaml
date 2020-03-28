@@ -8,9 +8,10 @@
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:AborigenDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance subjects:AborigenDecoratorViewModel}">
 
     <UserControl.CommandBindings>
         <CommandBinding Command="helpers:ClientCommands.Cancel" Executed="EscapeCommandBinding_OnExecuted"/>

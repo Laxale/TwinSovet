@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace TwinSovet.Interfaces 
 {
-    internal interface IReadonlyFlagged 
+    internal interface IDetailedAttachnemtView 
     {
-        bool IsReadonly { get; }
+        event Action EventCancelRequest;
 
-        bool ForceSkipReadonlyCheck { get; }
+        DateTime CreationTime { get; }
+
+
+        void FocusInnerBox();
     }
 }

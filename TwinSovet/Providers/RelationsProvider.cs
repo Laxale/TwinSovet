@@ -9,6 +9,7 @@ using TwinSovet.Data.Extensions;
 using TwinSovet.Data.Models;
 using TwinSovet.Data.Providers;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Providers 

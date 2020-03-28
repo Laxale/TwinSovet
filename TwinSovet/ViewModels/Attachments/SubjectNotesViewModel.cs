@@ -10,6 +10,9 @@ using TwinSovet.Interfaces;
 
 using Microsoft.Practices.Unity;
 
+using TwinSovet.Data.Models.Attachments;
+using TwinSovet.ViewModels.Subjects;
+
 
 namespace TwinSovet.ViewModels.Attachments 
 {
@@ -33,6 +36,13 @@ namespace TwinSovet.ViewModels.Attachments
         public SubjectNotesViewModel(IUnityContainer container) 
         {
             this.container = container;
+
+            ClientCommands.EventAttachmentSaveAttempt += ClientCommands_OnAttachmentSaveAttempt;
+        }
+
+        ~SubjectNotesViewModel() 
+        {
+            ClientCommands.EventAttachmentSaveAttempt -= ClientCommands_OnAttachmentSaveAttempt;
         }
 
 
@@ -64,7 +74,8 @@ namespace TwinSovet.ViewModels.Attachments
             if(notesOwner != null) throw new InvalidOperationException($"Нельзя повторно задать субъекта");
 
             CurrentNotesOwner = owner;
-            var config = new RootAttachmentsProviderConfig(owner.TypeOfSubject, AttachmentType.Note);
+            string hostId = RootSubjectIdentifier.Identify(owner);
+            var config = new RootAttachmentsProviderConfig(owner.TypeOfSubject, hostId, AttachmentType.Note);
             attachmentsProvider = new AttachmentsProvider(container.Resolve<IDbContextFactory>(), config);
 
             NoteDecorators = new AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric>(attachmentsProvider, pageSize, pageTimeout);
@@ -78,6 +89,18 @@ namespace TwinSovet.ViewModels.Attachments
         private void RefreshCollection() 
         {
             NoteDecorators?.Refresh();
+        }
+
+
+        private void ClientCommands_OnAttachmentSaveAttempt(AttachmentViewModelBase attachmentViewModelBase, bool suceeded) 
+        {
+            if (!suceeded) return;
+
+            if (attachmentViewModelBase is NoteAttachmentViewModel)
+            {
+                attachmentsProvider.Refresh();
+                RefreshCollection();
+            }
         }
     }
 }

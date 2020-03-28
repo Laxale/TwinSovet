@@ -27,6 +27,31 @@ namespace TwinSovet.Helpers
     /// </summary>
     internal class AttachmentsProvider : IAttachmentsProvider 
     {
+        private static class DbSetExtensions 
+        {
+            public static IEnumerable<AttachmentModelBase> ApplySelector(DbSet<NoteAttachmentModel> dbSet, AttachmentProviderConfigBase config)
+            {
+                return dbSet.AsEnumerable()
+                            .Where(config.Predicate)
+                            .OrderByDescending(model => model.ModificationTime);
+            }
+
+            public static IEnumerable<AttachmentModelBase> ApplySelector(DbSet<PhotoAttachmentModel> dbSet, AttachmentProviderConfigBase config)
+            {
+                return dbSet.AsEnumerable()
+                            .Where(config.Predicate)
+                            .OrderByDescending(model => model.ModificationTime);
+            }
+
+            public static IEnumerable<AttachmentModelBase> ApplySelector(DbSet<DocumentAttachmentModel> dbSet, AttachmentProviderConfigBase config)
+            {
+                return dbSet.AsEnumerable()
+                            .Where(config.Predicate)
+                            .OrderByDescending(model => model.ModificationTime);
+            }
+        }
+
+
         private static readonly object Locker = new object();
         private static readonly object NoteLocker = new object();
         private static readonly DbContextFactory contextFactory = new DbContextFactory();
@@ -53,11 +78,34 @@ namespace TwinSovet.Helpers
         }
 
 
+        public static void SaveOrUpdate(AttachmentModelBase baseModel) 
+        {
+            if (baseModel is NoteAttachmentModel noteModel)
+            {
+                SaveOrUpdate(noteModel);
+            }
+            else if (baseModel is PhotoAttachmentModel photoModel)
+            {
+                SaveOrUpdate(photoModel);
+            }
+            else if (baseModel is DocumentAttachmentModel documentModel)
+            {
+                SaveOrUpdate(documentModel);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Нельзя сохранить аттач типа '{ baseModel.GetType().Name }'");
+            }
+        }
+
         public static void SaveOrUpdate(NoteAttachmentModel noteModel) 
         {
             lock (NoteLocker)
             {
                 bool addedNote = false;
+
+                SetTimestamps(noteModel);
+
                 using (var context = contextFactory.CreateContext<NoteAttachmentModel>())
                 {
                     var existingModel = context.Objects.FirstOrDefault(note => note.Id == noteModel.Id);
@@ -144,6 +192,7 @@ namespace TwinSovet.Helpers
         {
             lock (Locker)
             {
+                loadedAttaches = false;
                 allAttachments.Clear();
                 predicatedAttachments.Clear();
                 GCHelper.Collect();
@@ -163,12 +212,23 @@ namespace TwinSovet.Helpers
                 if (this.predicate == predicate) return;
 
                 this.predicate = predicate;
-                predicatedAttachments.Clear();
-                predicatedAttachments.AddRange(this.predicate == null ? allAttachments : allAttachments.Where(predicate));
+
+                UpdatePredicatedAttachments();
             }
         }
 
-        
+
+        private static void SetTimestamps(AttachmentModelBase noteModel) 
+        {
+            noteModel.ModificationTime = DateTime.Now;
+
+            if (noteModel.CreationTime == null || noteModel.CreationTime == default(DateTime))
+            {
+                noteModel.CreationTime = noteModel.ModificationTime;
+            }
+        }
+
+
         private void LoadAttaches() 
         {
             if (loadedAttaches) return;
@@ -182,7 +242,15 @@ namespace TwinSovet.Helpers
                 LoadChildAttachments(childConfig);
             }
 
+            UpdatePredicatedAttachments();
+
             loadedAttaches = true;
+        }
+
+        private void UpdatePredicatedAttachments() 
+        {
+            predicatedAttachments.Clear();
+            predicatedAttachments.AddRange(this.predicate == null ? allAttachments : allAttachments.Where(predicate));
         }
 
         private void LoadSubjectAttachments(RootAttachmentsProviderConfig rootConfig) 
@@ -193,9 +261,9 @@ namespace TwinSovet.Helpers
                     using (var context = dbContextFactory.CreateContext<NoteAttachmentModel>())
                     {
                         var noteDecorators =
-                            context.Objects
-                                .AsEnumerable()
-                                .Select(model => new NotePanelDecorator(NoteAttachmentViewModel.CreateEditable(model)));
+                            DbSetExtensions
+                                .ApplySelector(context.Objects, config)
+                                .Select(model => new NotePanelDecorator(NoteAttachmentViewModel.CreateEditable((NoteAttachmentModel)model)));
 
                         allAttachments.AddRange(noteDecorators);
                     }
@@ -204,9 +272,9 @@ namespace TwinSovet.Helpers
                     using (var context = dbContextFactory.CreateContext<PhotoAttachmentModel>())
                     {
                         var photoDecorators =
-                            context.Objects
-                                .Select(photoModel => new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(photoModel)))
-                                .AsEnumerable();
+                            DbSetExtensions
+                                .ApplySelector(context.Objects, config)
+                                .Select(photoModel => new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable((PhotoAttachmentModel)photoModel)));
                         allAttachments.AddRange(photoDecorators);
                     }
                     break;
@@ -214,9 +282,9 @@ namespace TwinSovet.Helpers
                     using (var context = dbContextFactory.CreateContext<DocumentAttachmentModel>())
                     {
                         var documentDecorators =
-                            context.Objects
-                                .Select(documentModel => new DocumentPanelDecorator(DocumentAttachmentViewModel.CreateEditable(documentModel)))
-                                .AsEnumerable();
+                            DbSetExtensions
+                                .ApplySelector(context.Objects, config)
+                                .Select(documentModel => new DocumentPanelDecorator(DocumentAttachmentViewModel.CreateEditable((DocumentAttachmentModel)documentModel)));
                         allAttachments.AddRange(documentDecorators);
                     }
                     break;

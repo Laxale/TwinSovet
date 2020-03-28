@@ -3,19 +3,19 @@ using System.ComponentModel;
 using System.Linq;
 
 using Common.Helpers;
+
 using DataVirtualization;
-
-using TwinSovet.Data.Enums;
-using TwinSovet.Helpers;
-using TwinSovet.Interfaces;
-using TwinSovet.Providers;
-
-using Prism.Commands;
 
 using Microsoft.Practices.ObjectBuilder2;
 
+using Prism.Commands;
 
-namespace TwinSovet.ViewModels
+using TwinSovet.Data.Enums;
+using TwinSovet.Interfaces;
+using TwinSovet.Providers;
+
+
+namespace TwinSovet.ViewModels.Subjects
 {
     internal abstract class SectionViewModelBase : SubjectEntityViewModel 
     {

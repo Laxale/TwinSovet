@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-using TwinSovet.Data.Enums;
+﻿using TwinSovet.Data.Enums;
 using TwinSovet.ViewModels.Attachments;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
     /// <summary>
     /// Класс для обозначения вьюмоделей тех или иных сущностей дома. Будь то жители, квартиры, этажи, секции..

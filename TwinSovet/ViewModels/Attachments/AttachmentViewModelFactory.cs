@@ -7,13 +7,28 @@ using System.Threading.Tasks;
 using TwinSovet.Data.Models.Attachments;
 
 
-namespace TwinSovet.ViewModels.Attachments
+namespace TwinSovet.ViewModels.Attachments 
 {
     internal static class AttachmentViewModelFactory 
     {
-        public static AttachmentViewModelBase CreateReadonly(AttachmentModelBase attachmentModel)
+        public static AttachmentViewModelBase CreateReadonly(AttachmentModelBase attachmentModel) 
         {
-            return null;
+            if (attachmentModel is NoteAttachmentModel noteModel)
+            {
+                return NoteAttachmentViewModel.CreateReadonly(noteModel);
+            }
+
+            if (attachmentModel is PhotoAttachmentModel photoModel)
+            {
+                return PhotoAttachmentViewModel.CreateReadonly(photoModel);
+            }
+
+            if (attachmentModel is DocumentAttachmentModel documentModel)
+            {
+                return DocumentAttachmentViewModel.CreateReadonly(documentModel);
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

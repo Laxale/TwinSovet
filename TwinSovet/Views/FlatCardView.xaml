@@ -9,9 +9,10 @@
              xmlns:enums="clr-namespace:TwinSovet.Data.Enums;assembly=TwinSovet.Data"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance subjects:FlatDecoratorViewModel}">
 
     <UserControl.Resources>
         <Style TargetType="RowDefinition" BasedOn="{StaticResource CardRowStyle}">

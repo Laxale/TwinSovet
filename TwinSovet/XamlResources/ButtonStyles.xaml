@@ -6,8 +6,10 @@
                     mc:Ignorable="d"
 
                     xmlns:helpers="clr-namespace:TwinSovet.Helpers"
+                    xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
+                    xmlns:attachViewModels="clr-namespace:TwinSovet.ViewModels.Attachments"
                     xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
-                    xmlns:viewModels="clr-namespace:TwinSovet.ViewModels">
+                    xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./Brushes.xaml"/>
@@ -95,9 +97,10 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Стиль кнопки 'Показать заметки' -->
     <Style x:Key="TrimmedNotesButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
         <d:Style.DataContext>
-            <x:Type Type="viewModels:SubjectEntityViewModel"/>
+            <x:Type Type="subjects:SubjectEntityViewModel"/>
         </d:Style.DataContext>
 
         <Setter Property="Content" Value="{x:Static loc:Resources.Notes}"/>
@@ -106,9 +109,10 @@
         <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowNotes}"/>
     </Style>
 
+    <!-- Стиль кнопки 'Показать фотографии' -->
     <Style x:Key="TrimmedPhotosButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
         <d:Style.DataContext>
-            <x:Type Type="viewModels:SubjectEntityViewModel"/>
+            <x:Type Type="subjects:SubjectEntityViewModel"/>
         </d:Style.DataContext>
 
         <Setter Property="Content" Value="{x:Static loc:Resources.Photos}"/>
@@ -124,18 +128,34 @@
                     Command="{x:Static helpers:ClientCommands.CommandShowFlatIndications}"/>
     -->
 
+    <!-- Базовый стиль кнопки 'Показать показания' -->
     <Style x:Key="TrimmedIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
         <Setter Property="Content" Value="{x:Static loc:Resources.Indications}"/>
         <Setter Property="ToolTip" Value="{x:Static loc:Resources.ViewIndicationsHistory}"/>
         <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}"/>
-        
     </Style>
 
+    <!-- Стиль кнопки 'Показать показания квартиры' -->
     <Style x:Key="FlatIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedIndicationsButtonsStyle}">
         <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowFlatIndications}"/>
     </Style>
 
+    <!-- Стиль кнопки 'Показать показания этажа' -->
     <Style x:Key="FloorIndicationsButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedIndicationsButtonsStyle}">
         <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommandShowFloorIndications}"/>
+    </Style>
+
+    <Style x:Key="CancelButtonStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
+        <Setter Property="ToolTip" Value="{x:Null}"/>
+        <Setter Property="Foreground" Value="{StaticResource RedBrush}"/>
+        <Setter Property="Content" Value="{x:Static loc:Resources.Cancellation}"/>
+    </Style>
+
+    <Style x:Key="SaveAttachmentButtonStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
+        <Setter Property="ToolTip" Value="{x:Null}"/>
+        <Setter Property="Content" Value="{x:Static loc:Resources.ToDoSave}"/>
+
+        <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}"/>
+        <Setter Property="Command" Value="{x:Static helpers:ClientCommands.CommanSaveAttachment}"/>
     </Style>
 </ResourceDictionary>

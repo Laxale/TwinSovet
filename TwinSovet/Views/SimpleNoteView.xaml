@@ -17,6 +17,24 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
-        <TextBlock Grid.Row="0" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Is}"></TextBlock>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Path Grid.Row="0" Grid.Column="0" Data="{StaticResource NoteIconGeometry}" Fill="{StaticResource SteelGrayBrush}">
+            <Path.LayoutTransform>
+                <ScaleTransform ScaleX="0.06" ScaleY="0.06"/>
+            </Path.LayoutTransform>
+        </Path>
+
+        <TextBlock Grid.Row="0" Grid.Column="1" Margin="{StaticResource 8LeftMargin}"
+                   Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Title, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+
+        <TextBlock Grid.Row="1" Grid.Column="1" Margin="{StaticResource 8LeftMargin}"
+                   Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Description, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="{StaticResource 8LeftMargin}"
+                   Text="{Binding Path=Data.ReadonlyAttachmentViewModel.ModificationTime, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
     </Grid>
 </UserControl>

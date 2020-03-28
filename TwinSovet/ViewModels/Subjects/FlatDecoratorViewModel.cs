@@ -1,17 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows;
-
-using TwinSovet.Extensions;
-using TwinSovet.Properties;
-using TwinSovet.Views;
-
-using Prism.Commands;
-
-using LocRes = TwinSovet.Localization.Resources;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
     internal class FlatDecoratorViewModel : ViewModelBase  
     {

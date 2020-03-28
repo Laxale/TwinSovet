@@ -27,6 +27,8 @@ using Prism.Mvvm;
 
 using Microsoft.Practices.Unity;
 
+using TwinSovet.ViewModels.Subjects;
+
 using LocRes = TwinSovet.Localization.Resources;
 
 
@@ -120,16 +122,8 @@ namespace TwinSovet
         {
             Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
-            var grid = new Grid();
-            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-            var notesView = new SubjectNotesView { Margin = (Thickness)Resources["4TopMargin"] };
-            var toolBar = new AttachmentsToolbarView();
-            Grid.SetRow(toolBar, 0);
-            Grid.SetRow(notesView, 1);
-            grid.Children.Add(toolBar);
-            grid.Children.Add(notesView);
-            window.Content = grid;
+            var notesView = new Views.Attachments.SubjectNotesView();
+            window.Content = notesView;
 
             var context = (SubjectNotesViewModel)notesView.DataContext;
             context.SetNotesOwner(message.AttachablesOwner);

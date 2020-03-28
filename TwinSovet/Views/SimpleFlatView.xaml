@@ -6,10 +6,11 @@
              
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
              MouseLeftButtonDown="SimpleFlatView_OnMouseDown"
-             d:DataContext="{d:DesignInstance viewModels:FlatDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance subjects:FlatDecoratorViewModel}">
 
     <Grid Background="{StaticResource AlmostTransparent}">
         <Grid.RowDefinitions>

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 
 using TwinSovet.Data.Models;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Views

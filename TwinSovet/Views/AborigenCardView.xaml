@@ -11,9 +11,10 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance viewModels:AborigenDecoratorViewModel}">
+             d:DataContext="{d:DesignInstance subjects:AborigenDecoratorViewModel}">
 
     <UserControl.Resources>
         <Style TargetType="RowDefinition" BasedOn="{StaticResource CardRowStyle}">

@@ -5,7 +5,8 @@
 
                     mc:Ignorable="d"
                     xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./Brushes.xaml"/>
@@ -19,7 +20,7 @@
 
     <Style x:Key="EditableGenderPathIconStyle" TargetType="Path">
         <d:Style.DataContext>
-            <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
+            <x:Type Type="subjects:AborigenDecoratorViewModel"/>
         </d:Style.DataContext>
 
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -57,7 +58,7 @@
 
     <Style x:Key="ReadonlyGenderPathIconStyle" TargetType="Path">
         <d:Style.DataContext>
-            <x:Type Type="viewModels:AborigenDecoratorViewModel"/>
+            <x:Type Type="subjects:AborigenDecoratorViewModel"/>
         </d:Style.DataContext>
 
         <Setter Property="VerticalAlignment" Value="Center"/>

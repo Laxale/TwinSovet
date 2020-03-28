@@ -16,6 +16,7 @@ using Microsoft.Practices.Unity;
 using TwinSovet.Attributes;
 using TwinSovet.Helpers;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Views 

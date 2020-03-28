@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Views 

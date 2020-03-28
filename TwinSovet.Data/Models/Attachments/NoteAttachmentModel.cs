@@ -7,6 +7,7 @@ using TwinSovet.Data.DataBase.Attributes;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.DataBase.Context;
+using TwinSovet.Data.Enums;
 
 
 namespace TwinSovet.Data.Models.Attachments 
@@ -18,6 +19,12 @@ namespace TwinSovet.Data.Models.Attachments
     [RelationalContext(typeof(NoteAttachmentsContext))]
     public class NoteAttachmentModel : AttachmentModelBase 
     {
+        public NoteAttachmentModel() 
+        {
+            TypeOfAttachment = AttachmentType.Note;
+        }
+
+
         /// <summary>
         /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
         /// </summary>

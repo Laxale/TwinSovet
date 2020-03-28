@@ -15,6 +15,8 @@ using TwinSovet.Helpers;
 using PubSub;
 using TwinSovet.Data.Providers;
 using TwinSovet.Extensions;
+using TwinSovet.ViewModels.Subjects;
+
 using LocRes = TwinSovet.Localization.Resources;
 
 

@@ -10,9 +10,10 @@
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:SectionViewModelBase}">
+             d:DataContext="{d:DesignInstance subjects:SectionViewModelBase}">
 
     <Grid>
         <Grid.RowDefinitions>

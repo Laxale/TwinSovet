@@ -3,6 +3,7 @@ using Common.Interfaces;
 using DataVirtualization;
 using TwinSovet.Data.Enums;
 using TwinSovet.ViewModels;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.Interfaces 

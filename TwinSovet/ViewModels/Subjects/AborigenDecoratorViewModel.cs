@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Common.Extensions;
+
 using Prism.Commands;
 
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Extensions;
 using TwinSovet.Data.Models;
-using TwinSovet.Extensions;
 using TwinSovet.Helpers;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
     internal class AborigenDecoratorViewModel : SubjectEntityViewModel 
     {

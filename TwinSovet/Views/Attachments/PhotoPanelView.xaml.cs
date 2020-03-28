@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TwinSovet.Views
+namespace TwinSovet.Views.Attachments
 {
     /// <summary>
-    /// Логика взаимодействия для AttachmentsToolbarView.xaml
+    /// Interaction logic for PhotoPanelView.xaml
     /// </summary>
-    public partial class AttachmentsToolbarView : UserControl
+    public partial class PhotoPanelView : UserControl
     {
-        public AttachmentsToolbarView()
+        public PhotoPanelView()
         {
             InitializeComponent();
         }

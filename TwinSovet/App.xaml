@@ -10,6 +10,7 @@
              xmlns:views="clr-namespace:TwinSovet.Views"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
 
              mc:Ignorable="d"
              StartupUri="MainWindow.xaml">
@@ -27,11 +28,13 @@
                 <ResourceDictionary Source="./XamlResources/TextBoxStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TetxBlockStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/GeometryResources.xaml"/>
+                <ResourceDictionary Source="./XamlResources/TemplateSelectors.xaml"/>
 
                 <ResourceDictionary Source="./XamlResources/InputBindings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Duration x:Key="SlideAnimDuration">0:0:0.5</Duration>
+
             <system:Double x:Key="SlidePanelWidth">400</system:Double>
             <system:Boolean x:Key="TrueBoolFlag">True</system:Boolean>
             <system:Boolean x:Key="FalseBoolFlag">False</system:Boolean>
@@ -40,7 +43,7 @@
             <KeyBinding x:Key="EnterKeyBinding" Key="Enter" Command="helpers:ClientCommands.Enter"/>
             <KeyBinding x:Key="EscapeKeyBinding" Key="Escape" Command="helpers:ClientCommands.Cancel"/>
 
-            <DataTemplate x:Key="FlatInListTemplate" DataType="viewModels:FlatViewModel">
+            <DataTemplate x:Key="FlatInListTemplate" DataType="subjects:FlatViewModel">
                 <Border Style="{StaticResource FlatBorderInListStyle}">
                     <Grid>
                         <!--
@@ -169,7 +172,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListBoxItem">
-                                        <Border Style="{StaticResource InListBorderStyle}">
+                                        <Border Style="{StaticResource BasicBorderStyle}">
                                             <ContentPresenter/>
                                         </Border>
                                     </ControlTemplate>

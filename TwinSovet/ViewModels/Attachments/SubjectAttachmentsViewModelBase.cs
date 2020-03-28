@@ -17,11 +17,11 @@ namespace TwinSovet.ViewModels.Attachments
 
         protected SubjectAttachmentsViewModelBase() 
         {
-            CommandAddNew = new DelegateCommand(AddNewImpl);
+            CommandOpenDetails = new DelegateCommand<AttachmentPanelDecoratorBase_NonGeneric>(OpenDetailsImpl, CanOpenDetails);
         }
 
 
-        public DelegateCommand CommandAddNew { get; }
+        public DelegateCommand<AttachmentPanelDecoratorBase_NonGeneric> CommandOpenDetails { get; }
 
 
         public bool IsDetailing => DetailedAttachmentDecorator != null;
@@ -33,7 +33,7 @@ namespace TwinSovet.ViewModels.Attachments
         {
             get => detailedAttachmentDecorator;
 
-            private set
+            protected set
             {
                 if (detailedAttachmentDecorator == value) return;
 
@@ -45,9 +45,20 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
-        private void AddNewImpl() 
+        public void OnCancelledDetailing() 
         {
-            throw new NotImplementedException();
+            DetailedAttachmentDecorator = null;
+        }
+
+
+        private void OpenDetailsImpl(AttachmentPanelDecoratorBase_NonGeneric detailedDecorator) 
+        {
+            DetailedAttachmentDecorator = detailedDecorator;
+        }
+
+        private bool CanOpenDetails(AttachmentPanelDecoratorBase_NonGeneric detailedDecorator) 
+        {
+            return !IsDetailing;
         }
     }
 }

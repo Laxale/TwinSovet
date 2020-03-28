@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Prism.Commands;
-using TwinSovet.Data.Enums;
+﻿using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
-using TwinSovet.Extensions;
-using TwinSovet.Views;
 
 using LocRes = TwinSovet.Localization.Resources;
 
 
-namespace TwinSovet.ViewModels 
+namespace TwinSovet.ViewModels.Subjects 
 {
     internal class FlatViewModel : SubjectEntityViewModel 
     {
