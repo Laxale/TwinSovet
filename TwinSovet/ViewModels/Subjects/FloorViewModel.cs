@@ -74,7 +74,7 @@ namespace TwinSovet.ViewModels.Subjects
         {
             var flat = (FlatViewModel)flatObj;
 
-            return flat.Number.ToString().ToLowerInvariant().Contains(FilterModel.FilterText.ToLowerInvariant());
+            return flat.Number.ToString().ToLowerInvariant().Contains(FilterModel.LoweredFilter);
         }
 
 

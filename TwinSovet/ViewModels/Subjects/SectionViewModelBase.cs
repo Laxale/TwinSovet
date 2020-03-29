@@ -136,6 +136,7 @@ namespace TwinSovet.ViewModels.Subjects
             PropertyChanged += Self_OnPropertyChanged;
             FlatFilterModel.PropertyChanged += FlatFilterModel_OnPropertyChanged;
             FloorFilterModel.PropertyChanged += FloorFilterModel_OnPropertyChanged;
+            floorsProvider.ForEach(floor => floor.PropertyChanged += FloorDecorator_OnPropertyChanged);
         }
 
 
@@ -183,15 +184,11 @@ namespace TwinSovet.ViewModels.Subjects
 
         private bool IsFlatInFilter(FlatDecoratorViewModel flatDecorator) 
         {
-            string loweredFlatFiler = FlatFilterModel.LoweredFilter;
-
-            if (flatDecorator.Flat.Number.ToString().ToLowerInvariant().Contains(loweredFlatFiler))
+            if (flatDecorator.Flat.Number.ToString().ToLowerInvariant().Contains(FlatFilterModel.LoweredFilter))
             {
-                flatDecorator.IsHighlighted = true;
                 return true;
             }
 
-            flatDecorator.IsHighlighted = false;
             return false;
         }
 
@@ -230,7 +227,13 @@ namespace TwinSovet.ViewModels.Subjects
 
             if (FlatFilterModel.HasFilter)
             {
-                floorsProvider.SetFilter(decorator => decorator.OriginaFloorViewModel.FlatsEnumerable.Any(IsFlatInFilter));
+                floorsProvider.ForEach(floorDecorator => floorDecorator.OriginaFloorViewModel.FlatsEnumerable.ForEach(
+                    flat =>
+                    {
+                        // выделяем все квартиры, номера которых попадают в фильтр
+                        flat.IsHighlighted = IsFlatInFilter(flat);
+                    }));
+                floorsProvider.SetFilter(floorDecorator => floorDecorator.OriginaFloorViewModel.FlatsEnumerable.Any(IsFlatInFilter));
             }
             else
             {
@@ -268,7 +271,6 @@ namespace TwinSovet.ViewModels.Subjects
 
         private void RefreshCollection() 
         {
-            floorsProvider.ForEach(floor => floor.PropertyChanged += FloorDecorator_OnPropertyChanged);
             FloorWrappersCollection.Refresh();
         }
 

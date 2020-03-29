@@ -207,7 +207,14 @@ namespace TwinSovet.Providers
 
         private void OnBeforeFetching(List<FloorDecoratorViewModel> fetchedFloors) 
         {
-            Console.WriteLine($"fetching '{ fetchedFloors.Count }' floors for '{ fetchedFloors[0].OriginaFloorViewModel.Section }'");
+            if (fetchedFloors.Any())
+            {
+                Console.WriteLine($"fetching '{ fetchedFloors.Count }' floors for '{ fetchedFloors[0].OriginaFloorViewModel.Section }'");
+            }
+            else
+            {
+                Console.WriteLine("fetching 0 floors");
+            }
             foreach (FloorDecoratorViewModel fetchedFloor in fetchedFloors)
             {
                 LoadFlatOwners(fetchedFloor);
