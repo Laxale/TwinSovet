@@ -127,6 +127,7 @@
     <Compile Include="Messages\Indications\MessageShowFloorIndications.cs" />
     <Compile Include="Messages\Indications\MessageShowIndications.cs" />
     <Compile Include="Providers\AllFloorsProvider.cs" />
+    <Compile Include="Providers\PreviewProvider.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase_NonGeneric.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentViewModelBase.cs" />
@@ -134,12 +135,16 @@
     <Compile Include="ViewModels\Attachments\AttachmentViewModelFactory.cs" />
     <Compile Include="ViewModels\Attachments\DocumentAttachmentViewModel.cs" />
     <Compile Include="ViewModels\Attachments\DocumentPanelDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\PhotoAlbumAttachmentViewModel.cs" />
+    <Compile Include="ViewModels\Attachments\PhotoAlbumPanelDecorator.cs" />
     <Compile Include="ViewModels\Attachments\PhotoAttachmentViewModel.cs" />
     <Compile Include="ViewModels\Attachments\PhotoPanelDecorator.cs" />
     <Compile Include="ViewModels\Attachments\SubjectAttachmentsViewModelBase.cs" />
     <Compile Include="ViewModels\Attachments\SubjectPhotosViewModel.cs" />
     <Compile Include="ViewModels\Attachments\VirtualNoteDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\VirtualPhotoAlbumDecorator.cs" />
     <Compile Include="ViewModels\Attachments\VirtualPhotoDecorator.cs" />
+    <Compile Include="ViewModels\PreviewViewModel.cs" />
     <Compile Include="ViewModels\Subjects\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\Attachments\MessageShowAttachments.cs" />
     <Compile Include="Messages\Attachments\MessageShowPhotos.cs" />
@@ -147,7 +152,6 @@
     <Compile Include="Providers\FlatsProvider.cs" />
     <Compile Include="Providers\SectionFloorsProvider.cs" />
     <Compile Include="Providers\RelationsProvider.cs" />
-    <Compile Include="Providers\StaticsProvider.cs" />
     <Compile Include="Helpers\MainContainer.cs" />
     <Compile Include="Helpers\SingleInstancesCache.cs" />
     <Compile Include="Helpers\ViewMappingCache.cs" />
@@ -185,8 +189,8 @@
     <Compile Include="Views\Attachments\CreateAttachmentView.xaml.cs">
       <DependentUpon>CreateAttachmentView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Attachments\PhotoPanelView.xaml.cs">
-      <DependentUpon>PhotoPanelView.xaml</DependentUpon>
+    <Compile Include="Views\Attachments\SimplePhotoAlbumView.xaml.cs">
+      <DependentUpon>SimplePhotoAlbumView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Attachments\SubjectPhotosView.xaml.cs">
       <DependentUpon>SubjectPhotosView.xaml</DependentUpon>
@@ -233,6 +237,9 @@
     <Compile Include="Views\SimpleFlatView.xaml.cs">
       <DependentUpon>SimpleFlatView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlResources\DataTemplates.xaml.cs">
+      <DependentUpon>DataTemplates.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\FilterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -265,7 +272,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Attachments\PhotoPanelView.xaml">
+    <Page Include="Views\Attachments\SimplePhotoAlbumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -342,6 +349,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="XamlResources\Converters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="XamlResources\DataTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

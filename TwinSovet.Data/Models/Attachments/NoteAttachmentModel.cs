@@ -25,17 +25,6 @@ namespace TwinSovet.Data.Models.Attachments
         }
 
 
-        /// <summary>
-        /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
-        /// </summary>
-        public List<OfNoteChildAttachmentsDescriptor> ChildDescriptors { get; set; } = new List<OfNoteChildAttachmentsDescriptor>();
-
-        /// <summary>
-        /// Не использовать в коде! Коллекция для хранения свойства <see cref="ChildDescriptors"/> в базе.
-        /// </summary>
-        public virtual List<OfNoteChildAttachmentsDescriptor> ChildDescriptors_Map { get; set; } = new List<OfNoteChildAttachmentsDescriptor>();
-
-
         public override AttachmentModelBase Clone() 
         {
             var clone = new NoteAttachmentModel
@@ -66,7 +55,7 @@ namespace TwinSovet.Data.Models.Attachments
             ChildDescriptors_Map.Clear();
             ChildDescriptors_Map.AddRange(ChildDescriptors.Select(descriptor =>
             {
-                var clone = new OfNoteChildAttachmentsDescriptor
+                var clone = new ChildAttachmentDescriptor
                 {
                     Id = descriptor.Id,
                     ChildAttachmentId = descriptor.ChildAttachmentId,

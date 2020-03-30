@@ -9,9 +9,10 @@
              xmlns:local="clr-namespace:TwinSovet.Views"
              xmlns:viewModels="clr-namespace:TwinSovet.ViewModels"
              xmlns:controls="clr-namespace:TwinSovet.Controls"
-             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
+             xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="False"
@@ -24,9 +25,9 @@
         </Grid.RowDefinitions>
 
         <controls:FilterView Grid.Row="0" Margin="{StaticResource All4Margin}"
-                             WatermarkText="{x:Static loc:Resources.AborigenSearch}" x:Name="AborigensFilterer"
+                             WatermarkText="{x:Static localization:Resources.AborigenSearch}" x:Name="AborigensFilterer"
                              FilterText="{Binding Path=FilterModel.FilterText, Mode=TwoWay,
-                                                          Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                                                          Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
         <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" Margin="{StaticResource 4TopMargin}">
             <ItemsControl ItemsSource="{Binding Path=AborigensView, Mode=OneWay}">

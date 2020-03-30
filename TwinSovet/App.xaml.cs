@@ -93,17 +93,6 @@ namespace TwinSovet
         }
 
 
-        private void SimpleFlatView_OnEventShowFlatDetails(FlatDecoratorViewModel flat) 
-        {
-            this.Publish(new MessageShowFlatDetails(flat));
-        }
-
-        private void SimpleFlatView_OnEventShowOwnerDetails(FlatDecoratorViewModel flat) 
-        {
-            this.Publish(new MessageShowAborigenDetails(flat.OwnerDecorator));
-        }
-
-
         private void OnShowFlatIndicationsRequest(MessageShowFlatIndications message) 
         {
             var win = CreateHostWindow($"{ LocRes.Indications } квартиры { message.FlatDecorator.Flat.Number }");

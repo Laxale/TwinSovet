@@ -8,8 +8,9 @@
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
-             xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:attachmentViews="clr-namespace:TwinSovet.Views.Attachments"
+             xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
 
              mc:Ignorable="d" 
@@ -41,19 +42,19 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Resources.Title}"/>
-        <TextBox Grid.Row="0" Grid.Column="2" 
-                 Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:Resources.Title}"/>
+        <TextBox Grid.Row="0" Grid.Column="2" x:Name="TitleBox"
+                 Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Resources.Description}" 
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Description}" 
                    VerticalAlignment="Top" Margin="{StaticResource 6TopMargin}"/>
         <TextBox Grid.Row="1" Grid.Column="2" Margin="{StaticResource 4TopMargin}" VerticalAlignment="Stretch" TextWrapping="Wrap"
-                 Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                 Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
         
         <!-- дополнительнео содержимое для конкретного вида аттачей -->
-        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3"
-                        Content="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=attachmentViews:CreateAttachmentView},
-                                          Path=SpecificAttachmentContent, Mode=OneWay}"/>
+        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource 4TopMargin}" 
+                        ContentTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=attachmentViews:CreateAttachmentView},
+                                                  Path=SpecificContentTemplate, Mode=OneWay}"/>
         
         <DockPanel Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
             <Button Style="{StaticResource SaveAttachmentButtonStyle}"/>

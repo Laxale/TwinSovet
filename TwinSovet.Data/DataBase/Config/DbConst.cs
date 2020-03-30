@@ -59,6 +59,11 @@ namespace TwinSovet.Data.DataBase.Config
             public const string DocumentsTableName = "documents";
 
             /// <summary>
+            /// Название таблицы альбомов фотографий.
+            /// </summary>
+            public const string PhotoAlbumsTableName = "photo_albums";
+
+            /// <summary>
             /// Название таблицы дескрипторов дочерних аттачментов.
             /// </summary>
             public const string ChildAttachmentDescriptorTableName = "child_attach_descriptors";

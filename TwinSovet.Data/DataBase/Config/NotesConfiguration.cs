@@ -16,7 +16,7 @@ namespace TwinSovet.Data.DataBase.Config
             Ignore(note => note.ChildDescriptors);
 
             HasMany(noteModel => noteModel.ChildDescriptors_Map)
-                .WithRequired(childDescriptor => childDescriptor.NavigationParent)
+                .WithRequired(childDescriptor => (NoteAttachmentModel)childDescriptor.NavigationParent)
                 .HasForeignKey(childDescriptor => childDescriptor.ParentId)
                 .WillCascadeOnDelete(true);
         }

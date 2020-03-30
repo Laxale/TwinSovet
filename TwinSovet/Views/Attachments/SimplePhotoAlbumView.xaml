@@ -1,13 +1,15 @@
-﻿<UserControl x:Class="TwinSovet.Views.Attachments.PhotoPanelView"
+﻿<UserControl x:Class="TwinSovet.Views.Attachments.SimplePhotoAlbumView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              
              xmlns:local="clr-namespace:TwinSovet.Views.Attachments"
+             xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
              
              mc:Ignorable="d" 
-             >
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance attachments:VirtualPhotoAlbumDecorator}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,10 +24,9 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Path Data="{StaticResource PictureIconGeometry}" Fill="{StaticResource SteelGrayBrush}">
-            <Path.LayoutTransform>
-                <ScaleTransform ScaleX="0.1" ScaleY="0.1"/>
-            </Path.LayoutTransform>
-        </Path>
+        <Image Grid.Row="0" Grid.Column="0" Source="{Binding Path=Data.ReadonlyAttachmentViewModel.PreviewImageSource, Mode=OneWay}"/>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Title, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Description, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
     </Grid>
 </UserControl>

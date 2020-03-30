@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Security.Principal;
 
 using TwinSovet.Data.Enums;
 
+using LocRes = TwinSovet.Localization.Resources;
 
-namespace TwinSovet.Providers 
+
+namespace TwinSovet.Data.Providers 
 {
-    internal static class StaticsProvider 
+    public static class StaticsProvider 
     {
         /// <summary>
         /// 
@@ -24,6 +28,8 @@ namespace TwinSovet.Providers
             };
 
             IsAdminMode = IsAdministrator();
+
+            InAppDataFolderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), LocRes.AppName);
         }
 
 
@@ -50,6 +56,8 @@ namespace TwinSovet.Providers
         public static IReadOnlyCollection<GenderType> AvailableGenders { get; }
 
         public static IReadOnlyCollection<SectionType> AvailableSectionNumbers { get; }
+
+        public static string InAppDataFolderPath { get; }
 
 
         public static bool IsAdministrator() 

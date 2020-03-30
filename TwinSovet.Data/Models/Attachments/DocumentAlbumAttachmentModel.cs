@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace TwinSovet.Data.Models.Attachments 
 {
-    public class OfPhotoChildAttachmentsDescriptor : ChildAttachmentDescriptor<PhotoAttachmentModel> 
+    public class DocumentAlbumAttachmentModel : AlbumAttachmentModelBase<DocumentDescriptorModel> 
     {
 
     }

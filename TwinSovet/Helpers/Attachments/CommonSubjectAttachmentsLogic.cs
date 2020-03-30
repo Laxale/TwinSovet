@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,6 +16,7 @@ using TwinSovet.Interfaces;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels.Attachments;
 using TwinSovet.Views.Attachments;
+using TwinSovet.Data.Providers;
 
 using Microsoft.Practices.Unity;
 
@@ -87,16 +89,33 @@ namespace TwinSovet.Helpers.Attachments
 
             var newAttachView = new CreateAttachmentView
             {
-                DataContext = viewModelCreator(model)
+                SpecificContentTemplate = AttachmentPanelResolver.CreateNew_GetSpecificContentTemplate(viewModelGetter())
             };
+            newAttachView.DataContext = viewModelCreator(model);
 
-            newAttachView.EventCancelCreation += NewAttachView_OnCancelCreation;
+            newAttachView.IsVisibleChanged += NewAttachView_OnIsVisibleChanged;
+            
+            newAttachView.EventCancelRequest += NewAttachViewOnCancelRequest;
             Border border = CreatePopupBorder(NewAttachTag);
             border.Child = newAttachView;
 
             AddPopupBorderToRoot(border);
 
             isAddingNewSetter(true);
+        }
+
+        private void NewAttachView_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e) 
+        {
+            if ((bool) e.NewValue)
+            {
+                Task.Run(() =>
+                {
+                    Thread.Sleep(StaticsProvider.SearchDelay);
+                    ((IDetailedAttachnemtView)sender).FocusInnerBox();
+
+                    ((UserControl) sender).IsVisibleChanged -= NewAttachView_OnIsVisibleChanged;
+                });
+            }
         }
 
         public bool CanExecuteNewCommandBinding() 
@@ -187,7 +206,7 @@ namespace TwinSovet.Helpers.Attachments
             detailedViewStack.Peek().FocusInnerBox();
         }
 
-        private void NewAttachView_OnCancelCreation() 
+        private void NewAttachViewOnCancelRequest() 
         {
             UIElement creationView = FindAttachmentCreationView();
 
@@ -210,7 +229,7 @@ namespace TwinSovet.Helpers.Attachments
                     CancelDetailing(false);
 
                     Border border = CreatePopupBorder(DetailedAttachTag);
-                    border.Child = AttachmentPanelResolver.GetAttachmentPanelView(viewModel.DetailedAttachmentDecorator);
+                    border.Child = AttachmentPanelResolver.GetDetailedAttachmentPanelView(viewModel.DetailedAttachmentDecorator);
                     var detailedView = (IDetailedAttachnemtView)border.Child;
                     detailedViewStack.Push(detailedView);
                     detailedView.EventCancelRequest += DetailedAttachmentView_OnCancelRequest;

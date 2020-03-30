@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <Image Grid.Row="0" Grid.Column="0" Source="{Binding}"/>
+        <Image Grid.Row="0" Grid.Column="0" Source="{Binding Path=Data.ReadonlyAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
         
         <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Title, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
         <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Description, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>

@@ -26,10 +26,11 @@
                 <ResourceDictionary Source="./XamlResources/BorderStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TextBoxStyles.xaml"/>
+                <ResourceDictionary Source="./XamlResources/DataTemplates.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TetxBlockStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/GeometryResources.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TemplateSelectors.xaml"/>
-
+                
                 <ResourceDictionary Source="./XamlResources/InputBindings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
@@ -43,21 +44,7 @@
             <KeyBinding x:Key="EnterKeyBinding" Key="Enter" Command="helpers:ClientCommands.Enter"/>
             <KeyBinding x:Key="EscapeKeyBinding" Key="Escape" Command="helpers:ClientCommands.Cancel"/>
 
-            <DataTemplate x:Key="FlatInListTemplate" DataType="subjects:FlatViewModel">
-                <Border Style="{StaticResource FlatBorderInListStyle}">
-                    <Grid>
-                        <!--
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" SharedSizeGroup="FlatInListSharedGroup"/>
-                        </Grid.ColumnDefinitions>
-                        -->
 
-                        <views:SimpleFlatView Margin="{StaticResource All4Margin}"
-                                              EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"
-                                              EventShowOwnerDetails="SimpleFlatView_OnEventShowOwnerDetails"/>
-                    </Grid>
-                </Border>
-            </DataTemplate>
 
             <!--
             TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"

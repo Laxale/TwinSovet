@@ -10,8 +10,9 @@
              xmlns:praps="clr-namespace:TwinSovet.Properties"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
-             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
+             xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance subjects:AborigenDecoratorViewModel}">
@@ -47,7 +48,7 @@
         <!-- Имя жителя -->
         <TextBox Grid.Row="0" Grid.Column="1" Name="NameBox"
                  Text="{Binding Path=AborigenEditable.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                                Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
         <!-- Фамилия жителя -->
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Surname}"/>
@@ -61,7 +62,7 @@
         <TextBlock Grid.Row="3" Grid.Column="0" Text="{x:Static localization:Resources.Phone}"/>
         <TextBox Grid.Row="3" Grid.Column="1" 
                  Text="{Binding Path=AborigenEditable.PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
-                                Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                                Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
         <!-- Адрес почты жителя -->
         <TextBlock Grid.Row="4" Grid.Column="0" Text="{x:Static localization:Resources.Mail}"/>
@@ -70,7 +71,7 @@
         <!-- Пол жителя -->
         <TextBlock Grid.Row="5" Grid.Column="0" Text="{x:Static localization:Resources.Gender}"/>
         <ComboBox Grid.Row="5" Grid.Column="1" 
-                  ItemsSource="{x:Static providers:StaticsProvider.AvailableGenders}"
+                  ItemsSource="{x:Static dataProviders:StaticsProvider.AvailableGenders}"
                   VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="100" 
                   SelectedItem="{Binding Path=AborigenEditable.Gender, Mode=TwoWay}">
             <ComboBox.ItemTemplate>

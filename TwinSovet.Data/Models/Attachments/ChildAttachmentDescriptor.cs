@@ -12,7 +12,7 @@ namespace TwinSovet.Data.Models.Attachments
     /// </summary>
     /// <typeparam name="T">Тип родительского аттача, дочерних аттачей которого описывает данный дескриптор.</typeparam>
     [Table(DbConst.TableNames.ChildAttachmentDescriptorTableName)]
-    public abstract class ChildAttachmentDescriptor<T> : ChildSimpleDbObject<T> where T : AttachmentModelBase, new () 
+    public class ChildAttachmentDescriptor : ChildAttachmentDbObject 
     {
         /// <summary>
         /// Возвращает или задаёт идентификатор дочернего аттача.

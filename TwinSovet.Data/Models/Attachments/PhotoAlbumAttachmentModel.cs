@@ -11,12 +11,13 @@ using TwinSovet.Data.DataBase.Context;
 
 namespace TwinSovet.Data.Models.Attachments 
 {
-    [Table(DbConst.TableNames.DocumentsTableName)]
-    [RelationalContext(typeof(DocumentAttachmentsContext))]
-    public class DocumentAttachmentModel : BinaryAttachmentModel 
+    /// <summary>
+    /// Модель альбома фотографий.
+    /// </summary>
+    [RelationalContext(typeof(PhotoAlbumsContext))]
+    [Table(DbConst.TableNames.PhotoAlbumsTableName)]
+    public class PhotoAlbumAttachmentModel : AlbumAttachmentModelBase<PhotoDescriptorModel> 
     {
-        public string DataType { get; set; }
-
 
     }
 }

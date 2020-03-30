@@ -5,6 +5,7 @@ using System.Windows.Data;
 using Microsoft.Practices.Unity;
 using TwinSovet.Attributes;
 using TwinSovet.Data.Enums;
+using TwinSovet.Data.Providers;
 using TwinSovet.Helpers;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels;

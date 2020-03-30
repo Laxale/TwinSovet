@@ -10,10 +10,10 @@ using TwinSovet.Data.DataBase.Config;
 namespace TwinSovet.Data.Models 
 {
     /// <summary>
-    /// Модель дескриптора довичных данных в базе.
+    /// Модель объекта довичных данных в базе.
     /// </summary>
     [Table(DbConst.TableNames.BlobsTableName)]
-    public class BinaryDataDescriptor : SimpleDbObject 
+    public class BinaryDataModel : SimpleDbObject 
     {
         /// <summary>
         /// Возвращает или задаёт тип данных - имеется в виду расширение файла, которому соответствует блоб.

@@ -14,7 +14,7 @@ using TwinSovet.Data.DataBase.Config;
 using NLog;
 
 using SQLite.CodeFirst;
-
+using TwinSovet.Data.Providers;
 using LocRes = TwinSovet.Localization.Resources;
 
 
@@ -28,7 +28,7 @@ namespace TwinSovet.Data.DataBase.Base
     public abstract class DbContextBase<T> : DbContext where T : DbObject, new() 
     {
         private static readonly string dbFilePath;
-        private static readonly string applicationStoragePath = $@"{ LocRes.AppName }\Storage\";
+        private static readonly string applicationStorageName = "Storage";
 
         protected static readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
@@ -39,7 +39,7 @@ namespace TwinSovet.Data.DataBase.Base
 
         static DbContextBase() 
         {
-            string storagePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), applicationStoragePath);
+            string storagePath = Path.Combine(StaticsProvider.InAppDataFolderPath, applicationStorageName);
 
             EnsureDirectoryExistsUnsafely(storagePath);
 

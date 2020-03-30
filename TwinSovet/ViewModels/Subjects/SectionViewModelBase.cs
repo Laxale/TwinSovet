@@ -11,6 +11,7 @@ using Microsoft.Practices.ObjectBuilder2;
 using Prism.Commands;
 
 using TwinSovet.Data.Enums;
+using TwinSovet.Data.Providers;
 using TwinSovet.Interfaces;
 using TwinSovet.Providers;
 

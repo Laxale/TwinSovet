@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace TwinSovet.Views.Attachments
 {
     /// <summary>
-    /// Interaction logic for PhotoPanelView.xaml
+    /// Логика взаимодействия для SimplePhotoAlbumView.xaml
     /// </summary>
-    public partial class PhotoPanelView : UserControl
+    public partial class SimplePhotoAlbumView : UserControl
     {
-        public PhotoPanelView()
+        public SimplePhotoAlbumView()
         {
             InitializeComponent();
         }

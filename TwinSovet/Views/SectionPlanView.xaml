@@ -11,6 +11,7 @@
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
              xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
+             xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
 
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance subjects:SectionViewModelBase}">
@@ -51,12 +52,12 @@
             <controls:FilterView Grid.Column="0" x:Name="FloorsFilter" Loaded="FloorsFilter_OnLoaded"
                                  WatermarkText="{x:Static loc:Resources.SearchByFloors}"
                                  FilterText="{Binding Path=FloorFilterModel.FilterText, Mode=TwoWay,
-                                                      Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                                                      Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
             <controls:FilterView Grid.Column="1" Margin="{StaticResource  4LeftMargin}"
                                  WatermarkText="{x:Static loc:Resources.SearchByFlats}"
                                  FilterText="{Binding Path=FlatFilterModel.FilterText, Mode=TwoWay,
-                                                      Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                                                      Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
         </Grid>
 
         <WrapPanel Grid.Row="2">

@@ -1,0 +1,106 @@
+﻿<ResourceDictionary x:Class="TwinSovet.XamlResources.DataTemplates"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    
+                    mc:Ignorable="d"
+
+                    xmlns:views="clr-namespace:TwinSovet.Views"
+                    xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
+                    xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="./Brushes.xaml"/>
+        <ResourceDictionary Source="./Margins.xaml"/>
+        <ResourceDictionary Source="./Converters.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <system:Double x:Key="IconScale">0.14</system:Double>
+    <system:Double x:Key="PhotoPreviewHeight">80</system:Double>
+    
+    <DataTemplate x:Key="FlatInListTemplate" DataType="subjects:FlatViewModel">
+        <Border Style="{StaticResource FlatBorderInListStyle}">
+            <Grid>
+                <!--
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" SharedSizeGroup="FlatInListSharedGroup"/>
+                        </Grid.ColumnDefinitions>
+                        -->
+
+                <views:SimpleFlatView Margin="{StaticResource All4Margin}"
+                                      EventShowFlatDetails="SimpleFlatView_OnEventShowFlatDetails"
+                                      EventShowOwnerDetails="SimpleFlatView_OnEventShowOwnerDetails"/>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <Style x:Key="PhotoPreviewBorderStyle" TargetType="Border">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Width" Value="{StaticResource PhotoPreviewHeight}"/>
+        <Setter Property="Height" Value="{StaticResource PhotoPreviewHeight}"/>
+        <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource InListBorderCornerRadius}"/>
+
+        <Setter Property="DataContext" 
+                Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ContentControl}, Path=DataContext, Mode=OneWay}"/>
+    </Style>
+    <Style x:Key="PhotoIconPathStyle" TargetType="Path">
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="Fill" Value="{StaticResource SteelGrayBrush}"/>
+        <Setter Property="Data" Value="{StaticResource PictureIconGeometry}"/>
+        
+        <Setter Property="LayoutTransform">
+            <Setter.Value>
+                <ScaleTransform ScaleX="{StaticResource IconScale}" ScaleY="{StaticResource IconScale}"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="PhotoSpecificContentTemplate_CreateNew">
+        <d:DataTemplate.DataContext>
+            <x:Type Type="attachments:PhotoAttachmentViewModel"/>
+        </d:DataTemplate.DataContext>
+
+        <Border Style="{StaticResource PhotoPreviewBorderStyle}"
+                AllowDrop="True" Drop="PhotoPreviewBorder_OnDrop"
+                DragEnter="PhotoPreviewBorder_OnDragEnter" DragLeave="PhotoPreviewBorder_OnDragLeave">
+            <d:Border.DataContext>
+                <x:Type Type="attachments:PhotoAttachmentViewModel"/>
+            </d:Border.DataContext>
+
+            <Grid>
+                <Path Style="{StaticResource PhotoIconPathStyle}"
+                      Visibility="{Binding Path=Preview.HasPreview, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
+
+                <Image Source="{Binding Path=Preview.PreviewImageSource, Mode=OneWay}"
+                       Visibility="{Binding Path=Preview.HasPreview, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PhotoSpecificContentTemplate_Detailed">
+        <d:DataTemplate.DataContext>
+            <x:Type Type="attachments:PhotoPanelDecorator"/>
+        </d:DataTemplate.DataContext>
+
+        <Border Style="{StaticResource PhotoPreviewBorderStyle}"
+                AllowDrop="{Binding Path=IsEditing, Mode=OneWay}" Drop="PhotoPreviewBorder_OnDrop"
+                DragEnter="PhotoPreviewBorder_OnDragEnter" DragLeave="PhotoPreviewBorder_OnDragLeave">
+            <d:Border.DataContext>
+                <x:Type Type="attachments:PhotoPanelDecorator"/>
+            </d:Border.DataContext>
+
+            <Grid>
+                <Path Style="{StaticResource PhotoIconPathStyle}"
+                      Visibility="{Binding Path=ReadonlyAttachmentViewModel.Preview.HasPreview, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
+
+                <Image Source="{Binding Path=EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"
+                       Visibility="{Binding Path=EditableAttachmentViewModel.Preview.HasPreview, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            </Grid>
+        </Border>
+        
+    </DataTemplate>
+</ResourceDictionary>

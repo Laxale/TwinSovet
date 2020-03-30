@@ -49,9 +49,9 @@
     <Compile Include="DataBase\Base\ChildSimpleDbObject.cs" />
     <Compile Include="DataBase\Base\ComplexDbObject.cs" />
     <Compile Include="DataBase\Base\ComplexDbContext.cs" />
-    <Compile Include="DataBase\Config\ChildDescriptorConfiguration.cs" />
     <Compile Include="DataBase\Config\DbConst.cs" />
     <Compile Include="DataBase\Config\DocumentsConfiguration.cs" />
+    <Compile Include="DataBase\Config\PhotoAlbumsConfiguration.cs" />
     <Compile Include="DataBase\Config\PhotosConfiguration.cs" />
     <Compile Include="DataBase\Config\NotesConfiguration.cs" />
     <Compile Include="DataBase\Config\SQLiteConfiguration.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="DataBase\Context\CommonAttachmentContext.cs" />
     <Compile Include="DataBase\Context\DocumentAttachmentsContext.cs" />
     <Compile Include="DataBase\Context\NoteAttachmentsContext.cs" />
+    <Compile Include="DataBase\Context\PhotoAlbumsContext.cs" />
     <Compile Include="DataBase\Context\PhotoAttachmentsContext.cs" />
     <Compile Include="DataBase\DbContextFactory.cs" />
     <Compile Include="DataBase\Interfaces\IDbContextFactory.cs" />
@@ -72,14 +73,18 @@
     <Compile Include="Enums\SubjectType.cs" />
     <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Helpers\DbValidator.cs" />
+    <Compile Include="Models\Attachments\AlbumAttachmentModelBase.cs" />
     <Compile Include="Models\Attachments\AttachmentModelBase.cs" />
     <Compile Include="Models\Attachments\BinaryAttachmentModel.cs" />
+    <Compile Include="Models\Attachments\BinaryDescriptorModel.cs" />
+    <Compile Include="Models\Attachments\ChildAttachmentDbObject.cs" />
+    <Compile Include="Models\Attachments\DocumentAlbumAttachmentModel.cs" />
     <Compile Include="Models\Attachments\DocumentAttachmentModel.cs" />
-    <Compile Include="Models\Attachments\OfDocumentChildAttachmentsDescriptor.cs" />
-    <Compile Include="Models\Attachments\OfNoteChildAttachmentsDescriptor.cs" />
-    <Compile Include="Models\Attachments\OfPhotoChildAttachmentsDescriptor.cs" />
+    <Compile Include="Models\Attachments\DocumentDescriptorModel.cs" />
+    <Compile Include="Models\Attachments\PhotoAlbumAttachmentModel.cs" />
     <Compile Include="Models\Attachments\PhotoAttachmentModel.cs" />
-    <Compile Include="Models\BinaryDataDescriptor.cs" />
+    <Compile Include="Models\Attachments\PhotoDescriptorModel.cs" />
+    <Compile Include="Models\BinaryDataModel.cs" />
     <Compile Include="Models\BookRelation.cs" />
     <Compile Include="Models\Attachments\ChildAttachmentDescriptor.cs" />
     <Compile Include="Models\FlatModel.cs" />
@@ -88,6 +93,7 @@
     <Compile Include="Models\Attachments\NoteAttachmentModel.cs" />
     <Compile Include="Models\OwnRelationModel.cs" />
     <Compile Include="Providers\AborigensProvider.cs" />
+    <Compile Include="Providers\StaticsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLite.CodeFirst\SQLite.CodeFirst.csproj">

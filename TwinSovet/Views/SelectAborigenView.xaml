@@ -12,8 +12,9 @@
              xmlns:controls="clr-namespace:TwinSovet.Controls"
              xmlns:providers="clr-namespace:TwinSovet.Providers"
              xmlns:helpers="clr-namespace:TwinSovet.Helpers"
-             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
              xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
+             xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
+             xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
 
              mc:Ignorable="d"
              prism:ViewModelLocator.AutoWireViewModel="True"
@@ -52,7 +53,7 @@
 
         <controls:FilterView Grid.Row="0" WatermarkText="{x:Static localization:Resources.AborigenSearch}" 
                              Margin="0, 4, 0, 4" IsVisibleChanged="Filterer_OnIsVisibleChanged" x:Name="Focuser"
-                             FilterText="{Binding Path=FilterModel.FilterText, Mode=TwoWay, Delay={x:Static providers:StaticsProvider.SearchDelay}}"/>
+                             FilterText="{Binding Path=FilterModel.FilterText, Mode=TwoWay, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
         <ListBox Grid.Row="1" ItemsSource="{Binding Path=AborigensView, Mode=OneWay}" 
                  AlternationCount="2" HorizontalContentAlignment="Stretch" Name="AborigensList">

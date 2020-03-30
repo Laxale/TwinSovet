@@ -36,7 +36,10 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Control Grid.Row="0" Grid.Column="1" Template=""/>
+        <!-- Область, куда добавляется специфичный превью конкретного типа аттача -->
+        <ContentControl Grid.Row="0" Grid.Column="1"
+                        ContentTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AttachmentPanelView},
+                                                  Path=SpecificContentTemplate, Mode=OneWay}"/>
 
         <!-- Строка дат -->
         <WrapPanel Grid.Row="0" Grid.Column="1">

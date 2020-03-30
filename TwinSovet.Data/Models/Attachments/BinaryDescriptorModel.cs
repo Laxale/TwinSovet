@@ -1,23 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TwinSovet.Data.DataBase.Base;
 
 
 namespace TwinSovet.Data.Models.Attachments 
 {
     /// <summary>
-    /// Модель хранимых в базе довичных данных.
+    /// Модель ссылки на данные - то есть дескриптора, указателя на объект в базе.
     /// </summary>
-    public abstract class BinaryAttachmentModel : AttachmentModelBase 
+    public abstract class BinaryDescriptorModel : ChildAttachmentDbObject 
     {
         /// <summary>
         /// Возвращает или задаёт идентификатор блоба данных (объекта <see cref="BinaryDataModel"/>), соответствующего данному аттачу.
         /// </summary>
-        public string FullDataDescriptorId { get; set; }
+        public string DataBlobId { get; set; }
 
         /// <summary>
         /// Дескриптор данных объекта. Не мапится при чтении аттача, читается отдельным запросом при необходимости.
         /// </summary>
         [NotMapped]
-        public BinaryDataModel FullDataModel { get; set; }
+        public BinaryDataModel DataBlobModel { get; set; }
     }
 }
