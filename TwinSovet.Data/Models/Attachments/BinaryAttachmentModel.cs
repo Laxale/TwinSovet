@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
 
 
 namespace TwinSovet.Data.Models.Attachments 
 {
+    /// <summary>
+    /// Модель хранимых в базе довичных данных.
+    /// </summary>
     public class BinaryAttachmentModel : AttachmentModelBase 
     {
         /// <summary>
-        /// Возвращает или задаёт идентификатор блоба данных, соответствующих данному аттачу.
+        /// Возвращает или задаёт идентификатор блоба данных (объекта <see cref="BinaryDataDescriptor"/>), соответствующего данному аттачу.
         /// </summary>
         public string FullDataDescriptorId { get; set; }
 

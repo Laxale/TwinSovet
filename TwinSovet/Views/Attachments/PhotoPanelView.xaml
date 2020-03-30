@@ -3,10 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
              xmlns:local="clr-namespace:TwinSovet.Views.Attachments"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             >
+
     <Grid>
-        <TextBlock Text="photo panel!"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="6"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Path Data="{StaticResource PictureIconGeometry}" Fill="{StaticResource SteelGrayBrush}">
+            <Path.LayoutTransform>
+                <ScaleTransform ScaleX="0.1" ScaleY="0.1"/>
+            </Path.LayoutTransform>
+        </Path>
     </Grid>
 </UserControl>

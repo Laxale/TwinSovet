@@ -14,20 +14,31 @@ using TwinSovet.ViewModels.Attachments;
 namespace TwinSovet.Views 
 {
     /// <summary>
-    /// Логика взаимодействия для NotePanelView.xaml
+    /// Логика взаимодействия для AttachmentPanelView.xaml
     /// </summary>
-    public partial class NotePanelView : IDetailedAttachnemtView 
+    public partial class AttachmentPanelView : IDetailedAttachnemtView 
     {
         public event Action EventCancelRequest = () => { };
 
 
-        public NotePanelView() 
+        public AttachmentPanelView() 
         {
             InitializeComponent();
 
             CreationTime = DateTime.Now;
         }
 
+
+        public static readonly DependencyProperty SpecificContentTemplateProperty = 
+            DependencyProperty.Register(nameof(SpecificContentTemplate), typeof(DataTemplate), 
+                typeof(AttachmentPanelView), new PropertyMetadata(default(DataTemplate)));
+
+
+        public DataTemplate SpecificContentTemplate
+        {
+            get => (DataTemplate)GetValue(SpecificContentTemplateProperty);
+            set => SetValue(SpecificContentTemplateProperty, value);
+        }
 
         public DateTime CreationTime { get; }
 

@@ -18,7 +18,7 @@ namespace TwinSovet.Helpers
         {
             if (attachmentDecorator is NotePanelDecorator)
             {
-                return new NotePanelView { DataContext = attachmentDecorator };
+                return new AttachmentPanelView { DataContext = attachmentDecorator };
             }
 
             if (attachmentDecorator is PhotoPanelDecorator)

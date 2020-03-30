@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TwinSovet.Views.NotePanelView"
+﻿<UserControl x:Class="TwinSovet.Views.AttachmentPanelView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -31,8 +31,15 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Control Grid.Row="0" Grid.Column="1" Template=""/>
+
         <!-- Строка дат -->
-        <WrapPanel Grid.Row="0">
+        <WrapPanel Grid.Row="0" Grid.Column="1">
             <TextBlock>
                 <Run Text="Создано"/>
                 <Run Text="{Binding Path=ReadonlyAttachmentViewModel.CreationTime, Mode=OneWay}" Foreground="{StaticResource GrayBrush}"/>
@@ -47,17 +54,17 @@
             </TextBlock>
         </WrapPanel>
 
-        <TextBox Grid.Row="1" FontWeight="Medium" x:Name="TitleBox"
+        <TextBox Grid.Row="1" Grid.Column="1" FontWeight="Medium" x:Name="TitleBox"
                  IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
                  Text="{Binding Path=EditableAttachmentViewModel.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <TextBox Grid.Row="2" VerticalAlignment="Stretch" TextWrapping="Wrap"
+        <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}"
                  IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
                  Text="{Binding Path=EditableAttachmentViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         <!-- Панелька кнопок -->
-        <DockPanel Grid.Row="3" Margin="{StaticResource 4TopMargin}" HorizontalAlignment="Right"
+        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource 4TopMargin}" HorizontalAlignment="Right"
                    Visibility="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <!-- Кнопка сохранения -->
             <Button Style="{StaticResource SaveAttachmentButtonStyle}" 
@@ -69,7 +76,7 @@
         </DockPanel>
 
         <!-- Список вложенных аттачей -->
-        <Expander Grid.Row="4" IsExpanded="False" Header="Вложения" Margin="{StaticResource 4TopMargin}">
+        <Expander Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" IsExpanded="False" Header="Вложения" Margin="{StaticResource 4TopMargin}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

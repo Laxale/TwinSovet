@@ -28,6 +28,7 @@ using Prism.Mvvm;
 using Microsoft.Practices.Unity;
 
 using TwinSovet.ViewModels.Subjects;
+using TwinSovet.Views.Attachments;
 
 using LocRes = TwinSovet.Localization.Resources;
 
@@ -76,7 +77,7 @@ namespace TwinSovet
             this.Subscribe<MessageShowFlatIndications>(OnShowFlatIndicationsRequest);
             this.Subscribe<MessageShowFloorIndications>(OnShowFloorIndicationsRequest);
             this.Subscribe<MessageShowNotes<SubjectEntityViewModel>>(OnShowNotesRequest);
-            this.Subscribe<MessageShowPhotos<SubjectEntityViewModel>>(OnShowFloorPhotosRequest);
+            this.Subscribe<MessageShowPhotos<SubjectEntityViewModel>>(OnShowPhotosRequest);
         }
 
 
@@ -122,7 +123,7 @@ namespace TwinSovet
         {
             Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
-            var notesView = new Views.Attachments.SubjectNotesView();
+            var notesView = new SubjectNotesView();
             window.Content = notesView;
 
             var context = (SubjectNotesViewModel)notesView.DataContext;
@@ -131,11 +132,15 @@ namespace TwinSovet
             window.Show();
         }
 
-        private void OnShowFloorPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
+        private void OnShowPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
         {
             Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
 
-            window.Content = "страница фотографий";
+            var photosView = new SubjectPhotosView();
+            window.Content = photosView;
+
+            var context = (SubjectPhotosViewModel)photosView.DataContext;
+            context.SetNotesOwner(message.AttachablesOwner);
 
             window.Show();
         }

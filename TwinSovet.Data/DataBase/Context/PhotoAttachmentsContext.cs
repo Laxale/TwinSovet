@@ -30,6 +30,8 @@ namespace TwinSovet.Data.DataBase.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new PhotosConfiguration());
+
+            CreateTable(modelBuilder);
         }
     }
 }

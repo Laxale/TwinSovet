@@ -105,6 +105,7 @@
     <Compile Include="Helpers\AttachmentPanelResolver.cs" />
     <Compile Include="Helpers\Attachments\AttachmentProviderConfigBase.cs" />
     <Compile Include="Helpers\Attachments\ChildAttachmentsProviderConfig.cs" />
+    <Compile Include="Helpers\Attachments\CommonSubjectAttachmentsLogic.cs" />
     <Compile Include="Helpers\Attachments\RootAttachmentsProviderConfig.cs" />
     <Compile Include="Helpers\ChildAttachmentTemplateSelector.cs" />
     <Compile Include="Helpers\NullableBool.cs" />
@@ -136,7 +137,9 @@
     <Compile Include="ViewModels\Attachments\PhotoAttachmentViewModel.cs" />
     <Compile Include="ViewModels\Attachments\PhotoPanelDecorator.cs" />
     <Compile Include="ViewModels\Attachments\SubjectAttachmentsViewModelBase.cs" />
+    <Compile Include="ViewModels\Attachments\SubjectPhotosViewModel.cs" />
     <Compile Include="ViewModels\Attachments\VirtualNoteDecorator.cs" />
+    <Compile Include="ViewModels\Attachments\VirtualPhotoDecorator.cs" />
     <Compile Include="ViewModels\Subjects\FlatDecoratorViewModel.cs" />
     <Compile Include="Messages\Attachments\MessageShowAttachments.cs" />
     <Compile Include="Messages\Attachments\MessageShowPhotos.cs" />
@@ -185,11 +188,14 @@
     <Compile Include="Views\Attachments\PhotoPanelView.xaml.cs">
       <DependentUpon>PhotoPanelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Attachments\SubjectPhotosView.xaml.cs">
+      <DependentUpon>SubjectPhotosView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EditAborigenView.xaml.cs">
       <DependentUpon>EditAborigenView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\NotePanelView.xaml.cs">
-      <DependentUpon>NotePanelView.xaml</DependentUpon>
+    <Compile Include="Views\AttachmentPanelView.xaml.cs">
+      <DependentUpon>AttachmentPanelView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SectionPlanView.xaml.cs">
       <DependentUpon>SectionPlanView.xaml</DependentUpon>
@@ -263,11 +269,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Attachments\SubjectPhotosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\EditAborigenView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\NotePanelView.xaml">
+    <Page Include="Views\AttachmentPanelView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
