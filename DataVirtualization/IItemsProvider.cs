@@ -24,6 +24,17 @@ namespace DataVirtualization
         bool Any(Func<T, bool> predicate);
 
         /// <summary>
+        /// Обновить состояние провайдера.
+        /// </summary>
+        void Refresh();
+
+        /// <summary>
+        /// Задать фильтр выборки отображаемых объектов.
+        /// </summary>
+        /// <param name="predicate">Функция выборки отображаемых объектов. Может быть null.</param>
+        void SetFilter(Func<T, bool> predicate);
+
+        /// <summary>
         /// Fetches a range of items.
         /// </summary>
         /// <param name="startIndex">The start index.</param>
@@ -31,5 +42,5 @@ namespace DataVirtualization
         /// <param name="overallCount">Total count of items in storage.</param>
         /// <returns></returns>
         IList<T> FetchRange(int startIndex, int itemsCount, out int overallCount);
-	}
+    }
 }

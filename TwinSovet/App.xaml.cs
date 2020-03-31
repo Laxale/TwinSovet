@@ -65,6 +65,7 @@ namespace TwinSovet
 
             var initer = ViewModelInitializer.Instance;
 
+            MainContainer.Instance.RegisterType<IObjectStorage, DbObjectStorage>();
             MainContainer.Instance.RegisterType<IDbContextFactory, DbContextFactory>();
             MainContainer.Instance.RegisterInstance<IUnityContainer>(MainContainer.Instance);
             MainContainer.Instance.RegisterInstance<AllFloorsProvider>(AllFloorsProvider.Instance);

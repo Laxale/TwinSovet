@@ -13,7 +13,7 @@ namespace TwinSovet.Data.DataBase.Config
     {
         public PhotosConfiguration() 
         {
-            Ignore(note => note.ChildDescriptors);
+            //Ignore(note => note.ChildDescriptors);
 
             HasMany(noteModel => noteModel.ChildDescriptors_Map)
                 .WithRequired(childDescriptor => (PhotoAttachmentModel)childDescriptor.NavigationParent)

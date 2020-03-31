@@ -63,7 +63,7 @@
 
             <ListBox Grid.Row="1" Margin="{StaticResource 4TopMargin}" Style="{StaticResource NonSelectableListBoxStyle}" Name="PhotosList">
                 <ListBox.ItemTemplate>
-                    <DataTemplate DataType="attachments:VirtualPhotoDecorator">
+                    <DataTemplate DataType="attachments:VirtualPhotoAlbumDecorator">
                         <Border Style="{StaticResource InListBorderStyle}" Margin="2">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -74,7 +74,7 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
 
-                            <local:SimplePhotoView Margin="{StaticResource All4Margin}"/>
+                            <local:SimplePhotoAlbumView Margin="{StaticResource All4Margin}"/>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

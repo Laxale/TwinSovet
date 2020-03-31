@@ -12,9 +12,10 @@ using TwinSovet.ViewModels.Attachments;
 
 namespace TwinSovet.Interfaces 
 {
-    internal interface IAlbumItemsProvider<TDescriptor> : IItemsProvider<AttachmentPanelDecoratorBase_NonGeneric>
-        where TDescriptor : BinaryDescriptorModel
+    internal interface IAlbumItemsProvider<TAttachmentDescriptor, out TAttachmentModel> : IItemsProvider<AttachmentPanelDecoratorBase_NonGeneric>
+        where TAttachmentDescriptor : BinaryDescriptorModel
+        where TAttachmentModel : BinaryAttachmentModel
     {
-        void SetFilter(Func<, bool> predicate);
+        
     }
 }

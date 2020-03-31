@@ -49,6 +49,13 @@ namespace TwinSovet.Helpers
                             .Where(config.Predicate)
                             .OrderByDescending(model => model.ModificationTime);
             }
+
+            public static IEnumerable<AttachmentModelBase> ApplySelector(DbSet<PhotoAlbumAttachmentModel> dbSet, AttachmentProviderConfigBase config)
+            {
+                return dbSet.AsEnumerable()
+                    .Where(config.Predicate)
+                    .OrderByDescending(model => model.ModificationTime);
+            }
         }
 
 
@@ -70,7 +77,10 @@ namespace TwinSovet.Helpers
         public static event Action<PhotoAttachmentModel> EventDocumentAdded = documentModel => { };
 
 
-        public AttachmentsProvider(IDbContextFactory dbContextFactory, AttachmentProviderConfigBase config) 
+        public AttachmentsProvider(
+            IObjectStorage storage,
+            IDbContextFactory dbContextFactory, 
+            AttachmentProviderConfigBase config) 
         {
             config.AssertNotNull(nameof(config));
 
@@ -303,6 +313,16 @@ namespace TwinSovet.Helpers
                                 .ApplySelector(context.Objects, config)
                                 .Select(documentModel => new DocumentPanelDecorator(DocumentAttachmentViewModel.CreateEditable((DocumentAttachmentModel)documentModel)));
                         allAttachments.AddRange(documentDecorators);
+                    }
+                    break;
+                case AttachmentType.PhotoAlbum:
+                    using (var context = dbContextFactory.CreateContext<PhotoAlbumAttachmentModel>())
+                    {
+                        var albumDecorators =
+                            DbSetExtensions
+                                .ApplySelector(context.Objects, config)
+                                .Select(documentModel => new PhotoAlbumPanelDecorator(new PhotoAlbumAttachmentViewModel((PhotoAlbumAttachmentModel)documentModel, false)));
+                        allAttachments.AddRange(albumDecorators);
                     }
                     break;
                 default:

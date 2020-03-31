@@ -13,7 +13,7 @@ using TwinSovet.Providers;
 
 namespace TwinSovet.ViewModels.Attachments 
 {
-    internal class PhotoAlbumAttachmentViewModel : AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, PhotoDescriptorModel> 
+    internal class PhotoAlbumAttachmentViewModel : AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, PhotoDescriptorModel, PhotoAttachmentModel> 
     {
         
 
@@ -26,6 +26,18 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
+        protected override AttachmentPanelDecoratorBase_NonGeneric DecoratorFactory(PhotoAttachmentModel model) 
+        {
+            return new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(model));
+        }
 
+        protected override bool ItemDecoratorFilter(AttachmentPanelDecoratorBase_NonGeneric decorator) 
+        {
+            var photoDecorator = (PhotoPanelDecorator) decorator;
+
+            //пока нет логики, поскольку провайдер поставляет только элементы заведомо данного альбома.
+            // другой логики фильтрации внутри альбома ещё нет
+            return true;
+        }
     }
 }

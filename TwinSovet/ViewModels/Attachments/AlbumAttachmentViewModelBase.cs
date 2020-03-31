@@ -29,16 +29,18 @@ namespace TwinSovet.ViewModels.Attachments
     /// </summary>
     /// <typeparam name="TAlbumModel">Тип модели конкретного альбома.</typeparam>
     /// <typeparam name="TDescriptorModel">Тип модели дескриптора.</typeparam>
-    internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TDescriptorModel> : AttachmentViewModelBase 
+    /// <typeparam name="TAttachmentModel">Тип модели элементов альбома.</typeparam>
+    internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TDescriptorModel, TAttachmentModel> : AttachmentViewModelBase 
         where TAlbumModel : AlbumAttachmentModelBase<TDescriptorModel>
         where TDescriptorModel : BinaryDescriptorModel
+        where TAttachmentModel : BinaryAttachmentModel, new ()
     {
         private readonly int pageSize = 4;
         private readonly int pageTimeout = int.MaxValue;
 
         private string titleReaodnly;
         private string descriptionReadonly;
-        private IAlbumItemsProvider<TDescriptorModel> albumItemsProvider;
+        private IAlbumItemsProvider<TDescriptorModel, TAttachmentModel> albumItemsProvider;
 
 
         protected AlbumAttachmentViewModelBase(TAlbumModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
@@ -105,8 +107,10 @@ namespace TwinSovet.ViewModels.Attachments
             base.InitializeImpl();
 
             var originalAlbum = (TAlbumModel)originalModel;
-            albumItemsProvider = new AlbumItemsProvider<TDescriptorModel>(originalAlbum);
-            albumItemsProvider.SetFilter();
+            var contextFactory = MainContainer.Instance.Resolve<IDbContextFactory>();
+            albumItemsProvider = new AlbumItemsProvider<TDescriptorModel, TAttachmentModel>(originalAlbum, contextFactory, DecoratorFactory);
+            albumItemsProvider.SetFilter(ItemDecoratorFilter);
+            albumItemsProvider.Refresh();
 
             DispatcherHelper.InvokeOnDispatcher(() =>
             {
@@ -119,7 +123,9 @@ namespace TwinSovet.ViewModels.Attachments
             RefreshCollection();
         }
 
-        protected abstract IEnumerable<AttachmentPanelDecoratorBase_NonGeneric> GetItems(IEnumerable<TDescriptorModel> descriptors);
+        protected abstract AttachmentPanelDecoratorBase_NonGeneric DecoratorFactory(TAttachmentModel model);
+
+        protected abstract bool ItemDecoratorFilter (AttachmentPanelDecoratorBase_NonGeneric decorator);
 
 
         private void RefreshCollection() 

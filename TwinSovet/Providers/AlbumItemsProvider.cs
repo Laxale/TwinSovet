@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using DataVirtualization;
-
+using TwinSovet.Data.DataBase.Interfaces;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Interfaces;
 using TwinSovet.ViewModels.Attachments;
@@ -13,17 +13,53 @@ using TwinSovet.ViewModels.Attachments;
 
 namespace TwinSovet.Providers 
 {
-    internal class AlbumItemsProvider<TDescriptor> : IAlbumItemsProvider<TDescriptor> where TDescriptor : BinaryDescriptorModel
+    internal class AlbumItemsProvider<TAttachmentDescriptor, TAttachmentModel> : IAlbumItemsProvider<TAttachmentDescriptor, TAttachmentModel>
+        where TAttachmentDescriptor : BinaryDescriptorModel
+        where TAttachmentModel : BinaryAttachmentModel, new ()
     {
-        public AlbumItemsProvider(AlbumAttachmentModelBase<TDescriptor> albumModel) 
+        private static readonly object Locker = new object();
+
+        private readonly IDbContextFactory contextFactory;
+        private readonly Func<TAttachmentModel, AttachmentPanelDecoratorBase_NonGeneric> decoratorFactory;
+        private readonly AlbumAttachmentModelBase<TAttachmentDescriptor> albumModel;
+        private readonly List<AttachmentPanelDecoratorBase_NonGeneric> allDecorators = new List<AttachmentPanelDecoratorBase_NonGeneric>();
+        private readonly List<AttachmentPanelDecoratorBase_NonGeneric> predicatedDecorators = new List<AttachmentPanelDecoratorBase_NonGeneric>();
+
+        private Func<AttachmentPanelDecoratorBase_NonGeneric, bool> predicate;
+
+
+        public AlbumItemsProvider(
+            AlbumAttachmentModelBase<TAttachmentDescriptor> albumModel, 
+            IDbContextFactory contextFactory,
+            Func<TAttachmentModel, AttachmentPanelDecoratorBase_NonGeneric> decoratorFactory) 
         {
-            
+            this.albumModel = albumModel;
+            this.contextFactory = contextFactory;
+            this.decoratorFactory = decoratorFactory;
         }
 
 
+        /// <summary>
+        /// Обновить состояние провайдера.
+        /// </summary>
+        public void Refresh() 
+        {
+            lock (Locker)
+            {
+                allDecorators.Clear();
+                predicatedDecorators.Clear();
+
+                LoadItems();
+            }
+        }
+
         public void SetFilter(Func<AttachmentPanelDecoratorBase_NonGeneric, bool> predicate) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                predicatedDecorators.Clear();
+                predicatedDecorators.AddRange(predicate == null ? allDecorators : allDecorators.Where(predicate));
+            }
         }
 
         /// <summary>
@@ -32,7 +68,10 @@ namespace TwinSovet.Providers
         /// <returns></returns>
         public int FetchCount() 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                return predicatedDecorators.Count;
+            }
         }
 
         /// <summary>
@@ -42,7 +81,10 @@ namespace TwinSovet.Providers
         /// <returns>True, если есть хоть один декоратор, удовлетворяющий предикату.</returns>
         public bool Any(Func<AttachmentPanelDecoratorBase_NonGeneric, bool> predicate) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                return predicate == null ? predicatedDecorators.Any() : predicatedDecorators.Any(predicate);
+            }
         }
 
         /// <summary>
@@ -54,7 +96,31 @@ namespace TwinSovet.Providers
         /// <returns></returns>
         public IList<AttachmentPanelDecoratorBase_NonGeneric> FetchRange(int startIndex, int itemsCount, out int overallCount) 
         {
-            throw new NotImplementedException();
+            lock (Locker)
+            {
+                overallCount = predicatedDecorators.Count;
+                List<AttachmentPanelDecoratorBase_NonGeneric> decorators = predicatedDecorators.Skip(startIndex).Take(itemsCount).ToList();
+
+                return decorators;
+            }
+        }
+
+
+        private void LoadItems() 
+        {
+            using (var context = contextFactory.CreateContext<TAttachmentModel>())
+            {
+                var albumItems =
+                    context.Objects
+                        .AsEnumerable()
+                        .Where(attachment =>
+                        {
+                            return albumModel.AlbumCollectionDescriptors.Any(descriptor => descriptor.DataBlobId == attachment.Id);
+                        });
+
+                allDecorators.AddRange(albumItems.Select(decoratorFactory));
+                predicatedDecorators.AddRange(predicate == null ? allDecorators : allDecorators.Where(predicate));
+            }
         }
     }
 }

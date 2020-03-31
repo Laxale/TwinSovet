@@ -115,6 +115,14 @@ namespace TwinSovet.Providers
         }
 
         /// <summary>
+        /// Обновить состояние провайдера.
+        /// </summary>
+        public void Refresh() 
+        {
+            
+        }
+
+        /// <summary>
         /// Fetches a range of items.
         /// </summary>
         /// <param name="startIndex">The start index.</param>

@@ -18,12 +18,12 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
-        public override AttachmentType TypeOfAttachment { get; } = AttachmentType.Photo;
+        public override AttachmentType TypeOfAttachment { get; } = AttachmentType.PhotoAlbum;
 
 
         protected override bool MustReactToAttachmentCreation(AttachmentViewModelBase attachmentViewModelBase) 
         {
-            return attachmentViewModelBase is PhotoAttachmentViewModel;
+            return attachmentViewModelBase is PhotoAttachmentViewModel || attachmentViewModelBase is PhotoAlbumAttachmentViewModel;
         }
     }
 }

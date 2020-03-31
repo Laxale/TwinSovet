@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-
+using System.ComponentModel.DataAnnotations.Schema;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Enums;
@@ -66,6 +66,7 @@ namespace TwinSovet.Data.Models.Attachments
         /// <summary>
         /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
         /// </summary>
+        [NotMapped]
         public List<ChildAttachmentDescriptor> ChildDescriptors { get; set; } = new List<ChildAttachmentDescriptor>();
 
         /// <summary>
