@@ -59,6 +59,37 @@
         </Setter>
     </Style>
 
+    <Style x:Key="PhotosInAlbumBorderStyle" TargetType="Border" BasedOn="{StaticResource PhotoPreviewBorderStyle}">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="Auto"/>
+    </Style>
+
+    <DataTemplate x:Key="PhotoAlbumSpecificContentTemplate_CreateNew">
+        <d:DataTemplate.DataContext>
+            <x:Type Type="attachments:PhotoAlbumAttachmentViewModel"/>
+        </d:DataTemplate.DataContext>
+        
+        <Border Style="{StaticResource PhotosInAlbumBorderStyle}">
+            <d:Border.DataContext>
+                <x:Type Type="attachments:PhotoAlbumAttachmentViewModel"/>
+            </d:Border.DataContext>
+            
+            <ItemsControl Margin="{StaticResource All4Margin}" ItemsSource="{Binding Path=}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+    </DataTemplate>
+
     <DataTemplate x:Key="PhotoSpecificContentTemplate_CreateNew">
         <d:DataTemplate.DataContext>
             <x:Type Type="attachments:PhotoAttachmentViewModel"/>

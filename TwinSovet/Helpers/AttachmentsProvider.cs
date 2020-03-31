@@ -54,6 +54,7 @@ namespace TwinSovet.Helpers
 
         private static readonly object Locker = new object();
         private static readonly object NoteLocker = new object();
+        private static readonly object PhotoLocker = new object();
         private static readonly DbContextFactory contextFactory = new DbContextFactory();
 
         private readonly IDbContextFactory dbContextFactory;
@@ -131,7 +132,23 @@ namespace TwinSovet.Helpers
 
         public static void SaveOrUpdate(PhotoAttachmentModel photoModel) 
         {
+            lock (PhotoLocker)
+            {
+                
+            }
+        }
 
+        public static IEnumerable<PhotoPanelDecorator> GetPhotos(IEnumerable<string> photoIds) 
+        {
+            lock (PhotoLocker)
+            {
+                using (var context = contextFactory.CreateContext<PhotoAttachmentModel>())
+                {
+                    var photoModels = context.Objects.AsEnumerable().Where(photo => photoIds.Contains(photo.Id));
+
+                    return photoModels.Select(model => new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(model))).ToList();
+                }
+            }
         }
 
 

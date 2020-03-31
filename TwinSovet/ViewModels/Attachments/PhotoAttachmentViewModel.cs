@@ -26,7 +26,7 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
-        public static PhotoAttachmentViewModel CreateReadonly(PhotoAttachmentModel photoModel)
+        public static PhotoAttachmentViewModel CreateReadonly(PhotoAttachmentModel photoModel) 
         {
             return new PhotoAttachmentViewModel(photoModel, true);
         }

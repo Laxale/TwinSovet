@@ -43,7 +43,7 @@
         </Grid.ColumnDefinitions>
         
         <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:Resources.Title}"/>
-        <TextBox Grid.Row="0" Grid.Column="2" x:Name="TitleBox"
+        <TextBox Grid.Row="0" Grid.Column="2" x:Name="TitleBox" VerticalAlignment="Center"
                  Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
         <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Description}" 

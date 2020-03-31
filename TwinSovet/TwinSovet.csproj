@@ -116,6 +116,7 @@
     <Compile Include="Helpers\Regions.cs" />
     <Compile Include="Helpers\RootSubjectIdentifier.cs" />
     <Compile Include="Helpers\VirtualFloorWrapper.cs" />
+    <Compile Include="Interfaces\IAlbumItemsProvider.cs" />
     <Compile Include="Interfaces\IAttachmentsProvider.cs" />
     <Compile Include="Interfaces\IDetailedAttachnemtView.cs" />
     <Compile Include="Interfaces\IFloorsProvider.cs" />
@@ -127,7 +128,9 @@
     <Compile Include="Messages\Indications\MessageShowFloorIndications.cs" />
     <Compile Include="Messages\Indications\MessageShowIndications.cs" />
     <Compile Include="Providers\AllFloorsProvider.cs" />
+    <Compile Include="Providers\AlbumItemsProvider.cs" />
     <Compile Include="Providers\PreviewProvider.cs" />
+    <Compile Include="ViewModels\Attachments\AlbumAttachmentViewModelBase.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentPanelDecoratorBase_NonGeneric.cs" />
     <Compile Include="ViewModels\Attachments\AttachmentViewModelBase.cs" />

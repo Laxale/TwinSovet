@@ -21,8 +21,6 @@ namespace TwinSovet.ViewModels.Attachments
         protected readonly AttachmentModelBase originalModel;
 
         private string title;
-        private bool hasTitle;
-        private bool hasDescription;
         private string description;
         private DateTime? modificationTime;
 
@@ -57,7 +55,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// </summary>
         public abstract AttachmentType EntityType { get; }
 
-        public bool HasTitle => hasTitle;
+        public bool HasTitle { get; private set; }
 
         public string Title 
         {
@@ -69,14 +67,14 @@ namespace TwinSovet.ViewModels.Attachments
                 if (title == value) return;
 
                 title = value;
-                hasTitle = !string.IsNullOrWhiteSpace(value);
+                HasTitle = !string.IsNullOrWhiteSpace(value);
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasTitle));
             }
         }
 
-        public bool HasDescription => hasDescription;
+        public bool HasDescription { get; private set; }
 
         public string Description 
         {
@@ -88,7 +86,7 @@ namespace TwinSovet.ViewModels.Attachments
                 if (description == value) return;
 
                 description = value;
-                hasDescription = !string.IsNullOrWhiteSpace(value);
+                HasDescription = !string.IsNullOrWhiteSpace(value);
 
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasDescription));

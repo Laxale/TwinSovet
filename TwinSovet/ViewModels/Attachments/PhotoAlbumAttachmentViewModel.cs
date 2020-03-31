@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using DataVirtualization;
+
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Providers;
@@ -10,8 +13,11 @@ using TwinSovet.Providers;
 
 namespace TwinSovet.ViewModels.Attachments 
 {
-    internal class PhotoAlbumAttachmentViewModel : AttachmentViewModelBase 
+    internal class PhotoAlbumAttachmentViewModel : AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, PhotoDescriptorModel> 
     {
+        
+
+
         public PhotoAlbumAttachmentViewModel(PhotoAlbumAttachmentModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
         {
             //todo поставить на превью первую фотку альбома
@@ -20,14 +26,6 @@ namespace TwinSovet.ViewModels.Attachments
         }
 
 
-        /// <summary>
-        /// Возвращает тип данного attachable-объекта.
-        /// </summary>
-        public override AttachmentType EntityType { get; } = AttachmentType.PhotoAlbum;
 
-        /// <summary>
-        /// Возвращает ссылку на вьюмодель превью данной картинки.
-        /// </summary>
-        public PreviewViewModel Preview { get; } = new PreviewViewModel();
     }
 }

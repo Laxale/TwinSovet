@@ -16,15 +16,5 @@ namespace TwinSovet.Data.Models.Attachments
     public class PhotoAttachmentModel : BinaryAttachmentModel 
     {
         public byte[] PreviewDataBlob { get; set; }
-
-        /// <summary>
-        /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
-        /// </summary>
-        public List<ChildAttachmentDescriptor> ChildDescriptors { get; set; } = new List<ChildAttachmentDescriptor>();
-
-        /// <summary>
-        /// Не использовать в коде! Коллекция для хранения свойства <see cref="ChildDescriptors"/> в базе.
-        /// </summary>
-        public virtual List<ChildAttachmentDescriptor> ChildDescriptors_Map { get; set; } = new List<ChildAttachmentDescriptor>();
     }
 }
