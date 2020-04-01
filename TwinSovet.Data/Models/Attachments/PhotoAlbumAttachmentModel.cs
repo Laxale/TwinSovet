@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TwinSovet.Data.DataBase.Attributes;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.DataBase.Context;
+using TwinSovet.Data.Enums;
 
 
 namespace TwinSovet.Data.Models.Attachments 
@@ -16,8 +17,11 @@ namespace TwinSovet.Data.Models.Attachments
     /// </summary>
     [RelationalContext(typeof(PhotoAlbumsContext))]
     [Table(DbConst.TableNames.PhotoAlbumsTableName)]
-    public class PhotoAlbumAttachmentModel : AlbumAttachmentModelBase<PhotoDescriptorModel> 
+    public class PhotoAlbumAttachmentModel : AlbumAttachmentModelBase<PhotoAlbumAttachmentModel, OfPhotoAlbumAttachmentDescriptor> 
     {
-
+        public PhotoAlbumAttachmentModel()
+        {
+            TypeOfAttachment = AttachmentType.PhotoAlbum;
+        }
     }
 }

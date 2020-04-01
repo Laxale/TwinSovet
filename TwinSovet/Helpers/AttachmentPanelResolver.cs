@@ -17,6 +17,7 @@ namespace TwinSovet.Helpers
     {
         private const string SpecificPhotoTemplate_Detailed = "PhotoSpecificContentTemplate_Detailed";
         private const string SpecificPhotoTemplate_CreateNew = "PhotoSpecificContentTemplate_CreateNew";
+        private const string SpecificPhotoAlbumTemplate_CreateNew = "PhotoAlbumSpecificContentTemplate_CreateNew";
         
 
 
@@ -48,7 +49,7 @@ namespace TwinSovet.Helpers
 
             if (rootViewModel is SubjectPhotosViewModel)
             {
-                return (DataTemplate) Application.Current.Resources[SpecificPhotoTemplate_CreateNew];
+                return (DataTemplate) Application.Current.Resources[SpecificPhotoAlbumTemplate_CreateNew];
             }
 
             throw new NotImplementedException();

@@ -36,7 +36,7 @@ namespace TwinSovet.Helpers.Attachments
             {
                 DecoratorTransform = PhotoDecoratorTransform;
             }
-            if (attachmentType == AttachmentType.PhotoAlbum)
+            else if (attachmentType == AttachmentType.PhotoAlbum)
             {
                 DecoratorTransform = PhotoAlbumDecoratorTransform;
             }

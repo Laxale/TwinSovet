@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using DataVirtualization;
+using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
+using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Interfaces;
 using TwinSovet.ViewModels.Attachments;
@@ -13,15 +15,16 @@ using TwinSovet.ViewModels.Attachments;
 
 namespace TwinSovet.Providers 
 {
-    internal class AlbumItemsProvider<TAttachmentDescriptor, TAttachmentModel> : IAlbumItemsProvider<TAttachmentDescriptor, TAttachmentModel>
-        where TAttachmentDescriptor : BinaryDescriptorModel
-        where TAttachmentModel : BinaryAttachmentModel, new ()
+    internal class AlbumItemsProvider<TAlbum, TAttachmentModel, TDescriptor> : IAlbumItemsProvider<TAlbum, TDescriptor>
+        where TAlbum : AlbumAttachmentModelBase<TAlbum, TDescriptor>, new()
+        where TAttachmentModel : AttachmentModelBase, new()
+        where TDescriptor : ChildAttachmentDescriptor<TAlbum>, new()
     {
         private static readonly object Locker = new object();
 
         private readonly IDbContextFactory contextFactory;
         private readonly Func<TAttachmentModel, AttachmentPanelDecoratorBase_NonGeneric> decoratorFactory;
-        private readonly AlbumAttachmentModelBase<TAttachmentDescriptor> albumModel;
+        private readonly TAlbum albumModel;
         private readonly List<AttachmentPanelDecoratorBase_NonGeneric> allDecorators = new List<AttachmentPanelDecoratorBase_NonGeneric>();
         private readonly List<AttachmentPanelDecoratorBase_NonGeneric> predicatedDecorators = new List<AttachmentPanelDecoratorBase_NonGeneric>();
 
@@ -29,7 +32,7 @@ namespace TwinSovet.Providers
 
 
         public AlbumItemsProvider(
-            AlbumAttachmentModelBase<TAttachmentDescriptor> albumModel, 
+            TAlbum albumModel, 
             IDbContextFactory contextFactory,
             Func<TAttachmentModel, AttachmentPanelDecoratorBase_NonGeneric> decoratorFactory) 
         {
@@ -108,6 +111,11 @@ namespace TwinSovet.Providers
 
         private void LoadItems() 
         {
+            var descriptors = albumModel.AlbumCollectionDescriptors;
+            if (!descriptors.Any()) return;
+
+            AttachmentType attachType = descriptors[0].ChildAttachmentType;
+            
             using (var context = contextFactory.CreateContext<TAttachmentModel>())
             {
                 var albumItems =
@@ -115,12 +123,18 @@ namespace TwinSovet.Providers
                         .AsEnumerable()
                         .Where(attachment =>
                         {
-                            return albumModel.AlbumCollectionDescriptors.Any(descriptor => descriptor.DataBlobId == attachment.Id);
+                            return albumModel.AlbumCollectionDescriptors.Any(descriptor => descriptor.ChildAttachmentId == attachment.Id);
                         });
 
                 allDecorators.AddRange(albumItems.Select(decoratorFactory));
                 predicatedDecorators.AddRange(predicate == null ? allDecorators : allDecorators.Where(predicate));
             }
+        }
+
+        private DbContextBase<TAttachment> CreateContext<TAttachment>() 
+            where TAttachment : AttachmentModelBase, new()
+        {
+            return contextFactory.CreateContext<TAttachment>();
         }
     }
 }

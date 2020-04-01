@@ -13,7 +13,7 @@ namespace TwinSovet.Data.Models.Attachments
     /// Базовый класс моделей аттачментов.
     /// Логически является абстрактным, но таковым не сделан для возможности хранения в одном списке всех типов дочерних аттачей.
     /// </summary>
-    public class AttachmentModelBase : ComplexDbObject 
+    public abstract class AttachmentModelBase : ComplexDbObject 
     {
         /// <summary>
         /// Возвращает или задаёт название аттача.
@@ -64,25 +64,25 @@ namespace TwinSovet.Data.Models.Attachments
         /// </summary>
         public DateTime? ModificationTime { get; set; }
 
-        /// <summary>
-        /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
-        /// </summary>
-        [NotMapped]
-        public List<ChildAttachmentDescriptor> ChildDescriptors { get; set; } = new List<ChildAttachmentDescriptor>();
+        
+        public abstract AttachmentModelBase Clone();
 
-        /// <summary>
-        /// Не использовать в коде! Коллекция для хранения свойства <see cref="ChildDescriptors"/> в базе.
-        /// </summary>
-        public virtual List<ChildAttachmentDescriptor> ChildDescriptors_Map { get; set; } = new List<ChildAttachmentDescriptor>();
-
-
-        public virtual AttachmentModelBase Clone() => throw new NotImplementedException();
-
-        public void AcceptProps(AttachmentModelBase other) 
+        public void AcceptProps(AttachmentModelBase other)
         {
+            if (TypeOfAttachment != other.TypeOfAttachment)
+            {
+                throw new InvalidOperationException("Нельзя принимать свойства от модели другого типа");
+            }
+
+            Id = other.Id;
             Title = other.Title;
             Description = other.Description;
+            CreationTime = other.CreationTime;
             ModificationTime = other.ModificationTime;
+            RootSubjectId = other.RootSubjectId;
+            RootSubjectType = other.RootSubjectType;
+            HostType = other.HostType;
+            HostId = other.HostId;
         }
 
         /// <summary>
@@ -101,8 +101,7 @@ namespace TwinSovet.Data.Models.Attachments
         /// <returns>Список названий вложенных пропертей класса.</returns>
         protected override List<string> GetIncludedPropNames() 
         {
-            return new List<string> { nameof(ChildDescriptors) };
-            //return new List<string> { nameof(ChildDescriptors_Map) };
+            return new List<string>();
         }
     }
 }

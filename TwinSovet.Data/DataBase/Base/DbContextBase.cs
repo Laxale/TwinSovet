@@ -223,7 +223,7 @@ namespace TwinSovet.Data.DataBase.Base
             return property != null && !property.IsModified;
         }
 
-        private void CreateTableIfNotExists(DbModelBuilder modelBuilder)
+        private void CreateTableIfNotExists(DbModelBuilder modelBuilder) 
         {
             this.modelBuilder = modelBuilder;
 

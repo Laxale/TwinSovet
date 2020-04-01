@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+
 using Common.Helpers;
+
 using TwinSovet.Messages.Details;
 using TwinSovet.ViewModels.Subjects;
 
-using PubSub;
 using TwinSovet.Providers;
 using TwinSovet.ViewModels.Attachments;
+
+using PubSub;
 
 
 namespace TwinSovet.XamlResources 
@@ -32,33 +35,65 @@ namespace TwinSovet.XamlResources
         private void PhotoPreviewBorder_OnDragEnter(object sender, DragEventArgs e) 
         {
             var border = (Border) sender;
-            border.BorderBrush = (Brush)this["SteelGrayBrush"];
+
+            if (!IsTagged(border))
+            {
+                border.BorderBrush = (Brush)this["SteelGrayBrush"];
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(border.BorderThickness.Left + 1);
+            }
         }
 
         private void PhotoPreviewBorder_OnDragLeave(object sender, DragEventArgs e) 
         {
             var border = (Border)sender;
-            border.BorderBrush = null;
+
+            if (!IsTagged(border))
+            {
+                border.BorderBrush = null;
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(border.BorderThickness.Left - 1);
+            }
         }
 
         private void PhotoPreviewBorder_OnDrop(object sender, DragEventArgs e) 
         {
             var border = (Border)sender;
-            border.BorderBrush = null;
-            // мы в режиме детализации
-            if (border.DataContext is PhotoPanelDecorator decorator)
+            if (!IsTagged(border))
             {
-                using (var helper = new DragAndDropHelper(border, true))
+                border.BorderBrush = null;
+            }
+            else
+            {
+                border.BorderThickness = new Thickness(border.BorderThickness.Left - 1);
+            }
+
+            using (var helper = new DragAndDropHelper(border, true))
+            {
+                string[] files = helper.GetDroppedFiles(e);
+                IEnumerable<string> imageFiles = files.Where(PreviewProvider.IsImage);
+                if (!imageFiles.Any()) return;
+
+                // мы в режиме детализации
+                if (border.DataContext is PhotoPanelDecorator decorator)
                 {
-                    string[] files = helper.GetDroppedFiles(e);
-                    IEnumerable<string> imageFiles = files.Where(PreviewProvider.IsImage);
-                    if (imageFiles.Any())
-                    {
-                        throw new NotImplementedException();
-                        //decorator.EditableAttachmentViewModel.
-                    }
+
+                }
+                else if (border.DataContext is PhotoAlbumAttachmentViewModel albumViewModel)
+                {
+                    albumViewModel.AddImageToAdded(imageFiles);
                 }
             }
+        }
+
+
+        private bool IsTagged(Border border) 
+        {
+            return border.Tag?.ToString() == (string) this["ClearTag"];
         }
     }
 }

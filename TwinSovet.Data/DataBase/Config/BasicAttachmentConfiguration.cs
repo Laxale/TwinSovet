@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
@@ -17,10 +18,10 @@ namespace TwinSovet.Data.DataBase.Config
     {
         protected BasicAttachmentConfiguration() 
         {
-            HasMany(model => model.ChildDescriptors_Map)
-                .WithRequired(childDescriptor => (TAttachmentModel)childDescriptor.NavigationParent)
-                .HasForeignKey(childDescriptor => childDescriptor.ParentId)
-                .WillCascadeOnDelete(true);
+            Map(config =>
+            {
+                config.MapInheritedProperties();
+            });
         }
     }
 }

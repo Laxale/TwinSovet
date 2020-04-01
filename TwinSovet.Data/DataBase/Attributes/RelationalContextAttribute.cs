@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace TwinSovet.Data.DataBase.Attributes
         /// Конструирует <see cref="RelationalContextAttribute"/> с заданным типом ORM-контекста для помечаемого класса.
         /// </summary>
         /// <param name="contextType">Тип контекста, используемый для хранения помечаемого атрибутом объекта в базе.</param>
+        [DebuggerStepThrough]
         public RelationalContextAttribute(Type contextType)
         {
             ContextType = contextType ?? throw new ArgumentNullException(nameof(contextType));

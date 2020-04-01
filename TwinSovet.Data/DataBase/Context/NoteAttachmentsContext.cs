@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Models.Attachments;
 
@@ -27,6 +28,13 @@ namespace TwinSovet.Data.DataBase.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Configurations.Add(new NotesConfiguration());
+            //modelBuilder.Configurations.Add(new ChildAttachmentDescriptorsConfiguration<NoteAttachmentModel>());
+
+            modelBuilder.Entity<OfNoteAttachmentDescriptor>()
+                .HasRequired(descriptor => descriptor.NavigationParent)
+                .WithMany(note => note.ChildAttachmentDescriptors)
+                .HasForeignKey(descriptor => descriptor.ParentId)
+                .WillCascadeOnDelete(true);
 
             CreateTable(modelBuilder);
         }

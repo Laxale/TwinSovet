@@ -17,6 +17,15 @@ namespace TwinSovet.Data.Models.Attachments
     {
         public string DataType { get; set; }
 
+        /// <summary>
+        /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
+        /// </summary>
+        public List<OfDocumentAttachmentDescriptor> ChildAttachmentDescriptors = new List<OfDocumentAttachmentDescriptor>();
 
+
+        public override AttachmentModelBase Clone() 
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -227,8 +227,10 @@ namespace TwinSovet.Data.DataBase
             }
         }
 
-        private void SaveCachedProps<TObject>(IEnumerable<string> props) where TObject : DbObject 
+        private void SaveCachedProps<TObject>(IEnumerable<string> props) where TObject : DbObject
         {
+            if (props == null || !props.Any() || props.Any(string.IsNullOrWhiteSpace)) return;
+
             lock (CacheLocker)
             {
                 var cachedKey = includedPropsCache.Keys.FirstOrDefault(typeKey => typeKey is List<TObject>);
@@ -245,9 +247,15 @@ namespace TwinSovet.Data.DataBase
             where TObject : DbObject, new()
         {
             DbQuery<TObject> query = context.Objects;
+
+            if (props == null) return query;
+
             foreach (string cachedPropName in props)
             {
-                query = query.Include(cachedPropName);
+                if (!string.IsNullOrWhiteSpace(cachedPropName))
+                {
+                    query = query.Include(cachedPropName);
+                }
             }
 
             return query;

@@ -35,9 +35,17 @@ namespace TwinSovet.Data.DataBase.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Configurations.Add(new PhotoAlbumsConfiguration());
-            modelBuilder.Configurations.Add(new ChildAttachmentDescriptorsConfiguration());
+            modelBuilder.Entity<OfPhotoAlbumAttachmentDescriptor>()
+                .ToTable(DbConst.TableNames.ChildAttachmentDescriptorsTableName)
+                .HasRequired(descriptor => descriptor.NavigationParent)
+                .WithMany(album => album.ChildAttachmentDescriptors)
+                .HasForeignKey(desc => desc.ParentId)
+                .WillCascadeOnDelete(true)
+                ;
 
+            modelBuilder.Configurations.Add(new PhotoAlbumsConfiguration());
+
+            
             CreateTable(modelBuilder);
         }
     }

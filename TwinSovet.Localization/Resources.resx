@@ -267,4 +267,7 @@
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="DragImagesHere" xml:space="preserve">
+      <value>Перетащите сюда изображения</value>
+  </data>
 </root>

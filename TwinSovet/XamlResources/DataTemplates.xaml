@@ -9,7 +9,8 @@
                     xmlns:views="clr-namespace:TwinSovet.Views"
                     xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
                     xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+                    xmlns:system="clr-namespace:System;assembly=mscorlib"
+                    xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./Brushes.xaml"/>
@@ -19,6 +20,7 @@
 
     <system:Double x:Key="IconScale">0.14</system:Double>
     <system:Double x:Key="PhotoPreviewHeight">80</system:Double>
+    <system:String x:Key="ClearTag">DoNotClearBorderBrush</system:String>
     
     <DataTemplate x:Key="FlatInListTemplate" DataType="subjects:FlatViewModel">
         <Border Style="{StaticResource FlatBorderInListStyle}">
@@ -62,6 +64,12 @@
     <Style x:Key="PhotosInAlbumBorderStyle" TargetType="Border" BasedOn="{StaticResource PhotoPreviewBorderStyle}">
         <Setter Property="Width" Value="Auto"/>
         <Setter Property="Height" Value="Auto"/>
+        <Setter Property="AllowDrop" Value="True"/>
+        <Setter Property="Tag" Value="{StaticResource ClearTag}"/>
+
+        <EventSetter Event="Drop" Handler="PhotoPreviewBorder_OnDrop"/>
+        <EventSetter Event="DragEnter" Handler="PhotoPreviewBorder_OnDragEnter"/>
+        <EventSetter Event="DragLeave" Handler="PhotoPreviewBorder_OnDragLeave"/>
     </Style>
 
     <DataTemplate x:Key="PhotoAlbumSpecificContentTemplate_CreateNew">
@@ -69,36 +77,69 @@
             <x:Type Type="attachments:PhotoAlbumAttachmentViewModel"/>
         </d:DataTemplate.DataContext>
         
-        <Border Style="{StaticResource PhotosInAlbumBorderStyle}">
+        <Border>
             <d:Border.DataContext>
                 <x:Type Type="attachments:PhotoAlbumAttachmentViewModel"/>
             </d:Border.DataContext>
             
-            <ItemsControl Margin="{StaticResource All4Margin}" ItemsSource="{Binding Path=ItemDecorators, Mode=OneWay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="attachments:VirtualPhotoDecorator">
-                        <Border>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Style="{StaticResource PhotosInAlbumBorderStyle}"
+                        BorderBrush="{StaticResource LinkForegroundBrush}" ToolTip="{x:Static loc:Resources.DragImagesHere}">
+                    <Grid>
+                        <Path Style="{StaticResource PhotoIconPathStyle}" Margin="{StaticResource All4Margin}"
+                              Visibility="{Binding Path=HasAddedPhotos, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
 
-                                <Image Grid.Column="0" Source="{Binding Path=Data.EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto"
+                                      Visibility="{Binding Path=HasAddedPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ItemsControl ItemsSource="{Binding Path=AddedPhotosView, Mode=OneWay}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel ItemHeight="60"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
 
-                                <TextBlock Grid.Column="1" Margin="{StaticResource 8LeftMargin}"
-                                           Text="{Binding Path=Data.EditableAttachmentViewModel.Title, Mode=OneWay}"/>
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="attachments:PhotoPanelDecorator">
+                                        <Image Margin="{StaticResource All4Margin}" 
+                                               Source="{Binding Path=EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <ItemsControl Grid.Row="1" Margin="{StaticResource All4Margin}" ItemsSource="{Binding Path=ItemDecorators, Mode=OneWay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="attachments:VirtualPhotoDecorator">
+                            <Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image Grid.Column="0" Source="{Binding Path=Data.EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+
+                                    <TextBlock Grid.Column="1" Margin="{StaticResource 8LeftMargin}"
+                                               Text="{Binding Path=Data.EditableAttachmentViewModel.Title, Mode=OneWay}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
         </Border>
     </DataTemplate>
 

@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Data;
 using Common.Helpers;
 
 using DataVirtualization;
@@ -31,23 +35,29 @@ namespace TwinSovet.ViewModels.Attachments
     /// <typeparam name="TDescriptorModel">Тип модели дескриптора.</typeparam>
     /// <typeparam name="TAttachmentModel">Тип модели элементов альбома.</typeparam>
     internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TDescriptorModel, TAttachmentModel> : AttachmentViewModelBase 
-        where TAlbumModel : AlbumAttachmentModelBase<TDescriptorModel>
-        where TDescriptorModel : BinaryDescriptorModel
+        where TAlbumModel : AlbumAttachmentModelBase<TAlbumModel, TDescriptorModel>, new()
+        where TDescriptorModel : ChildAttachmentDescriptor<TAlbumModel>, new()
         where TAttachmentModel : BinaryAttachmentModel, new ()
     {
         private readonly int pageSize = 4;
         private readonly int pageTimeout = int.MaxValue;
+        private readonly ObservableCollection<PhotoPanelDecorator> addedPhotos = new ObservableCollection<PhotoPanelDecorator>();
 
         private string titleReaodnly;
         private string descriptionReadonly;
-        private IAlbumItemsProvider<TDescriptorModel, TAttachmentModel> albumItemsProvider;
+        private IAlbumItemsProvider<TAlbumModel, TDescriptorModel> albumItemsProvider;
 
 
         protected AlbumAttachmentViewModelBase(TAlbumModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
         {
+            addedPhotos.CollectionChanged += AddedPhotos_OnCollectionChanged;
+            AddedPhotosView = CollectionViewSource.GetDefaultView(addedPhotos);
+
             this.Publish(new MessageInitializeModelRequest(this, $"Загружаем альбом '{ attachmentModel.Title }'"));
         }
 
+
+        public ICollectionView AddedPhotosView { get; }
 
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
@@ -93,10 +103,30 @@ namespace TwinSovet.ViewModels.Attachments
             }
         }
 
+        public bool HasAddedPhotos => addedPhotos.Any();
+
+        public bool HasSavedPhotos => albumItemsProvider.Any(null);
+
         /// <summary>
         /// Возвращает ссылку на виртуальную коллекцию декораторов объектов данного альбома.
         /// </summary>
         public AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> ItemDecorators { get; private set; }
+
+
+        public void AddImageToAdded(IEnumerable<string> photoPaths) 
+        {
+            foreach (string photoPath in photoPaths)
+            {
+                byte[] imageData = File.ReadAllBytes(photoPath);
+                var photoModel = new PhotoAttachmentModel
+                {
+                    PreviewDataBlob = ImageScaler.ScaleToPreview(imageData),
+                    TypeOfAttachment = AttachmentType.Photo
+                };
+
+                addedPhotos.Add(new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(photoModel)));
+            }
+        }
 
 
         /// <summary>
@@ -108,7 +138,7 @@ namespace TwinSovet.ViewModels.Attachments
 
             var originalAlbum = (TAlbumModel)originalModel;
             var contextFactory = MainContainer.Instance.Resolve<IDbContextFactory>();
-            albumItemsProvider = new AlbumItemsProvider<TDescriptorModel, TAttachmentModel>(originalAlbum, contextFactory, DecoratorFactory);
+            albumItemsProvider = new AlbumItemsProvider<TAlbumModel, TAttachmentModel, TDescriptorModel>(originalAlbum, contextFactory, DecoratorFactory);
             albumItemsProvider.SetFilter(ItemDecoratorFilter);
             albumItemsProvider.Refresh();
 
@@ -119,6 +149,7 @@ namespace TwinSovet.ViewModels.Attachments
             });
 
             OnPropertyChanged(nameof(ItemDecorators));
+            OnPropertyChanged(nameof(HasSavedPhotos));
 
             RefreshCollection();
         }
@@ -131,6 +162,12 @@ namespace TwinSovet.ViewModels.Attachments
         private void RefreshCollection() 
         {
             ItemDecorators?.Refresh();
+        }
+
+
+        private void AddedPhotos_OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) 
+        {
+            OnPropertyChanged(nameof(HasAddedPhotos));
         }
     }
 }

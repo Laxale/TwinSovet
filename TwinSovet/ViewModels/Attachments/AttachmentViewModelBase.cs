@@ -115,7 +115,7 @@ namespace TwinSovet.ViewModels.Attachments
         {
             this.VerifyIsEditable();
 
-            AttachmentsProvider<AttachmentModelBase>.SaveOrUpdate(GetModel());
+            AttachmentsProvider<NoteAttachmentModel>.SaveOrUpdate(GetModel());
 
             EventExecutedAttachmentSave();
         }

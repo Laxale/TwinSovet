@@ -4,20 +4,19 @@ using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.Models.Attachments;
 
 
 namespace TwinSovet.Data.DataBase.Config 
 {
-    internal class NotesConfiguration : EntityTypeConfiguration<NoteAttachmentModel> 
+    internal class NotesConfiguration : BasicAttachmentConfiguration<NoteAttachmentModel> 
     {
         public NotesConfiguration() 
         {
-            Ignore(note => note.ChildDescriptors);
-
-            HasMany(noteModel => noteModel.ChildDescriptors_Map)
-                .WithRequired(childDescriptor => (NoteAttachmentModel)childDescriptor.NavigationParent)
-                .HasForeignKey(childDescriptor => childDescriptor.ParentId)
+            HasMany(note => note.ChildAttachmentDescriptors)
+                .WithRequired(descriptor => descriptor.NavigationParent)
+                .HasForeignKey(descriptor => descriptor.ParentId)
                 .WillCascadeOnDelete(true);
         }
     }

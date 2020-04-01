@@ -22,6 +22,6 @@ namespace TwinSovet.Data.Models.Attachments
         /// Навигационное свойство - родительский объект <see cref="AttachmentModelBase"/>.
         /// </summary>
         [ForeignKey(nameof(ParentId))]
-        public AttachmentModelBase NavigationParent { get; set; }
+        public virtual AttachmentModelBase NavigationParent { get; set; }
     }
 }

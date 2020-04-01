@@ -36,7 +36,7 @@ namespace TwinSovet.Data.DataBase.Context
         protected override void OnModelCreating(DbModelBuilder modelBuilder) 
         {
             base.OnModelCreating(modelBuilder);
-
+            
             // вызывает падение из-за запрета EF на абстрактные и generic-модели
             //modelBuilder.Configurations.Add(new ChildDescriptorConfiguration());
         }

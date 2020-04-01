@@ -49,8 +49,8 @@
     <Compile Include="DataBase\Base\ChildSimpleDbObject.cs" />
     <Compile Include="DataBase\Base\ComplexDbObject.cs" />
     <Compile Include="DataBase\Base\ComplexDbContext.cs" />
+    <Compile Include="DataBase\Config\BasicAlbumAttachmentConfiguration.cs" />
     <Compile Include="DataBase\Config\BasicAttachmentConfiguration.cs" />
-    <Compile Include="DataBase\Config\ChildAttachmentDescriptorsConfiguration.cs" />
     <Compile Include="DataBase\Config\DbConst.cs" />
     <Compile Include="DataBase\Config\DocumentsConfiguration.cs" />
     <Compile Include="DataBase\Config\PhotoAlbumsConfiguration.cs" />
@@ -59,7 +59,6 @@
     <Compile Include="DataBase\Config\SQLiteConfiguration.cs" />
     <Compile Include="DataBase\Base\DbContextBase.cs" />
     <Compile Include="DataBase\Base\DbObject.cs" />
-    <Compile Include="DataBase\Context\ChildAttachmentDescriptorsContext.cs" />
     <Compile Include="DataBase\Context\CommonAttachmentContext.cs" />
     <Compile Include="DataBase\Context\DocumentAttachmentsContext.cs" />
     <Compile Include="DataBase\Context\NoteAttachmentsContext.cs" />
@@ -86,6 +85,11 @@
     <Compile Include="Models\Attachments\DocumentAlbumAttachmentModel.cs" />
     <Compile Include="Models\Attachments\DocumentAttachmentModel.cs" />
     <Compile Include="Models\Attachments\DocumentDescriptorModel.cs" />
+    <Compile Include="Models\Attachments\OfDocumentAlbumAttachmentDescriptor.cs" />
+    <Compile Include="Models\Attachments\OfDocumentAttachmentDescriptor.cs" />
+    <Compile Include="Models\Attachments\OfNoteAttachmentDescriptor.cs" />
+    <Compile Include="Models\Attachments\OfPhotoAlbumAttachmentDescriptor.cs" />
+    <Compile Include="Models\Attachments\OfPhotoAttachmentDescriptor.cs" />
     <Compile Include="Models\Attachments\PhotoAlbumAttachmentModel.cs" />
     <Compile Include="Models\Attachments\PhotoAttachmentModel.cs" />
     <Compile Include="Models\Attachments\PhotoDescriptorModel.cs" />

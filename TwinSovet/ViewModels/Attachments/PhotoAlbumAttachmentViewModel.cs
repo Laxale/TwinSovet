@@ -13,7 +13,8 @@ using TwinSovet.Providers;
 
 namespace TwinSovet.ViewModels.Attachments 
 {
-    internal class PhotoAlbumAttachmentViewModel : AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, PhotoDescriptorModel, PhotoAttachmentModel> 
+    internal class PhotoAlbumAttachmentViewModel : 
+        AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, OfPhotoAlbumAttachmentDescriptor, PhotoAttachmentModel> 
     {
         
 

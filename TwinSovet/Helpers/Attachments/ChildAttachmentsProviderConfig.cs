@@ -19,7 +19,7 @@ namespace TwinSovet.Helpers.Attachments
         public ChildAttachmentsProviderConfig(NoteAttachmentModel parentAttachment) 
         {
             Predicate = model =>
-                parentAttachment.ChildDescriptors.Any(childDescriptor =>
+                parentAttachment.ChildAttachmentDescriptors.Any(childDescriptor =>
                     childDescriptor.ChildAttachmentId == model.Id
                 // не нужно проверять тип, поскольку аттачи лежат в разных таблицах.
                 // предикат, соответственно, применяется к одному типу аттачей внутри одного EF-контекста.
@@ -33,7 +33,7 @@ namespace TwinSovet.Helpers.Attachments
         public ChildAttachmentsProviderConfig(PhotoAttachmentModel parentAttachment) 
         {
             Predicate = model =>
-                parentAttachment.ChildDescriptors.Any(childDescriptor =>
+                parentAttachment.ChildAttachmentDescriptors.Any(childDescriptor =>
                         childDescriptor.ChildAttachmentId == model.Id);
 
             DecoratorTransform = PhotoDecoratorTransform;
@@ -42,7 +42,7 @@ namespace TwinSovet.Helpers.Attachments
         public ChildAttachmentsProviderConfig(DocumentAttachmentModel parentAttachment) 
         {
             Predicate = model =>
-                parentAttachment.ChildDescriptors.Any(childDescriptor =>
+                parentAttachment.ChildAttachmentDescriptors.Any(childDescriptor =>
                     childDescriptor.ChildAttachmentId == model.Id);
 
             DecoratorTransform = DocumentDecoratorTransform;

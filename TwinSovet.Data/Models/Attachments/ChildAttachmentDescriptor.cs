@@ -10,10 +10,14 @@ namespace TwinSovet.Data.Models.Attachments
 {
     /// <summary>
     /// Дескриптор дочернего аттача, приложенного к родительскому аттачу.
+    /// <typeparam name="TParentAttachmentModel">Тип аттачмента, дочерние аттачи которого описывает данный дескриптор.</typeparam>
     /// </summary>
-    [RelationalContext(typeof(ChildAttachmentDescriptorsContext))]
-    [Table(DbConst.TableNames.ChildAttachmentDescriptorsTableName)]
-    public class ChildAttachmentDescriptor : ChildAttachmentDbObject 
+    public abstract class ChildAttachmentDescriptor 
+        <TParentAttachmentModel>
+        : 
+        //ChildAttachmentDbObject 
+        ChildSimpleDbObject<TParentAttachmentModel>
+        where TParentAttachmentModel : AttachmentModelBase, new()
     {
         /// <summary>
         /// Возвращает или задаёт идентификатор дочернего аттача.

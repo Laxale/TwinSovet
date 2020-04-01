@@ -25,6 +25,12 @@ namespace TwinSovet.Data.Models.Attachments
         }
 
 
+        /// <summary>
+        /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
+        /// </summary>
+        public virtual List<OfNoteAttachmentDescriptor> ChildAttachmentDescriptors { get; set; } = new List<OfNoteAttachmentDescriptor>();
+
+
         public override AttachmentModelBase Clone() 
         {
             var clone = new NoteAttachmentModel
@@ -41,7 +47,7 @@ namespace TwinSovet.Data.Models.Attachments
                 TypeOfAttachment = TypeOfAttachment,
             };
 
-            clone.ChildDescriptors.AddRange(ChildDescriptors);
+            //clone.ChildDescriptors.AddRange(ChildDescriptors);
 
             return clone;
         }
@@ -52,10 +58,11 @@ namespace TwinSovet.Data.Models.Attachments
         /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
         public override ComplexDbObject PrepareMappedProps() 
         {
-            ChildDescriptors_Map.Clear();
-            ChildDescriptors_Map.AddRange(ChildDescriptors.Select(descriptor =>
+            ChildAttachmentDescriptors.Clear();
+            
+            ChildAttachmentDescriptors.AddRange(ChildAttachmentDescriptors.Select(descriptor =>
             {
-                var clone = new ChildAttachmentDescriptor
+                var clone = new OfNoteAttachmentDescriptor
                 {
                     Id = descriptor.Id,
                     ChildAttachmentId = descriptor.ChildAttachmentId,
@@ -68,16 +75,6 @@ namespace TwinSovet.Data.Models.Attachments
             }));
 
             return this;
-        }
-
-
-        /// <summary>
-        /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
-        /// </summary>
-        /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected override List<string> GetIncludedPropNames() 
-        {
-            return new List<string> { nameof(ChildDescriptors_Map) };
         }
     }
 }

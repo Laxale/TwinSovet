@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Cache;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Microsoft.Practices.ObjectBuilder2;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Data.Providers;
 
@@ -42,7 +44,11 @@ namespace TwinSovet.Providers
                 string previewFilePath = Path.Combine(previewFolderPath, $"preview_{photoModel.Id}");
                 File.WriteAllBytes(previewFilePath, photoModel.PreviewDataBlob);
 
-                previewSources.Add(photoModel.Id, new BitmapImage(new Uri(previewFilePath, UriKind.Absolute)));
+                previewSources.Add(photoModel.Id, 
+                    new BitmapImage(new Uri(previewFilePath, UriKind.Absolute))
+                    {
+                        CacheOption = BitmapCacheOption.None
+                    });
             }
         }
 
@@ -63,7 +69,8 @@ namespace TwinSovet.Providers
         {
             try
             {
-                var source = new BitmapImage(new Uri(filePath));
+                var source = new BitmapImage(new Uri(filePath), new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore));
+                source.StreamSource?.Dispose();
                 return true;
             }
             catch (Exception ex)
@@ -78,7 +85,11 @@ namespace TwinSovet.Providers
         {
             if (Directory.Exists(previewFolderPath))
             {
-                Directory.Delete(previewFolderPath, true);
+                previewSources.ForEach(pair => (pair.Value as BitmapImage)?.StreamSource?.Dispose());
+                previewSources.Clear();
+                //todo папка пока не удаляется при закрытии процесса.
+                // где-то держится указатель на файл
+                //Directory.Delete(previewFolderPath, true);
             }
         }
 

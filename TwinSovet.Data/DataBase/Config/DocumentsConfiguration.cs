@@ -9,16 +9,15 @@ using TwinSovet.Data.Models.Attachments;
 
 namespace TwinSovet.Data.DataBase.Config 
 {
-    internal class DocumentsConfiguration : EntityTypeConfiguration<DocumentAttachmentModel> 
+    internal class DocumentsConfiguration : BasicAttachmentConfiguration<DocumentAttachmentModel> 
     {
         public DocumentsConfiguration() 
         {
-            Ignore(note => note.ChildDescriptors);
-
-            HasMany(noteModel => noteModel.ChildDescriptors_Map)
-                .WithRequired(childDescriptor => (DocumentAttachmentModel)childDescriptor.NavigationParent)
-                .HasForeignKey(childDescriptor => childDescriptor.ParentId)
+            HasMany(note => note.ChildAttachmentDescriptors)
+                .WithRequired(descriptor => descriptor.NavigationParent)
+                .HasForeignKey(descriptor => descriptor.ParentId)
                 .WillCascadeOnDelete(true);
+
         }
     }
 }

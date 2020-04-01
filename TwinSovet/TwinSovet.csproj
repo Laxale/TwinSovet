@@ -108,6 +108,7 @@
     <Compile Include="Helpers\Attachments\CommonSubjectAttachmentsLogic.cs" />
     <Compile Include="Helpers\Attachments\RootAttachmentsProviderConfig.cs" />
     <Compile Include="Helpers\ChildAttachmentTemplateSelector.cs" />
+    <Compile Include="Helpers\ImageScaler.cs" />
     <Compile Include="Helpers\NullableBool.cs" />
     <Compile Include="Helpers\ClientCommands.cs" />
     <Compile Include="Helpers\DelayedEventInvoker.cs" />
@@ -121,6 +122,8 @@
     <Compile Include="Interfaces\IDetailedAttachnemtView.cs" />
     <Compile Include="Interfaces\IFloorsProvider.cs" />
     <Compile Include="Helpers\NonDesignInvoker.cs" />
+    <Compile Include="Interfaces\IPhotoAlbumsProvider.cs" />
+    <Compile Include="Interfaces\IPhotoAttachmentsProvider.cs" />
     <Compile Include="Interfaces\IReadonlyFlagged.cs" />
     <Compile Include="Messages\Details\MessageShowAborigenDetails.cs" />
     <Compile Include="Messages\Details\MessageShowDetails.cs" />
