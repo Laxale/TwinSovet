@@ -13,6 +13,11 @@ namespace TwinSovet.Data.DataBase.Config
     {
         public ChildAttachmentDescriptorsConfiguration() 
         {
+            HasKey(descriptor => descriptor.Id);
+            HasRequired(descriptor => descriptor.NavigationParent)
+                .WithMany(t => t.ChildDescriptors_Map).HasForeignKey(desc => desc.ParentId).WillCascadeOnDelete(true)
+                ;
+            
             
         }
     }

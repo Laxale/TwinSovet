@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TwinSovet.Data.Models;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Interfaces;
+using TwinSovet.ViewModels.Attachments;
 
 
 namespace TwinSovet.Helpers.Attachments 
@@ -25,6 +26,8 @@ namespace TwinSovet.Helpers.Attachments
                 // конкретную таблицу выбирает провайдер по полю ChildAttachmentType
                 //&& childDescriptor.ChildAttachmentType == model.TypeOfAttachment
                 );
+
+            DecoratorTransform = NoteDecoratorTransform;
         }
 
         public ChildAttachmentsProviderConfig(PhotoAttachmentModel parentAttachment) 
@@ -32,6 +35,8 @@ namespace TwinSovet.Helpers.Attachments
             Predicate = model =>
                 parentAttachment.ChildDescriptors.Any(childDescriptor =>
                         childDescriptor.ChildAttachmentId == model.Id);
+
+            DecoratorTransform = PhotoDecoratorTransform;
         }
 
         public ChildAttachmentsProviderConfig(DocumentAttachmentModel parentAttachment) 
@@ -39,6 +44,8 @@ namespace TwinSovet.Helpers.Attachments
             Predicate = model =>
                 parentAttachment.ChildDescriptors.Any(childDescriptor =>
                     childDescriptor.ChildAttachmentId == model.Id);
+
+            DecoratorTransform = DocumentDecoratorTransform;
         }
 
 
@@ -46,5 +53,10 @@ namespace TwinSovet.Helpers.Attachments
         /// Возвращает функцию-предикат поиска аттачей в базе.
         /// </summary>
         public override Func<AttachmentModelBase, bool> Predicate { get; }
+
+        /// <summary>
+        /// Функция преобразования модели объекта в декоратор.
+        /// </summary>
+        public override Func<AttachmentModelBase, AttachmentPanelDecoratorBase_NonGeneric> DecoratorTransform { get; }
     }
 }

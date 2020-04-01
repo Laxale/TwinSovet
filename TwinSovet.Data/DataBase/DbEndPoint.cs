@@ -5,16 +5,19 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NLog;
+
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
 
-namespace TwinSovet.Data.DataBase
+using NLog;
+
+
+namespace TwinSovet.Data.DataBase 
 {
     /// <summary>
-    /// Репозиторий настроек приложения - объекты настроек хранятся в единственном экземпляре.
+    /// Реализация <see cref="IDbEndPoint"/>.
     /// </summary>
-    public class DbObjectStorage : IObjectStorage 
+    public class DbEndPoint : IDbEndPoint 
     {
         private static readonly object Locker = new object();
         private static readonly object CacheLocker = new object();
@@ -24,30 +27,26 @@ namespace TwinSovet.Data.DataBase
         private readonly IDbContextFactory contextFactory;
 
 
-        public DbObjectStorage(IDbContextFactory contextFactory)
+        public DbEndPoint(IDbContextFactory contextFactory) 
         {
             this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
 
-        /// <summary>
-        /// Возвращает объект настроек типа <see cref="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Тип объекта для сохранения.</typeparam>
-        /// <returns>Результат с объектом настройки.</returns>
-        public T GetSingleSimple<T>() where T : SimpleDbObject, new() 
+        public IEnumerable<T> GetSimpleObjects<T>(Func<T, bool> predicate) where T : SimpleDbObject, new() 
         {
-            return GetDbObjectSynchronized<T>(true);
+            return GetDbObjectSynchronized<T>(predicate, true);
         }
 
         /// <summary>
-        /// Вернуть объект сложных настроек типа <see cref="TComplexObject"/>.
+        /// Получить сложные объекты из базы типа <see cref="TComplexObject"/>.
         /// </summary>
-        /// <typeparam name="TComplexObject">Тип сложных настроек.</typeparam>
+        /// <typeparam name="TComplexObject">Тип сложных объектов.</typeparam>
         /// <returns>Результат получения объекта сложных настроек.</returns>
-        public TComplexObject GetSingleComplex<TComplexObject>() where TComplexObject : ComplexDbObject, new() 
+        public IEnumerable<TComplexObject> GetComplexObjects<TComplexObject>(Func<TComplexObject, bool> predicate) 
+            where TComplexObject : ComplexDbObject, new() 
         {
-            return GetDbObjectSynchronized<TComplexObject>(false);
+            return GetDbObjectSynchronized<TComplexObject>(predicate, false);
         }
 
         /// <summary>
@@ -145,34 +144,29 @@ namespace TwinSovet.Data.DataBase
             }
         }
 
-        private TObject GetDbObjectSynchronized<TObject>(bool isSimple) where TObject : DbObject, new() 
+        private IEnumerable<TObject> GetDbObjectSynchronized<TObject>(Func<TObject, bool> predicate, bool isSimple) 
+            where TObject : DbObject, new() 
         {
             lock (Locker)
             {
                 if (isSimple)
                 {
-                    return TryGetSimpleDbObject<TObject>();
+                    return TryGetSimpleDbObject<TObject>(predicate);
                 }
 
-                return TryGetComplexDbObject<TObject>();
+                return TryGetComplexObjects<TObject>(predicate);
             }
         }
 
-        private TObject TryGetSimpleDbObject<TObject>() where TObject : DbObject, new()
+        private IEnumerable<TObject> TryGetSimpleDbObject<TObject>(Func<TObject, bool> predicate) 
+            where TObject : DbObject, new() 
         {
             try
             {
 
                 using (var dbContext = contextFactory.CreateContext<TObject>())
                 {
-                    //var logs = new List<string>();
-                    //dbContext.Database.Log = logs.Add;
-
-                    TObject foundProxy =
-                        dbContext.Objects.Local.SingleOrDefault() ??
-                        dbContext.Objects.SingleOrDefault();
-
-                    return foundProxy;
+                    return dbContext.Objects.ToList();
                 }
             }
             catch (Exception ex)
@@ -182,47 +176,31 @@ namespace TwinSovet.Data.DataBase
             }
         }
 
-        private TObject TryGetComplexDbObject<TObject>() where TObject : DbObject, new() 
+        private IEnumerable<TObject> TryGetComplexObjects<TObject>(Func<TObject, bool> predicate) 
+            where TObject : DbObject, new() 
         {
             try
             {
-                bool cached = false;
-                ComplexDbObject complexProxy;
+                var foundProxies = new List<TObject>();
 
                 using (DbContextBase<TObject> dbContext = contextFactory.CreateContext<TObject>())
                 {
                     IEnumerable<string> cachedProps = GetCachedProps<TObject>();
-
-                    TObject foundProxy;
-
-                    if (cachedProps != null)
+                    
+                    if (cachedProps == null)
                     {
-                        DbQuery<TObject> query = IncludeProps(dbContext, cachedProps);
-                        foundProxy = query.SingleOrDefault();
-                        complexProxy = foundProxy as ComplexDbObject;
-                    }
-                    else
-                    {
-                        foundProxy = dbContext.Objects.SingleOrDefault();
-                        if (foundProxy == null)
-                        {
-                            string typeName = typeof(TObject).Name;
-                            throw new InvalidOperationException("oooooo");
-                        }
-                        complexProxy = foundProxy as ComplexDbObject;
+                        var complexProxy = new TObject() as ComplexDbObject;
                         var includedProps = new List<string> { complexProxy.IncludedPropertyNames };
                         includedProps.AddRange(complexProxy.IncludedChildPropNames);
                         SaveCachedProps<TObject>(includedProps);
-                        cached = true;
                     }
-                }
 
-                if (cached)
-                {
-                    return TryGetComplexDbObject<TObject>();
+                    cachedProps = GetCachedProps<TObject>();
+                    DbQuery<TObject> query = IncludeProps(dbContext, cachedProps);
+                    foundProxies.AddRange(predicate == null ? query.AsEnumerable() : query.AsEnumerable()?.Where(predicate));
                 }
-
-                return complexProxy as TObject;
+                
+                return foundProxies;
             }
             catch (Exception ex)
             {

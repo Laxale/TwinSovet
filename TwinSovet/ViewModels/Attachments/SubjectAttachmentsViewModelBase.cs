@@ -9,6 +9,7 @@ using TwinSovet.Data.Enums;
 using Prism.Commands;
 
 using TwinSovet.Data.DataBase.Interfaces;
+using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Helpers;
 using TwinSovet.Helpers.Attachments;
 using TwinSovet.Interfaces;
@@ -22,16 +23,15 @@ namespace TwinSovet.ViewModels.Attachments
     /// </summary>
     internal abstract class SubjectAttachmentsViewModelBase : ViewModelBase 
     {
-        private readonly int pageSize = 10;
-        private readonly int pageTimeout = int.MaxValue;
-        private readonly IUnityContainer container;
+        protected readonly int pageSize = 10;
+        protected readonly int pageTimeout = int.MaxValue;
+        protected readonly IUnityContainer container;
 
         private SubjectEntityViewModel notesOwner;
-        private IAttachmentsProvider attachmentsProvider;
         private AttachmentPanelDecoratorBase_NonGeneric detailedAttachmentDecorator;
 
 
-        protected SubjectAttachmentsViewModelBase(IUnityContainer container)
+        protected SubjectAttachmentsViewModelBase(IUnityContainer container) 
         {
             this.container = container;
 
@@ -106,15 +106,17 @@ namespace TwinSovet.ViewModels.Attachments
             CurrentNotesOwner = owner;
             string hostId = RootSubjectIdentifier.Identify(owner);
             var config = new RootAttachmentsProviderConfig(owner.TypeOfSubject, hostId, TypeOfAttachment);
-            attachmentsProvider = new AttachmentsProvider(container.Resolve<IDbContextFactory>(), config);
 
-            NoteDecorators = new AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric>(attachmentsProvider, pageSize, pageTimeout);
+            NoteDecorators = InitCollection(config);
 
             OnPropertyChanged(nameof(NoteDecorators));
 
             RefreshCollection();
         }
 
+        protected abstract void RefreshProvider();
+
+        protected abstract AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> InitCollection(RootAttachmentsProviderConfig config);
 
         protected abstract bool MustReactToAttachmentCreation(AttachmentViewModelBase attachmentViewModelBase);
 
@@ -142,7 +144,7 @@ namespace TwinSovet.ViewModels.Attachments
 
             if (MustReactToAttachmentCreation(attachmentViewModelBase))
             {
-                attachmentsProvider.Refresh();
+                RefreshProvider();
                 RefreshCollection();
             }
         }

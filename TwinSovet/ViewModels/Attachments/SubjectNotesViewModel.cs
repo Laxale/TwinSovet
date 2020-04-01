@@ -21,6 +21,9 @@ namespace TwinSovet.ViewModels.Attachments
     /// </summary>
     internal class SubjectNotesViewModel : SubjectAttachmentsViewModelBase 
     {
+        private IAttachmentsProvider<NoteAttachmentModel> provider;
+
+
         /// <summary>
         /// Конструирует <see cref="SubjectNotesViewModel"/> с данными зависимостями.
         /// </summary>
@@ -33,6 +36,21 @@ namespace TwinSovet.ViewModels.Attachments
 
         public override AttachmentType TypeOfAttachment { get; } = AttachmentType.Note;
 
+
+        protected override void RefreshProvider() 
+        {
+            provider?.Refresh();
+        }
+
+        protected override AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> InitCollection(RootAttachmentsProviderConfig config) 
+        {
+            var endpoint = container.Resolve<IDbEndPoint>();
+            var factory = container.Resolve<IDbContextFactory>();
+
+            provider = new AttachmentsProvider<NoteAttachmentModel>(endpoint, factory, config);
+
+            return new AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric>(provider, pageSize, pageTimeout);
+        }
 
         protected override bool MustReactToAttachmentCreation(AttachmentViewModelBase attachmentViewModelBase) 
         {

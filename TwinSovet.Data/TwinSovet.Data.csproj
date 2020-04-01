@@ -66,9 +66,9 @@
     <Compile Include="DataBase\Context\PhotoAlbumsContext.cs" />
     <Compile Include="DataBase\Context\PhotoAttachmentsContext.cs" />
     <Compile Include="DataBase\DbContextFactory.cs" />
-    <Compile Include="DataBase\DbObjectStorage.cs" />
+    <Compile Include="DataBase\DbEndPoint.cs" />
     <Compile Include="DataBase\Interfaces\IDbContextFactory.cs" />
-    <Compile Include="DataBase\Interfaces\IObjectStorage.cs" />
+    <Compile Include="DataBase\Interfaces\IDbEndPoint.cs" />
     <Compile Include="DataBase\SimpleDbContext.cs" />
     <Compile Include="DataBase\Base\SimpleDbObject.cs" />
     <Compile Include="Enums\AttachmentHostType.cs" />

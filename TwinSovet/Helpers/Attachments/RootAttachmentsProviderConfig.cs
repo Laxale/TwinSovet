@@ -7,6 +7,7 @@ using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Extensions;
+using TwinSovet.ViewModels.Attachments;
 
 
 namespace TwinSovet.Helpers.Attachments 
@@ -26,6 +27,23 @@ namespace TwinSovet.Helpers.Attachments
 
                 return isFiltered;
             };
+
+            if (attachmentType == AttachmentType.Note)
+            {
+                DecoratorTransform = NoteDecoratorTransform;
+            }
+            else if (attachmentType == AttachmentType.Photo)
+            {
+                DecoratorTransform = PhotoDecoratorTransform;
+            }
+            if (attachmentType == AttachmentType.PhotoAlbum)
+            {
+                DecoratorTransform = PhotoAlbumDecoratorTransform;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
 
@@ -35,6 +53,11 @@ namespace TwinSovet.Helpers.Attachments
         /// Возвращает функцию-предикат поиска аттачей в базе.
         /// </summary>
         public override Func<AttachmentModelBase, bool> Predicate { get; }
+
+        /// <summary>
+        /// Функция преобразования модели объекта в декоратор.
+        /// </summary>
+        public override Func<AttachmentModelBase, AttachmentPanelDecoratorBase_NonGeneric> DecoratorTransform { get; }
 
 
         private SubjectType TypeOfSubject { get; }

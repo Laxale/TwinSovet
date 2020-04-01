@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Models.Attachments;
 
-namespace TwinSovet.Data.DataBase.Context
+
+namespace TwinSovet.Data.DataBase.Context 
 {
     public class ChildAttachmentDescriptorsContext : SimpleDbContext<ChildAttachmentDescriptor> 
     {

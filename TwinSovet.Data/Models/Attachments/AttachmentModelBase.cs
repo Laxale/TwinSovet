@@ -41,6 +41,7 @@ namespace TwinSovet.Data.Models.Attachments
         /// <summary>
         /// Возвращает или задаёт идентификатор объекта, к которому приложен данный аттач.
         /// </summary>
+        [DefaultValue(DbConst.DefaulStringValue)]
         public string HostId { get; set; }
 
         /// <summary>
@@ -100,7 +101,8 @@ namespace TwinSovet.Data.Models.Attachments
         /// <returns>Список названий вложенных пропертей класса.</returns>
         protected override List<string> GetIncludedPropNames() 
         {
-            throw new NotImplementedException();
+            return new List<string> { nameof(ChildDescriptors) };
+            //return new List<string> { nameof(ChildDescriptors_Map) };
         }
     }
 }
