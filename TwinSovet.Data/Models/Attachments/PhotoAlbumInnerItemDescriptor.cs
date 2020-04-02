@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwinSovet.Data.Models.Attachments 
 {
-    public class OfPhotoAttachmentDescriptor : ChildAttachmentDescriptor<PhotoAttachmentModel> 
+    public class PhotoAlbumInnerItemDescriptor : ChildAttachmentDescriptor<PhotoAlbumAttachmentModel> 
     {
 
     }

@@ -13,10 +13,12 @@ namespace TwinSovet.Data.DataBase.Config
     {
         public PhotosConfiguration() 
         {
+            /*
             HasMany(note => note.ChildAttachmentDescriptors)
                 .WithRequired(descriptor => descriptor.NavigationParent)
                 .HasForeignKey(descriptor => descriptor.ParentId)
                 .WillCascadeOnDelete(true);
+            */
         }
     }
 }

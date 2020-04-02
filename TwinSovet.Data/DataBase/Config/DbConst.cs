@@ -77,6 +77,11 @@ namespace TwinSovet.Data.DataBase.Config
             /// Название таблицы дескрипторов дочерних аттачментов.
             /// </summary>
             public const string ChildAttachmentDescriptorsTableName = "child_attach_descriptors";
+
+            /// <summary>
+            /// Название таблицы дескрипторов объектов, составляющих содержимое альбомов.
+            /// </summary>
+            public const string AlbumInnerItemDescriptorsTableName = "album_items_descriptors";
         }
     }
 }

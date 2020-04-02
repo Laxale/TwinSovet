@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Models.Attachments;
 
@@ -29,8 +30,9 @@ namespace TwinSovet.Data.DataBase.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Configurations.Add(new OfPhotoDescriptorConfiguration());
             modelBuilder.Configurations.Add(new PhotosConfiguration());
-
+            
             CreateTable(modelBuilder);
         }
     }

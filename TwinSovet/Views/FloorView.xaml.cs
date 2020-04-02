@@ -125,7 +125,7 @@ namespace TwinSovet.Views
                 return;
             }
 
-            this.Publish(new MessageShowNotes<SubjectEntityViewModel>(ViewModel.Data.OriginaFloorViewModel));
+            this.Publish(new MessageShowNotes<SubjectEntityViewModelBase>(ViewModel.Data.OriginaFloorViewModel));
         }
 
         private void ShowPhotosButtonOnClick(object sender, RoutedEventArgs e) 
@@ -136,7 +136,7 @@ namespace TwinSovet.Views
                 return;
             }
 
-            this.Publish(new MessageShowPhotos<SubjectEntityViewModel>(ViewModel.Data.OriginaFloorViewModel));
+            this.Publish(new MessageShowPhotos<SubjectEntityViewModelBase>(ViewModel.Data.OriginaFloorViewModel));
         }
 
 

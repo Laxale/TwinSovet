@@ -27,7 +27,7 @@ namespace TwinSovet.ViewModels.Attachments
         protected readonly int pageTimeout = int.MaxValue;
         protected readonly IUnityContainer container;
 
-        private SubjectEntityViewModel notesOwner;
+        private SubjectEntityViewModelBase notesOwner;
         private AttachmentPanelDecoratorBase_NonGeneric detailedAttachmentDecorator;
 
 
@@ -74,7 +74,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// <summary>
         /// Возвращает текущую вьюмодель субъекта, для которого отображаем заметки.
         /// </summary>
-        public SubjectEntityViewModel CurrentNotesOwner 
+        public SubjectEntityViewModelBase CurrentNotesOwner 
         {
             get => notesOwner;
 
@@ -89,6 +89,9 @@ namespace TwinSovet.ViewModels.Attachments
             }
         }
 
+        /// <summary>
+        /// Возвращает тип аттачей, которые содержит данная вьюмодель.
+        /// </summary>
         public abstract AttachmentType TypeOfAttachment { get; }
 
         public AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> NoteDecorators { get; private set; }
@@ -99,7 +102,7 @@ namespace TwinSovet.ViewModels.Attachments
             DetailedAttachmentDecorator = null;
         }
 
-        public void SetNotesOwner(SubjectEntityViewModel owner) 
+        public void SetNotesOwner(SubjectEntityViewModelBase owner) 
         {
             if (notesOwner != null) throw new InvalidOperationException($"Нельзя повторно задать субъекта");
 

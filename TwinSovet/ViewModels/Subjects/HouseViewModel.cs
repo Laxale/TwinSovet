@@ -5,7 +5,7 @@ using TwinSovet.Data.Enums;
 
 namespace TwinSovet.ViewModels.Subjects 
 {
-    internal class HouseViewModel : SubjectEntityViewModel 
+    internal class HouseViewModel : SubjectEntityViewModelBase 
     {
         /// <summary>
         /// Возвращает тип субъекта, которому соответствует данная вьюмодель.

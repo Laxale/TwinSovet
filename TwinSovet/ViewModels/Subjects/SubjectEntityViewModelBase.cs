@@ -7,7 +7,7 @@ namespace TwinSovet.ViewModels.Subjects
     /// <summary>
     /// Класс для обозначения вьюмоделей тех или иных сущностей дома. Будь то жители, квартиры, этажи, секции..
     /// </summary>
-    internal abstract class SubjectEntityViewModel : AttachmentAcceptorViewModel 
+    internal abstract class SubjectEntityViewModelBase : AttachmentAcceptorViewModel 
     {
         /// <summary>
         /// Возвращает тип субъекта, которому соответствует данная вьюмодель.

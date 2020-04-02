@@ -16,12 +16,14 @@ namespace TwinSovet.Data.DataBase.Base
         /// Внешний ключ для связи с родительским объектом <see cref="TComplexParent"/>.
         /// </summary>
         [Required]
+        //[ForeignKey(nameof(ParentId))]
+        [ForeignKey(nameof(NavigationParent))]
         public string ParentId { get; set; }
 
         /// <summary>
         /// Навигационное свойство - родительский объект <see cref="TComplexParent"/>.
         /// </summary>
-        [ForeignKey(nameof(ParentId))]
+        //[ForeignKey(nameof(ParentId))]
         public TComplexParent NavigationParent { get; set; }
     }
 }

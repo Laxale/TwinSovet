@@ -181,7 +181,7 @@
     <Compile Include="ViewModels\Subjects\HouseViewModel.cs" />
     <Compile Include="ViewModels\Subjects\SectionViewModelBase.cs" />
     <Compile Include="ViewModels\SelectAborigenViewModel.cs" />
-    <Compile Include="ViewModels\Subjects\SubjectEntityViewModel.cs" />
+    <Compile Include="ViewModels\Subjects\SubjectEntityViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AborigensListView.xaml.cs">
       <DependentUpon>AborigensListView.xaml</DependentUpon>

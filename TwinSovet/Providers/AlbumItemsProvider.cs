@@ -15,10 +15,11 @@ using TwinSovet.ViewModels.Attachments;
 
 namespace TwinSovet.Providers 
 {
-    internal class AlbumItemsProvider<TAlbum, TAttachmentModel, TDescriptor> : IAlbumItemsProvider<TAlbum, TDescriptor>
-        where TAlbum : AlbumAttachmentModelBase<TAlbum, TDescriptor>, new()
+    internal class AlbumItemsProvider<TAlbum, TAttachmentModel, TInnerDescriptor, TChildDescriptor> : IAlbumItemsProvider<TAlbum, TInnerDescriptor, TChildDescriptor>
+        where TAlbum : AlbumAttachmentModelBase<TAlbum, TInnerDescriptor, TChildDescriptor>, new()
         where TAttachmentModel : AttachmentModelBase, new()
-        where TDescriptor : ChildAttachmentDescriptor<TAlbum>, new()
+        where TInnerDescriptor : ChildAttachmentDescriptor<TAlbum>, new()
+        where TChildDescriptor : ChildAttachmentDescriptor<TAlbum>, new()
     {
         private static readonly object Locker = new object();
 

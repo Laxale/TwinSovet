@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwinSovet.Data.DataBase.Attributes;
+using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.DataBase.Context;
 using TwinSovet.Data.Enums;
@@ -27,18 +28,32 @@ namespace TwinSovet.Data.Models.Attachments
         /// <summary>
         /// Возвращает или задаёт коллекцию дескрипторов дочерних аттачей данного аттача.
         /// </summary>
-        public List<OfPhotoAttachmentDescriptor> ChildAttachmentDescriptors = new List<OfPhotoAttachmentDescriptor>();
+        public List<OfPhotoAttachmentDescriptor> ChildAttachmentDescriptors { get; set; } = new List<OfPhotoAttachmentDescriptor>();
 
 
         public override AttachmentModelBase Clone() 
         {
             var clone = new PhotoAttachmentModel();
-            clone.AcceptProps(this);
+            clone.AcceptModelProperties(this);
 
             clone.FullDataDescriptorId = this.FullDataDescriptorId;
             clone.PreviewDataBlob = this.PreviewDataBlob.ToArray();
 
             return clone;
+        }
+
+        /// <summary>
+        /// Принять свойства редактированной копии исходного объекта в базе для сохранения изменений.
+        /// </summary>
+        /// <returns></returns>
+        public override void AcceptProps(ComplexDbObject other) 
+        {
+            base.AcceptProps(other);
+
+            var photoOther = (PhotoAttachmentModel) other;
+            PreviewDataBlob = photoOther.PreviewDataBlob;
+            ChildAttachmentDescriptors.Clear();
+            ChildAttachmentDescriptors.AddRange(photoOther.ChildAttachmentDescriptors);
         }
     }
 }

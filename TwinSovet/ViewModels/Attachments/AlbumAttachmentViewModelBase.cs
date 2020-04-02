@@ -32,11 +32,12 @@ namespace TwinSovet.ViewModels.Attachments
     /// Базовый класс вьюмоделей альбомов.
     /// </summary>
     /// <typeparam name="TAlbumModel">Тип модели конкретного альбома.</typeparam>
-    /// <typeparam name="TDescriptorModel">Тип модели дескриптора.</typeparam>
+    /// <typeparam name="TChildDescriptor">Тип модели дескриптора.</typeparam>
     /// <typeparam name="TAttachmentModel">Тип модели элементов альбома.</typeparam>
-    internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TDescriptorModel, TAttachmentModel> : AttachmentViewModelBase 
-        where TAlbumModel : AlbumAttachmentModelBase<TAlbumModel, TDescriptorModel>, new()
-        where TDescriptorModel : ChildAttachmentDescriptor<TAlbumModel>, new()
+    internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TInnerDescriptor, TChildDescriptor, TAttachmentModel> : AttachmentViewModelBase 
+        where TAlbumModel : AlbumAttachmentModelBase<TAlbumModel, TInnerDescriptor, TChildDescriptor>, new()
+        where TInnerDescriptor : ChildAttachmentDescriptor<TAlbumModel>, new()
+        where TChildDescriptor : ChildAttachmentDescriptor<TAlbumModel>, new()
         where TAttachmentModel : BinaryAttachmentModel, new ()
     {
         private readonly int pageSize = 4;
@@ -46,7 +47,7 @@ namespace TwinSovet.ViewModels.Attachments
 
         private string titleReaodnly;
         private string descriptionReadonly;
-        private IAlbumItemsProvider<TAlbumModel, TDescriptorModel> albumItemsProvider;
+        private IAlbumItemsProvider<TAlbumModel, TInnerDescriptor, TChildDescriptor> albumItemsProvider;
 
 
         protected AlbumAttachmentViewModelBase(TAlbumModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
@@ -135,7 +136,7 @@ namespace TwinSovet.ViewModels.Attachments
 
             var originalAlbum = (TAlbumModel)originalModel;
             var contextFactory = MainContainer.Instance.Resolve<IDbContextFactory>();
-            albumItemsProvider = new AlbumItemsProvider<TAlbumModel, TAttachmentModel, TDescriptorModel>(originalAlbum, contextFactory, DecoratorFactory);
+            albumItemsProvider = new AlbumItemsProvider<TAlbumModel, TAttachmentModel, TInnerDescriptor, TChildDescriptor>(originalAlbum, contextFactory, DecoratorFactory);
             albumItemsProvider.SetFilter(ItemDecoratorFilter);
             albumItemsProvider.Refresh();
 
@@ -165,11 +166,11 @@ namespace TwinSovet.ViewModels.Attachments
 
             var clonedAlbum = (TAlbumModel) clonedOriginalModel;
 
-            IEnumerable<TDescriptorModel> newDescriptors = GetNewDescriptorsForSaving();
+            IEnumerable<TInnerDescriptor> newDescriptors = GetNewDescriptorsForSaving();
             clonedAlbum.AlbumCollectionDescriptors.AddRange(newDescriptors);
         }
 
-        protected abstract IEnumerable<TDescriptorModel> GetNewDescriptorsForSaving();
+        protected abstract IEnumerable<TInnerDescriptor> GetNewDescriptorsForSaving();
 
         protected string GetAlbumId() 
         {

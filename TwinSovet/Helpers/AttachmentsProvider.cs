@@ -5,6 +5,7 @@ using System.Linq;
 using Common.Extensions;
 using Common.Helpers;
 using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity;
 using TwinSovet.Data.DataBase;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
@@ -91,17 +92,27 @@ namespace TwinSovet.Helpers
 
         public static void SaveOrUpdate(AttachmentModelBase baseModel) 
         {
+            var endpoint = MainContainer.Instance.Resolve<IDbEndPoint>();
+            
             if (baseModel is NoteAttachmentModel noteModel)
             {
-                SaveOrUpdate(noteModel);
+                endpoint.SaveComplexObjects(new[] { noteModel });
+                //SaveOrUpdate(noteModel);
             }
             else if (baseModel is PhotoAttachmentModel photoModel)
             {
-                SaveOrUpdate(photoModel);
+                endpoint.SaveComplexObjects(new[] { photoModel });
+                //SaveOrUpdate(photoModel);
             }
             else if (baseModel is DocumentAttachmentModel documentModel)
             {
-                SaveOrUpdate(documentModel);
+                endpoint.SaveComplexObjects(new[] { documentModel });
+                //SaveOrUpdate(documentModel);
+            }
+            else if (baseModel is PhotoAlbumAttachmentModel photoAlbumModel)
+            {
+                endpoint.SaveComplexObjects(new[] { photoAlbumModel });
+                //SaveOrUpdate(documentModel);
             }
             else
             {
@@ -115,14 +126,14 @@ namespace TwinSovet.Helpers
             {
                 bool addedNote = false;
 
-                SetTimestamps(noteModel);
+                DbEndPoint.SetTimestamps(noteModel);
 
                 using (var context = contextFactory.CreateContext<NoteAttachmentModel>())
                 {
                     var existingModel = context.Objects.FirstOrDefault(note => note.Id == noteModel.Id);
                     if (existingModel != null)
                     {
-                        existingModel.AcceptProps(noteModel);
+                        existingModel.AcceptModelProperties(noteModel);
                     }
                     else
                     {
@@ -140,38 +151,8 @@ namespace TwinSovet.Helpers
             }
         }
 
-        public static void SaveOrUpdate(PhotoAttachmentModel photoModel) 
-        {
-            lock (PhotoLocker)
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public static void SaveOrUpdate(IEnumerable<PhotoAttachmentModel> photoModels) 
-        {
-            lock (PhotoLocker)
-            {
-                photoModels.ForEach(SetTimestamps);
-
-                throw new NotImplementedException();
-            }
-        }
-
-        public static IEnumerable<PhotoPanelDecorator> GetPhotos(IEnumerable<string> photoIds) 
-        {
-            lock (PhotoLocker)
-            {
-                using (var context = contextFactory.CreateContext<PhotoAttachmentModel>())
-                {
-                    var photoModels = context.Objects.AsEnumerable().Where(photo => photoIds.Contains(photo.Id));
-
-                    return photoModels.Select(model => new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(model))).ToList();
-                }
-            }
-        }
-
-
+      
+        
         /// <summary>
         /// Fetches the total number of items available.
         /// </summary>
@@ -254,16 +235,6 @@ namespace TwinSovet.Helpers
             }
         }
 
-
-        private static void SetTimestamps(AttachmentModelBase noteModel) 
-        {
-            noteModel.ModificationTime = DateTime.Now;
-
-            if (noteModel.CreationTime == null || noteModel.CreationTime == default(DateTime))
-            {
-                noteModel.CreationTime = noteModel.ModificationTime;
-            }
-        }
 
 
         private void LoadAttaches() 

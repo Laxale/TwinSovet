@@ -12,9 +12,10 @@ using TwinSovet.ViewModels.Attachments;
 
 namespace TwinSovet.Interfaces 
 {
-    internal interface IAlbumItemsProvider<TAlbum, TDescriptor> : IItemsProvider<AttachmentPanelDecoratorBase_NonGeneric>
-        where TAlbum : AlbumAttachmentModelBase<TAlbum, TDescriptor>, new() 
-        where TDescriptor : ChildAttachmentDescriptor<TAlbum>, new() 
+    internal interface IAlbumItemsProvider<TAlbum, TInnerDescriptor, TChildDescriptor> : IItemsProvider<AttachmentPanelDecoratorBase_NonGeneric>
+        where TAlbum : AlbumAttachmentModelBase<TAlbum, TInnerDescriptor, TChildDescriptor>, new() 
+        where TInnerDescriptor : ChildAttachmentDescriptor<TAlbum>, new() 
+        where TChildDescriptor : ChildAttachmentDescriptor<TAlbum>, new() 
     {
         
     }

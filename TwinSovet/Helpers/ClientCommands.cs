@@ -33,8 +33,8 @@ namespace TwinSovet.Helpers
             Enter = new RoutedUICommand(LocRes.ToDoAccept, nameof(Enter), typeof(ClientCommands));
             Cancel = new RoutedUICommand(LocRes.Cancellation, nameof(Cancel), typeof(ClientCommands));
 
-            CommandShowNotes = new DelegateCommand<SubjectEntityViewModel>(ShowNotesImpl);
-            CommandShowPhotos = new DelegateCommand<SubjectEntityViewModel>(ShowPhotosImpl);
+            CommandShowNotes = new DelegateCommand<SubjectEntityViewModelBase>(ShowNotesImpl);
+            CommandShowPhotos = new DelegateCommand<SubjectEntityViewModelBase>(ShowPhotosImpl);
             CommandShowFlatIndications = new DelegateCommand<FlatDecoratorViewModel>(ShowFlatIndicationsImpl);
             CommandShowFloorIndications = new DelegateCommand<FloorDecoratorViewModel>(ShowFloorIndicationsImpl);
             CommanSaveAttachment = new DelegateCommand<AttachmentViewModelBase>(SaveAttachmentImpl, CanSaveAttachment);
@@ -67,12 +67,12 @@ namespace TwinSovet.Helpers
         /// <summary>
         /// Возвращает команду показать заметки субъекта.
         /// </summary>
-        public static DelegateCommand<SubjectEntityViewModel> CommandShowNotes { get; }
+        public static DelegateCommand<SubjectEntityViewModelBase> CommandShowNotes { get; }
 
         /// <summary>
         /// Возвращает команду показать фотографии субъекта.
         /// </summary>
-        public static DelegateCommand<SubjectEntityViewModel> CommandShowPhotos { get; }
+        public static DelegateCommand<SubjectEntityViewModelBase> CommandShowPhotos { get; }
 
         /// <summary>
         /// Возвращает команду сохранить аттач.
@@ -90,14 +90,14 @@ namespace TwinSovet.Helpers
         public static DelegateCommand<AttachmentPanelDecoratorBase_NonGeneric> CommandCancelDetailingAttachment { get; }
 
 
-        private static void ShowNotesImpl(SubjectEntityViewModel owner) 
+        private static void ShowNotesImpl(SubjectEntityViewModelBase owner) 
         {
-            owner.Publish(new MessageShowNotes<SubjectEntityViewModel>(owner));
+            owner.Publish(new MessageShowNotes<SubjectEntityViewModelBase>(owner));
         }
 
-        private static void ShowPhotosImpl(SubjectEntityViewModel owner) 
+        private static void ShowPhotosImpl(SubjectEntityViewModelBase owner) 
         {
-            owner.Publish(new MessageShowPhotos<SubjectEntityViewModel>(owner));
+            owner.Publish(new MessageShowPhotos<SubjectEntityViewModelBase>(owner));
         }
 
         private static void ShowFlatIndicationsImpl(FlatDecoratorViewModel flat) 

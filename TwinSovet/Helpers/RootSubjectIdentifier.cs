@@ -18,7 +18,7 @@ namespace TwinSovet.Helpers
         public static string HousePrefix { get; } = "House";
 
 
-        public static string Identify(SubjectEntityViewModel subjectModel) 
+        public static string Identify(SubjectEntityViewModelBase subjectModel) 
         {
             if (subjectModel is AborigenDecoratorViewModel aborigen)
             {

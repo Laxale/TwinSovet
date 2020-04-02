@@ -77,8 +77,8 @@ namespace TwinSovet
 
             this.Subscribe<MessageShowFlatIndications>(OnShowFlatIndicationsRequest);
             this.Subscribe<MessageShowFloorIndications>(OnShowFloorIndicationsRequest);
-            this.Subscribe<MessageShowNotes<SubjectEntityViewModel>>(OnShowNotesRequest);
-            this.Subscribe<MessageShowPhotos<SubjectEntityViewModel>>(OnShowPhotosRequest);
+            this.Subscribe<MessageShowNotes<SubjectEntityViewModelBase>>(OnShowNotesRequest);
+            this.Subscribe<MessageShowPhotos<SubjectEntityViewModelBase>>(OnShowPhotosRequest);
         }
 
 
@@ -109,7 +109,7 @@ namespace TwinSovet
             win.Show();
         }
 
-        private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModel> message) 
+        private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModelBase> message) 
         {
             Window window = CreateHostWindow($"{ LocRes.Notes } | { message.AttachablesOwner.SubjectFriendlyInfo }");
 
@@ -122,7 +122,7 @@ namespace TwinSovet
             window.Show();
         }
 
-        private void OnShowPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
+        private void OnShowPhotosRequest(MessageShowPhotos<SubjectEntityViewModelBase> message) 
         {
             Window window = CreateHostWindow($"{ LocRes.Photos } | { message.AttachablesOwner.SubjectFriendlyInfo }");
 
@@ -140,6 +140,8 @@ namespace TwinSovet
         {
             Window window = Extensions.WindowExtensions.CreateEmptyHorizontalWindow();
             window.Title = title;
+            window.Owner = MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             window.MakeSticky();
 

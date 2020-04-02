@@ -17,7 +17,7 @@ using TwinSovet.Providers;
 namespace TwinSovet.ViewModels.Attachments 
 {
     internal class PhotoAlbumAttachmentViewModel : 
-        AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, OfPhotoAlbumAttachmentDescriptor, PhotoAttachmentModel> 
+        AlbumAttachmentViewModelBase<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor, PhotoAttachmentModel> 
     {
         
 
@@ -57,22 +57,24 @@ namespace TwinSovet.ViewModels.Attachments
                 //todo добавить сохранение исходного блоба!!!11
                 PreviewDataBlob = ImageScaler.ScaleToPreview(fileData),
                 TypeOfAttachment = AttachmentType.Photo,
-                RootSubjectType = 
+                RootSubjectType = subject?.TypeOfSubject ?? SubjectType.None,
+                RootSubjectId = subject == null ? "" : RootSubjectIdentifier.Identify(subject)
             };
 
             return new PhotoPanelDecorator(PhotoAttachmentViewModel.CreateEditable(photoModel));
         }
 
-        protected override IEnumerable<OfPhotoAlbumAttachmentDescriptor> GetNewDescriptorsForSaving() 
+        protected override IEnumerable<PhotoAlbumInnerItemDescriptor> GetNewDescriptorsForSaving() 
         {
             string thisAlbumId = GetAlbumId();
             
             IEnumerable<PhotoAttachmentModel> newPhotos = 
                 addedAlbumItems
                     .OfType<PhotoPanelDecorator>()
-                    .Select(photoDecorator => (PhotoAttachmentModel)photoDecorator.EditableAttachmentViewModel.GetModel());
+                    .Select(photoDecorator => (PhotoAttachmentModel)photoDecorator.EditableAttachmentViewModel.GetModel())
+                    .ToList();
 
-            if (!newPhotos.Any()) return new List<OfPhotoAlbumAttachmentDescriptor>();
+            if (!newPhotos.Any()) return new List<PhotoAlbumInnerItemDescriptor>();
 
             var endpoint = MainContainer.Instance.Resolve<IDbEndPoint>();
 
@@ -82,7 +84,7 @@ namespace TwinSovet.ViewModels.Attachments
                     newPhotos
                         .Select(photoAttach =>
                         {
-                            var photoDescriptor = new OfPhotoAlbumAttachmentDescriptor
+                            var photoDescriptor = new PhotoAlbumInnerItemDescriptor
                             {
                                 ChildAttachmentType = AttachmentType.Photo,
                                 ParentId = thisAlbumId,
@@ -90,7 +92,8 @@ namespace TwinSovet.ViewModels.Attachments
                             };
 
                             return photoDescriptor;
-                        });
+                        })
+                        .ToList();
 
             return newPhotoDescriptors;
         }

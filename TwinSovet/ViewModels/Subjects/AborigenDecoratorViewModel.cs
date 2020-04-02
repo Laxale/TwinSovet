@@ -12,7 +12,7 @@ using TwinSovet.Helpers;
 
 namespace TwinSovet.ViewModels.Subjects 
 {
-    internal class AborigenDecoratorViewModel : SubjectEntityViewModel 
+    internal class AborigenDecoratorViewModel : SubjectEntityViewModelBase 
     {
         private static readonly object Locker = new object();
         private static readonly AborigenDecoratorsCache cache = new AborigenDecoratorsCache();

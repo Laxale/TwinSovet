@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-
+using System.ServiceModel.Security;
 using TwinSovet.Data.DataBase.Attributes;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
@@ -53,28 +53,16 @@ namespace TwinSovet.Data.Models.Attachments
         }
 
         /// <summary>
-        /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
+        /// Принять свойства редактированной копии исходного объекта в базе для сохранения изменений.
         /// </summary>
-        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
-        public override ComplexDbObject PrepareMappedProps() 
+        /// <returns></returns>
+        public override void AcceptProps(ComplexDbObject other) 
         {
+            var noteOther = (NoteAttachmentModel) other;
+            base.AcceptModelProperties(noteOther);
+
             ChildAttachmentDescriptors.Clear();
-            
-            ChildAttachmentDescriptors.AddRange(ChildAttachmentDescriptors.Select(descriptor =>
-            {
-                var clone = new OfNoteAttachmentDescriptor
-                {
-                    Id = descriptor.Id,
-                    ChildAttachmentId = descriptor.ChildAttachmentId,
-                    ChildAttachmentType = descriptor.ChildAttachmentType,
-                    ParentId = this.Id,
-                    NavigationParent = this
-                };
-
-                return clone;
-            }));
-
-            return this;
+            ChildAttachmentDescriptors.AddRange(noteOther.ChildAttachmentDescriptors);
         }
     }
 }

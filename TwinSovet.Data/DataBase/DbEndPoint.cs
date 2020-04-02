@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using Common.Extensions;
+
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
 
 using NLog;
+using TwinSovet.Data.Models.Attachments;
 
 
 namespace TwinSovet.Data.DataBase 
@@ -30,6 +31,17 @@ namespace TwinSovet.Data.DataBase
         public DbEndPoint(IDbContextFactory contextFactory) 
         {
             this.contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+        }
+
+
+        public static void SetTimestamps(AttachmentModelBase noteModel) 
+        {
+            noteModel.ModificationTime = DateTime.Now;
+
+            if (noteModel.CreationTime == null || noteModel.CreationTime == default(DateTime))
+            {
+                noteModel.CreationTime = noteModel.ModificationTime;
+            }
         }
 
 
@@ -82,14 +94,14 @@ namespace TwinSovet.Data.DataBase
                 //var efLogs = new List<string>();
                 //RemoveCascade<TComplexObject>();
 
-                DbContextBase<TComplexObject> complexContext = contextFactory.CreateContext<TComplexObject>();
+                DbContextBase<TComplexObject> context = contextFactory.CreateContext<TComplexObject>();
 
-                using (complexContext)
+                using (context)
                 {
                     //complexContext.Database.Log = efLogs.Add;
                     // для полного удаления сложного объекта нужно приложить к нему названия его дочерних пропертей (которым соответствуют отдельные таблицы)
                     TComplexObject firstObject = objectsToSave.First();
-                    DbQuery<TComplexObject> allObjectsQuery = complexContext.Objects.Include(firstObject.IncludedPropertyNames);
+                    DbQuery<TComplexObject> allObjectsQuery = IncludeProps(context, new[] { firstObject.IncludedPropertyNames });
                     foreach (string childPropName in firstObject.IncludedChildPropNames)
                     {
                         allObjectsQuery.Include(childPropName);
@@ -100,11 +112,23 @@ namespace TwinSovet.Data.DataBase
 
                     foreach (TComplexObject complexObject in objectsToSave)
                     {
-                        DbEntityEntry<ComplexDbObject> entry = complexContext.Entry(complexObject.PrepareMappedProps());
-                        entry.State = EntityState.Added;
+                        SetTimestamps(complexObject as AttachmentModelBase);
+
+                        var existingObject = context.Objects.FirstOrDefault(obj => obj.Id == complexObject.Id);
+                        if (existingObject == null)
+                        {
+                            DbEntityEntry<TComplexObject> entry = context.Entry(complexObject);
+                            entry.State = EntityState.Added;
+                        }
+                        else
+                        {
+                            existingObject.AcceptProps(complexObject);
+                            DbEntityEntry<TComplexObject> entry = context.Entry(existingObject);
+                            entry.State = EntityState.Modified;
+                        }
                     }
 
-                    complexContext.SaveChanges();
+                    context.SaveChanges();
                 }
             }
             catch (Exception ex)

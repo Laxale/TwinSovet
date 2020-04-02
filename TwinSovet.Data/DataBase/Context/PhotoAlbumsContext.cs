@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
 using TwinSovet.Data.Models.Attachments;
@@ -35,17 +32,11 @@ namespace TwinSovet.Data.DataBase.Context
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<OfPhotoAlbumAttachmentDescriptor>()
-                .ToTable(DbConst.TableNames.ChildAttachmentDescriptorsTableName)
-                .HasRequired(descriptor => descriptor.NavigationParent)
-                .WithMany(album => album.ChildAttachmentDescriptors)
-                .HasForeignKey(desc => desc.ParentId)
-                .WillCascadeOnDelete(true)
-                ;
-
+            modelBuilder.Configurations.Add(new OfPhotoAlbumDescriptorConfiguration());
             modelBuilder.Configurations.Add(new PhotoAlbumsConfiguration());
+            modelBuilder.Configurations.Add(new AlbumInnerDescriptorsConfiguration<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor>());
 
-            
+
             CreateTable(modelBuilder);
         }
     }

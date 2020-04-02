@@ -11,17 +11,14 @@ using TwinSovet.Data.Models.Attachments;
 
 namespace TwinSovet.Data.DataBase.Config 
 {
-    internal class PhotoAlbumsConfiguration : BasicAlbumAttachmentConfiguration<PhotoAlbumAttachmentModel, OfPhotoAlbumAttachmentDescriptor> 
+    internal class PhotoAlbumsConfiguration : BasicAlbumAttachmentConfiguration<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor> 
     {
         public PhotoAlbumsConfiguration() 
         {
-            // можно использовать атрибут [NotMapped]?
-            //Ignore(album => album.ChildDescriptors);
-
             //ToTable(DbConst.TableNames.PhotoAlbumsTableName);
+            // вызывается в базовом классе
+            //Map(config => config.MapInheritedProperties());
 
-
-            
         }
     }
 }

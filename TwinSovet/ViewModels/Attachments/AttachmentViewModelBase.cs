@@ -9,6 +9,7 @@ using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Extensions;
 using TwinSovet.Helpers;
 using TwinSovet.Interfaces;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.ViewModels.Attachments 
@@ -24,6 +25,8 @@ namespace TwinSovet.ViewModels.Attachments
         private string title;
         private string description;
         private DateTime? modificationTime;
+
+        protected SubjectEntityViewModelBase subject;
 
         /// <summary>
         /// Событие успешного сохранения данных аттача.
@@ -67,6 +70,9 @@ namespace TwinSovet.ViewModels.Attachments
         /// </summary>
         public bool HasTitle { get; private set; }
 
+        /// <summary>
+        /// Возвращает или задаёт название аттача данной вьюмодели.
+        /// </summary>
         public string Title 
         {
             get => title;
@@ -84,8 +90,14 @@ namespace TwinSovet.ViewModels.Attachments
             }
         }
 
+        /// <summary>
+        /// Возвращает флаг - заполнено ли сейчас у вьюмодели НЕпустое поле <see cref="Description"/>.
+        /// </summary>
         public bool HasDescription { get; private set; }
 
+        /// <summary>
+        /// Возвращает или задаёт описание аттача данной вьюмодели.
+        /// </summary>
         public string Description 
         {
             get => description;
@@ -144,6 +156,15 @@ namespace TwinSovet.ViewModels.Attachments
             clone.Description = Description;
             
             return clone;
+        }
+
+        /// <summary>
+        /// Задать субъекта-владельца данной вьюмодели. То есть ему принадлежит данный аттач.
+        /// </summary>
+        /// <param name="subject">Вьюмодель субъекта-владельца данного аттача.</param>
+        public void SetOwnerSubject(SubjectEntityViewModelBase subject) 
+        {
+            this.subject = subject;
         }
 
         public virtual void ResetToSaved(AttachmentViewModelBase readonlyModel) 

@@ -18,7 +18,7 @@ using TwinSovet.Providers;
 
 namespace TwinSovet.ViewModels.Subjects
 {
-    internal abstract class SectionViewModelBase : SubjectEntityViewModel 
+    internal abstract class SectionViewModelBase : SubjectEntityViewModelBase 
     {
         private const int pageSize = 4;
         private const int pageTimeout = int.MaxValue;

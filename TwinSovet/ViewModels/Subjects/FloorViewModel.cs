@@ -11,7 +11,7 @@ using TwinSovet.Data.Models;
 
 namespace TwinSovet.ViewModels.Subjects 
 {
-    internal class FloorViewModel : SubjectEntityViewModel 
+    internal class FloorViewModel : SubjectEntityViewModelBase 
     {
         private readonly ObservableCollection<FlatDecoratorViewModel> flatDecorators = new ObservableCollection<FlatDecoratorViewModel>();
 

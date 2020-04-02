@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using TwinSovet.Data.DataBase.Base;
 
 
 namespace TwinSovet.Data.Models.Attachments 
@@ -19,5 +20,18 @@ namespace TwinSovet.Data.Models.Attachments
         /// </summary>
         [NotMapped]
         public BinaryDataModel FullDataModel { get; set; }
+
+
+        /// <summary>
+        /// Принять свойства редактированной копии исходного объекта в базе для сохранения изменений.
+        /// </summary>
+        /// <returns></returns>
+        public override void AcceptProps(ComplexDbObject other)
+        {
+            var binaryOther = (BinaryAttachmentModel) other;
+            base.AcceptModelProperties(binaryOther);
+
+            FullDataDescriptorId = binaryOther.FullDataDescriptorId;
+        }
     }
 }

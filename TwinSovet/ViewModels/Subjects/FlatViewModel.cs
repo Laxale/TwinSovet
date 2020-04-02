@@ -6,7 +6,7 @@ using LocRes = TwinSovet.Localization.Resources;
 
 namespace TwinSovet.ViewModels.Subjects 
 {
-    internal class FlatViewModel : SubjectEntityViewModel 
+    internal class FlatViewModel : SubjectEntityViewModelBase 
     {
         public FlatViewModel(FlatModel flatModel) 
         {

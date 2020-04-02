@@ -92,7 +92,10 @@ namespace TwinSovet.Views.Attachments
 
         private PhotoAlbumAttachmentViewModel CreateAttachmentViewModel(AttachmentModelBase model) 
         {
-            return new PhotoAlbumAttachmentViewModel((PhotoAlbumAttachmentModel)model, false);
+            var albumViewModel = new PhotoAlbumAttachmentViewModel((PhotoAlbumAttachmentModel)model, false);
+            albumViewModel.SetOwnerSubject(ViewModel.CurrentNotesOwner);
+
+            return albumViewModel;
         }
     }
 }

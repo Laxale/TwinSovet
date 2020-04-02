@@ -53,6 +53,9 @@
     <Compile Include="DataBase\Config\BasicAttachmentConfiguration.cs" />
     <Compile Include="DataBase\Config\DbConst.cs" />
     <Compile Include="DataBase\Config\DocumentsConfiguration.cs" />
+    <Compile Include="DataBase\Config\OfPhotoDescriptorConfiguration.cs" />
+    <Compile Include="DataBase\Config\OfPhotoAlbumDescriptorConfiguration.cs" />
+    <Compile Include="DataBase\Config\AlbumInnerDescriptorsConfiguration.cs" />
     <Compile Include="DataBase\Config\PhotoAlbumsConfiguration.cs" />
     <Compile Include="DataBase\Config\PhotosConfiguration.cs" />
     <Compile Include="DataBase\Config\NotesConfiguration.cs" />
@@ -78,6 +81,8 @@
     <Compile Include="Extensions\ModelExtensions.cs" />
     <Compile Include="Helpers\DbValidator.cs" />
     <Compile Include="Models\Attachments\AlbumAttachmentModelBase.cs" />
+    <Compile Include="Models\Attachments\DocumentAlbumInnerItemDescriptor.cs" />
+    <Compile Include="Models\Attachments\PhotoAlbumInnerItemDescriptor.cs" />
     <Compile Include="Models\Attachments\AttachmentModelBase.cs" />
     <Compile Include="Models\Attachments\BinaryAttachmentModel.cs" />
     <Compile Include="Models\Attachments\BinaryDescriptorModel.cs" />

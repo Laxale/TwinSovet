@@ -14,14 +14,17 @@ namespace TwinSovet.Data.Models.Attachments
     /// Базовый класс моделей аттачментов.
     /// Логически является абстрактным, но таковым не сделан для возможности хранения в одном списке всех типов дочерних аттачей.
     /// </summary>
-    public abstract class AttachmentModelBase : ComplexDbObject 
+    public abstract class AttachmentModelBase : ComplexDbObject
     {
+        private const string DefaultTitle = "Название не указано";
+
+
         /// <summary>
         /// Возвращает или задаёт название аттача.
         /// </summary>
         [Required]
-        [DefaultValue(DbConst.DefaulStringValue)]
-        public string Title { get; set; }
+        [DefaultValue(DefaultTitle)]
+        public string Title { get; set; } = DefaultTitle;
 
         /// <summary>
         /// Возвращает или задаёт текст описания аттача.
@@ -74,7 +77,7 @@ namespace TwinSovet.Data.Models.Attachments
         public abstract AttachmentModelBase Clone();
         
 
-        public virtual void AcceptProps(AttachmentModelBase other) 
+        public virtual void AcceptModelProperties(AttachmentModelBase other) 
         {
             if (TypeOfAttachment != other.TypeOfAttachment)
             {
@@ -92,16 +95,7 @@ namespace TwinSovet.Data.Models.Attachments
             HostId = other.HostId;
         }
 
-        /// <summary>
-        /// Заполнить актуальными данными зависимые свойства типа public <see cref="List{T}"/> MyList { get; set; }.
-        /// </summary>
-        /// <returns>Ссылка на сам <see cref="ComplexDbObject"/> с заполненными мап-пропертями.</returns>
-        public override ComplexDbObject PrepareMappedProps() 
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>

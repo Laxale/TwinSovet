@@ -100,7 +100,7 @@
     <!-- Стиль кнопки 'Показать заметки' -->
     <Style x:Key="TrimmedNotesButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
         <d:Style.DataContext>
-            <x:Type Type="subjects:SubjectEntityViewModel"/>
+            <x:Type Type="subjects:SubjectEntityViewModelBase"/>
         </d:Style.DataContext>
 
         <Setter Property="Content" Value="{x:Static loc:Resources.Notes}"/>
@@ -112,7 +112,7 @@
     <!-- Стиль кнопки 'Показать фотографии' -->
     <Style x:Key="TrimmedPhotosButtonsStyle" TargetType="Button" BasedOn="{StaticResource TrimmedLinkButtonStyle}">
         <d:Style.DataContext>
-            <x:Type Type="subjects:SubjectEntityViewModel"/>
+            <x:Type Type="subjects:SubjectEntityViewModelBase"/>
         </d:Style.DataContext>
 
         <Setter Property="Content" Value="{x:Static loc:Resources.Photos}"/>
