@@ -40,7 +40,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// <summary>
         /// Возвращает тип данного attachable-объекта.
         /// </summary>
-        public override AttachmentType EntityType { get; } = AttachmentType.Photo;
+        public override AttachmentType TypeOfAttachment { get; } = AttachmentType.Photo;
 
         /// <summary>
         /// Возвращает ссылку на вьюмодель превью данной картинки.

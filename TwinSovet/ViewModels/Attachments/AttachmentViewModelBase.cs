@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Prism.Commands;
 
 using TwinSovet.Data.Enums;
@@ -40,21 +41,30 @@ namespace TwinSovet.ViewModels.Attachments
             Description = attachmentModel.Description;
             CreationTime = attachmentModel.CreationTime;
             ModificationTime = attachmentModel.ModificationTime;
-            BeginAcceptingProps();
+            EndAcceptingProps();
 
             PropertyChanged += Self_OnPropertyChanged;
         }
 
 
+        /// <summary>
+        /// Возвращает флаг - является ли данная вьюмодель 'readonly'.
+        /// </summary>
         public bool IsReadonly { get; }
 
+        /// <summary>
+        /// Возвращает флаг - форсирует ли данная вьюмодель пропуск проверок на 'readonly'.
+        /// </summary>
         public bool ForceSkipReadonlyCheck { get; private set; }
 
         /// <summary>
-        /// Возвращает тип данного attachable-объекта.
+        /// Возвращает тип данного аттачмента.
         /// </summary>
-        public abstract AttachmentType EntityType { get; }
+        public abstract AttachmentType TypeOfAttachment { get; }
 
+        /// <summary>
+        /// Возвращает флаг - есть ли у данной модели НЕпустое название.
+        /// </summary>
         public bool HasTitle { get; private set; }
 
         public string Title 
@@ -115,7 +125,9 @@ namespace TwinSovet.ViewModels.Attachments
         {
             this.VerifyIsEditable();
 
-            AttachmentsProvider<NoteAttachmentModel>.SaveOrUpdate(GetModel());
+            AttachmentModelBase updatedModel = GetModel();
+            PrepareOriginalForSaving(updatedModel);
+            AttachmentsProvider<NoteAttachmentModel>.SaveOrUpdate(updatedModel);
 
             EventExecutedAttachmentSave();
         }
@@ -159,6 +171,11 @@ namespace TwinSovet.ViewModels.Attachments
         protected void EndAcceptingProps() 
         {
             ForceSkipReadonlyCheck = false;
+        }
+
+        protected virtual void PrepareOriginalForSaving(AttachmentModelBase clonedOriginalModel) 
+        {
+
         }
 
 

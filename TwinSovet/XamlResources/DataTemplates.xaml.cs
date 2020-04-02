@@ -85,7 +85,7 @@ namespace TwinSovet.XamlResources
                 }
                 else if (border.DataContext is PhotoAlbumAttachmentViewModel albumViewModel)
                 {
-                    albumViewModel.AddImageToAdded(imageFiles);
+                    albumViewModel.AddFilesToAddedBuffer(imageFiles);
                 }
             }
         }

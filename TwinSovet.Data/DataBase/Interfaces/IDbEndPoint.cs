@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TwinSovet.Data.DataBase.Base;
 
 
@@ -40,12 +38,12 @@ namespace TwinSovet.Data.DataBase.Interfaces
             where TSimpleObject : SimpleDbObject, new();
 
         /// <summary>
-        /// Сохранить сложный объект - содержащий проперти в виде вложенных типов.
+        /// Сохранить сложные объект - содержащие свойствав виде вложенных типов.
         /// </summary>
         /// <typeparam name="TComplexObject">Тип сложного объекта для сохранения.</typeparam>
-        /// <param name="objectToSave">Объект сложного типа.</param>
+        /// <param name="objectsToSave">Объекты сложного типа.</param>
         /// <returns>Результат сохранения.</returns>
-        void SaveSingleComplex<TComplexObject>(TComplexObject objectToSave) 
+        void SaveComplexObjects<TComplexObject>(IEnumerable<TComplexObject> objectsToSave) 
             where TComplexObject : ComplexDbObject, new();
     }
 }

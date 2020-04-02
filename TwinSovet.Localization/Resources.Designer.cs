@@ -250,6 +250,42 @@ namespace TwinSovet.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая папка документов.
+        /// </summary>
+        public static string NewDocumentFolder {
+            get {
+                return ResourceManager.GetString("NewDocumentFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая заметка.
+        /// </summary>
+        public static string NewNote {
+            get {
+                return ResourceManager.GetString("NewNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новая фотография.
+        /// </summary>
+        public static string NewPhoto {
+            get {
+                return ResourceManager.GetString("NewPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Новый фотоальбом.
+        /// </summary>
+        public static string NewPhotoAlbum {
+            get {
+                return ResourceManager.GetString("NewPhotoAlbum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Заметки.
         /// </summary>
         public static string Notes {

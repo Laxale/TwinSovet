@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Config;
@@ -18,6 +19,7 @@ namespace TwinSovet.Data.Models.Attachments
         /// <summary>
         /// Возвращает или задаёт название аттача.
         /// </summary>
+        [Required]
         [DefaultValue(DbConst.DefaulStringValue)]
         public string Title { get; set; }
 
@@ -52,10 +54,11 @@ namespace TwinSovet.Data.Models.Attachments
         /// <summary>
         /// Возвращает или задаёт тип аттачмента.
         /// </summary>
+        [Required]
         public AttachmentType TypeOfAttachment { get; set; }
 
         /// <summary>
-        /// Возвращает или задаёт дату создания заметки.
+        /// Возвращает или задаёт дату создания данного аттача.
         /// </summary>
         public DateTime? CreationTime { get; set; }
 
@@ -64,10 +67,14 @@ namespace TwinSovet.Data.Models.Attachments
         /// </summary>
         public DateTime? ModificationTime { get; set; }
 
-        
+        /// <summary>
+        /// Клонировать данную модель аттача.
+        /// </summary>
+        /// <returns>Клон данного аттача.</returns>
         public abstract AttachmentModelBase Clone();
+        
 
-        public void AcceptProps(AttachmentModelBase other)
+        public virtual void AcceptProps(AttachmentModelBase other) 
         {
             if (TypeOfAttachment != other.TypeOfAttachment)
             {

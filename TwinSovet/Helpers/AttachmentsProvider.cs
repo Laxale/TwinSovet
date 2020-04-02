@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using Common.Extensions;
 using Common.Helpers;
-
+using Microsoft.Practices.ObjectBuilder2;
 using TwinSovet.Data.DataBase;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
@@ -144,7 +144,17 @@ namespace TwinSovet.Helpers
         {
             lock (PhotoLocker)
             {
-                
+                throw new NotImplementedException();
+            }
+        }
+
+        public static void SaveOrUpdate(IEnumerable<PhotoAttachmentModel> photoModels) 
+        {
+            lock (PhotoLocker)
+            {
+                photoModels.ForEach(SetTimestamps);
+
+                throw new NotImplementedException();
             }
         }
 

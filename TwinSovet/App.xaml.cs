@@ -111,7 +111,7 @@ namespace TwinSovet
 
         private void OnShowNotesRequest(MessageShowNotes<SubjectEntityViewModel> message) 
         {
-            Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
+            Window window = CreateHostWindow($"{ LocRes.Notes } | { message.AttachablesOwner.SubjectFriendlyInfo }");
 
             var notesView = new SubjectNotesView();
             window.Content = notesView;
@@ -124,7 +124,7 @@ namespace TwinSovet
 
         private void OnShowPhotosRequest(MessageShowPhotos<SubjectEntityViewModel> message) 
         {
-            Window window = CreateHostWindow(message.AttachablesOwner.SubjectFriendlyInfo);
+            Window window = CreateHostWindow($"{ LocRes.Photos } | { message.AttachablesOwner.SubjectFriendlyInfo }");
 
             var photosView = new SubjectPhotosView();
             window.Content = photosView;

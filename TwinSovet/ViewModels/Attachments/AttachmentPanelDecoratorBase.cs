@@ -10,10 +10,14 @@ namespace TwinSovet.ViewModels.Attachments
     internal abstract class AttachmentPanelDecoratorBase<TAttachmentViewModel> : AttachmentPanelDecoratorBase_NonGeneric 
         where TAttachmentViewModel : AttachmentViewModelBase
     {
-        protected AttachmentPanelDecoratorBase(TAttachmentViewModel editableViewModel) 
+        protected AttachmentPanelDecoratorBase(TAttachmentViewModel editableViewModel, bool cloneToReadonly) 
         {
             EditableAttachmentViewModel = editableViewModel;
-            ReadonlyAttachmentViewModel = (TAttachmentViewModel)AttachmentViewModelFactory.CreateReadonly(editableViewModel.GetModel());
+
+            if (cloneToReadonly)
+            {
+                ReadonlyAttachmentViewModel = (TAttachmentViewModel)AttachmentViewModelFactory.CreateReadonly(editableViewModel.GetModel());
+            }
 
             EditableAttachmentViewModel.EventExecutedAttachmentSave += EditableModel_OnExecutedAttachmentSave;
         }

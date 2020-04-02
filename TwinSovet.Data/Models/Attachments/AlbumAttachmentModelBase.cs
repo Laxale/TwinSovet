@@ -21,9 +21,27 @@ namespace TwinSovet.Data.Models.Attachments
         public virtual List<TDescriptor> ChildAttachmentDescriptors { get; set; } = new List<TDescriptor>();
 
 
+        /// <summary>
+        /// Клонировать данную модель аттача.
+        /// </summary>
+        /// <returns>Клон данного аттача.</returns>
         public override AttachmentModelBase Clone() 
         {
-            throw new NotImplementedException();
+            var clone = new TAlbum();
+            clone.AcceptProps(this);
+            
+            return clone;
+        }
+
+        public override void AcceptProps(AttachmentModelBase other) 
+        {
+            base.AcceptProps(other);
+
+            var otherAlbum = (TAlbum) other;
+            AlbumCollectionDescriptors.Clear();
+            ChildAttachmentDescriptors.Clear();
+            AlbumCollectionDescriptors.AddRange(otherAlbum.AlbumCollectionDescriptors);
+            ChildAttachmentDescriptors.AddRange(otherAlbum.ChildAttachmentDescriptors);
         }
     }
 }

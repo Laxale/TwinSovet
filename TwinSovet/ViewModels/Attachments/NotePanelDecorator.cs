@@ -5,7 +5,7 @@
     /// </summary>
     internal class NotePanelDecorator : AttachmentPanelDecoratorBase<NoteAttachmentViewModel> 
     {
-        public NotePanelDecorator(NoteAttachmentViewModel noteAttachmentViewModel) : base(noteAttachmentViewModel) 
+        public NotePanelDecorator(NoteAttachmentViewModel noteAttachmentViewModel) : base(noteAttachmentViewModel, true) 
         {
             
         }

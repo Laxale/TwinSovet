@@ -105,6 +105,10 @@
     <Compile Include="Providers\StaticsProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{1C5D948D-8BF2-44C6-88D9-647806DD51B3}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SQLite.CodeFirst\SQLite.CodeFirst.csproj">
       <Project>{50A32FE4-0E13-4213-A373-72523CDF34D9}</Project>
       <Name>SQLite.CodeFirst</Name>

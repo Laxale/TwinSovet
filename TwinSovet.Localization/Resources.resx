@@ -270,4 +270,16 @@
   <data name="DragImagesHere" xml:space="preserve">
       <value>Перетащите сюда изображения</value>
   </data>
+  <data name="NewNote" xml:space="preserve">
+      <value>Новая заметка</value>
+  </data>
+  <data name="NewPhoto" xml:space="preserve">
+      <value>Новая фотография</value>
+  </data>
+  <data name="NewDocumentFolder" xml:space="preserve">
+      <value>Новая папка документов</value>
+  </data>
+  <data name="NewPhotoAlbum" xml:space="preserve">
+      <value>Новый фотоальбом</value>
+  </data>
 </root>

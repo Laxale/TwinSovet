@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <Button Grid.Column="0" Style="{StaticResource TrimmedLinkButtonStyle}" Content="{x:Static loc:Resources.ToDoAdd}"
-                Click="NewAttachmentButton_OnClick"/>
+                Click="NewAttachmentButton_OnClick" Margin="{StaticResource 8LeftMargin}"/>
         <Button Grid.Column="1" Style="{StaticResource TrimmedLinkButtonStyle}" Content="Сортировать" Margin="{StaticResource 4LeftMargin}"/>
         <controls:FilterView Grid.Column="2" Margin="{StaticResource 4LeftMargin}" WatermarkText="Поиск" HorizontalAlignment="Stretch" MinWidth="140"/>
     </Grid>

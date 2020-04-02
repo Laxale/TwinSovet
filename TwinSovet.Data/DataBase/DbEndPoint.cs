@@ -5,7 +5,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Extensions;
 using TwinSovet.Data.DataBase.Base;
 using TwinSovet.Data.DataBase.Interfaces;
 
@@ -49,12 +49,6 @@ namespace TwinSovet.Data.DataBase
             return GetDbObjectSynchronized<TComplexObject>(predicate, false);
         }
 
-        /// <summary>
-        /// Сохранить простые настройки - не содержащие пропертей в виде вложенных типов.
-        /// </summary>
-        /// <typeparam name="TSimpleObject">Тип простого объекта для сохранения.</typeparam>
-        /// <param name="objectToSave">Объект простых настроек.</param>
-        /// <returns>Результат сохранения.</returns>
         public void SaveSingleSimple<TSimpleObject>(TSimpleObject objectToSave) where TSimpleObject : SimpleDbObject, new()
         {
             try
@@ -77,14 +71,12 @@ namespace TwinSovet.Data.DataBase
             }
         }
 
-        /// <summary>
-        /// Сохранить настройки - не содержащие пропертей в виде вложенных типов.
-        /// </summary>
-        /// <typeparam name="TComplexObject">Тип сложного объекта для сохранения.</typeparam>
-        /// <param name="objectToSave">Объект сложных настроек.</param>
-        /// <returns>Результат сохранения.</returns>
-        public void SaveSingleComplex<TComplexObject>(TComplexObject objectToSave) where TComplexObject : ComplexDbObject, new()
+        public void SaveComplexObjects<TComplexObject>(IEnumerable<TComplexObject> objectsToSave) 
+            where TComplexObject : ComplexDbObject, new()
         {
+            objectsToSave.AssertNotNull(nameof(objectsToSave));
+            if (!objectsToSave.Any()) return;
+
             try
             {
                 //var efLogs = new List<string>();
@@ -96,18 +88,21 @@ namespace TwinSovet.Data.DataBase
                 {
                     //complexContext.Database.Log = efLogs.Add;
                     // для полного удаления сложного объекта нужно приложить к нему названия его дочерних пропертей (которым соответствуют отдельные таблицы)
-                    DbQuery<TComplexObject> allObjectsQuery = complexContext.Objects.Include(objectToSave.IncludedPropertyNames);
-                    foreach (string childPropName in objectToSave.IncludedChildPropNames)
+                    TComplexObject firstObject = objectsToSave.First();
+                    DbQuery<TComplexObject> allObjectsQuery = complexContext.Objects.Include(firstObject.IncludedPropertyNames);
+                    foreach (string childPropName in firstObject.IncludedChildPropNames)
                     {
                         allObjectsQuery.Include(childPropName);
                     }
 
-                    List<TComplexObject> allObjects = allObjectsQuery.ToList();
+                    //List<TComplexObject> allObjects = allObjectsQuery.ToList();
+                    //complexContext.Objects.RemoveRange(allObjects);
 
-                    complexContext.Objects.RemoveRange(allObjects);
-
-                    DbEntityEntry<ComplexDbObject> entry = complexContext.Entry(objectToSave.PrepareMappedProps());
-                    entry.State = EntityState.Added;
+                    foreach (TComplexObject complexObject in objectsToSave)
+                    {
+                        DbEntityEntry<ComplexDbObject> entry = complexContext.Entry(complexObject.PrepareMappedProps());
+                        entry.State = EntityState.Added;
+                    }
 
                     complexContext.SaveChanges();
                 }

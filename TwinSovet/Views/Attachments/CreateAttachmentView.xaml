@@ -11,6 +11,7 @@
              xmlns:attachmentViews="clr-namespace:TwinSovet.Views.Attachments"
              xmlns:dataProviders="clr-namespace:TwinSovet.Data.Providers;assembly=TwinSovet.Data"
              xmlns:localization="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+             xmlns:enums="clr-namespace:TwinSovet.Data.Enums;assembly=TwinSovet.Data"
 
 
              mc:Ignorable="d" 
@@ -31,6 +32,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -41,22 +43,50 @@
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static localization:Resources.Title}"/>
-        <TextBox Grid.Row="0" Grid.Column="2" x:Name="TitleBox" VerticalAlignment="Center"
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" Margin="0, 0, 0, 6" FontWeight="Medium">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock" BasedOn="{StaticResource BasicTextBlockStyle}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=TypeOfAttachment, Mode=OneWay}" Value="{x:Static enums:AttachmentType.Note}">
+                            <Setter Property="Text" Value="{x:Static localization:Resources.NewNote}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=TypeOfAttachment, Mode=OneWay}" Value="{x:Static enums:AttachmentType.Photo}">
+                            <Setter Property="Text" Value="{x:Static localization:Resources.NewPhoto}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=TypeOfAttachment, Mode=OneWay}" Value="{x:Static enums:AttachmentType.Document}">
+                            <Setter Property="Text" Value="Новый документ"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=TypeOfAttachment, Mode=OneWay}" Value="{x:Static enums:AttachmentType.PhotoAlbum}">
+                            <Setter Property="Text" Value="{x:Static localization:Resources.NewPhotoAlbum}"/>
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding Path=TypeOfAttachment, Mode=OneWay}" Value="{x:Static enums:AttachmentType.DocumentAlbum}">
+                            <Setter Property="Text" Value="{x:Static localization:Resources.NewDocumentFolder}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Title}"/>
+        <TextBox Grid.Row="1" Grid.Column="2" x:Name="TitleBox" VerticalAlignment="Center"
                  Text="{Binding Path=Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
 
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static localization:Resources.Description}" 
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static localization:Resources.Description}" 
                    VerticalAlignment="Top" Margin="{StaticResource 6TopMargin}"/>
-        <TextBox Grid.Row="1" Grid.Column="2" Margin="{StaticResource 4TopMargin}" VerticalAlignment="Stretch" TextWrapping="Wrap"
+        <TextBox Grid.Row="2" Grid.Column="2" Margin="{StaticResource 4TopMargin}" VerticalAlignment="Stretch" TextWrapping="Wrap"
                  Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay={x:Static dataProviders:StaticsProvider.SearchDelay}}"/>
         
         <!-- дополнительнео содержимое для конкретного вида аттачей -->
-        <ContentControl Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource 4TopMargin}" 
+        <ContentControl Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Margin="{StaticResource 4TopMargin}" 
                         ContentTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=attachmentViews:CreateAttachmentView},
                                                   Path=SpecificContentTemplate, Mode=OneWay}"/>
         
-        <DockPanel Grid.Row="3" Grid.Column="2" HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
+        <DockPanel Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right" Margin="{StaticResource 4TopMargin}">
             <Button Style="{StaticResource SaveAttachmentButtonStyle}"/>
             <Button Style="{StaticResource CancelButtonStyle}" Margin="{StaticResource 8LeftMargin}"
                     Click="EscapeButton_OnClick"/>

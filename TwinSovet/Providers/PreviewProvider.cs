@@ -47,7 +47,8 @@ namespace TwinSovet.Providers
                 previewSources.Add(photoModel.Id, 
                     new BitmapImage(new Uri(previewFilePath, UriKind.Absolute))
                     {
-                        CacheOption = BitmapCacheOption.None
+                        CacheOption = BitmapCacheOption.None,
+                        CreateOptions = BitmapCreateOptions.DelayCreation
                     });
             }
         }
