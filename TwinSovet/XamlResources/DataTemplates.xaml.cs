@@ -87,6 +87,10 @@ namespace TwinSovet.XamlResources
                 {
                     albumViewModel.AddFilesToAddedBuffer(imageFiles);
                 }
+                else if (border.DataContext is PhotoAlbumPanelDecorator photoAlbumDecorator)
+                {
+                    photoAlbumDecorator.EditableAttachmentViewModel.AddFilesToAddedBuffer(imageFiles);
+                }
             }
         }
 

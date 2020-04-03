@@ -15,7 +15,7 @@ namespace TwinSovet.Data.DataBase.Base
         /// Возвращает набор вложенных свойств сложного объекта, разделённых точкой. Нужен для правильного чтения вложенных свойств из базы.
         /// </summary>
         [NotMapped]
-        public string IncludedPropertyNames => string.Join(".", GetIncludedPropNames());
+        public string _IncludedPropertyNames => string.Join(".", GetIncludedPropNames());
 
         /// <summary>
         /// Возвращает набор названий свойств дочерних объектов, которые нужно инклудить при чтении сложного родительского объекта из базы.
@@ -33,11 +33,13 @@ namespace TwinSovet.Data.DataBase.Base
         /// <returns></returns>
         public abstract void AcceptProps(ComplexDbObject other);
 
+        public abstract void PrepareNavigationProps();
+
 
         /// <summary>
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
         /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected abstract List<string> GetIncludedPropNames();
+        public abstract List<string> GetIncludedPropNames();
     }
 }

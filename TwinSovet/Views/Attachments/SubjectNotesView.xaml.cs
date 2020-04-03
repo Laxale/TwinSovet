@@ -38,7 +38,7 @@ namespace TwinSovet.Views.Attachments
                 () => RootGrid, 
                 () => NotesList,
                 () => IsAddingNew,
-                value => IsAddingNew = value, 
+                value => IsAddingNew = value,
                 () => ViewModel,
                 CreateAttachmentViewModel
             );

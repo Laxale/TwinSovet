@@ -9,7 +9,10 @@ namespace TwinSovet.ViewModels.Attachments
 {
     internal class PhotoAlbumPanelDecorator : AttachmentPanelDecoratorBase<PhotoAlbumAttachmentViewModel> 
     {
-        public PhotoAlbumPanelDecorator(PhotoAlbumAttachmentViewModel editableViewModel) : base(editableViewModel, false) 
+        public PhotoAlbumPanelDecorator(PhotoAlbumAttachmentViewModel editableViewModel) : 
+            base(editableViewModel
+                //, false
+                ) 
         {
 
         }

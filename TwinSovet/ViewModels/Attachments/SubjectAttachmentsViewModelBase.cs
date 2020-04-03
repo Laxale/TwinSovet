@@ -1,7 +1,7 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using DataVirtualization;
-
+using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 
 using TwinSovet.Data.Enums;
@@ -94,7 +94,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// </summary>
         public abstract AttachmentType TypeOfAttachment { get; }
 
-        public AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> NoteDecorators { get; private set; }
+        public AsyncVirtualizingCollection<AttachmentPanelDecoratorBase_NonGeneric> AttachmentDecorators { get; private set; }
 
 
         public void OnCancelledDetailing() 
@@ -102,7 +102,7 @@ namespace TwinSovet.ViewModels.Attachments
             DetailedAttachmentDecorator = null;
         }
 
-        public void SetNotesOwner(SubjectEntityViewModelBase owner) 
+        public void SetAttachmentsOwner(SubjectEntityViewModelBase owner) 
         {
             if (notesOwner != null) throw new InvalidOperationException($"Нельзя повторно задать субъекта");
 
@@ -110,11 +110,18 @@ namespace TwinSovet.ViewModels.Attachments
             string hostId = RootSubjectIdentifier.Identify(owner);
             var config = new RootAttachmentsProviderConfig(owner.TypeOfSubject, hostId, TypeOfAttachment);
 
-            NoteDecorators = InitCollection(config);
+            AttachmentDecorators = InitCollection(config);
 
-            OnPropertyChanged(nameof(NoteDecorators));
+            AttachmentDecorators.EventFetchedData += AttachmentDecorators_OnFetchedData;
+
+            OnPropertyChanged(nameof(AttachmentDecorators));
 
             RefreshCollection();
+        }
+
+        private void AttachmentDecorators_OnFetchedData(IList<AttachmentPanelDecoratorBase_NonGeneric> data) 
+        {
+            data.ForEach(item => item.SetOwnerSubject(CurrentNotesOwner));
         }
 
         protected abstract void RefreshProvider();
@@ -137,7 +144,7 @@ namespace TwinSovet.ViewModels.Attachments
         
         private void RefreshCollection() 
         {
-            NoteDecorators?.Refresh();
+            AttachmentDecorators?.Refresh();
         }
 
 

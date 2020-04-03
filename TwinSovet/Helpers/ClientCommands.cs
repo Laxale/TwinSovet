@@ -11,7 +11,7 @@ using TwinSovet.Messages.Indications;
 using PubSub;
 
 using Prism.Commands;
-
+using TwinSovet.Data.Models.Attachments;
 using TwinSovet.ViewModels.Attachments;
 using TwinSovet.ViewModels.Subjects;
 
@@ -33,6 +33,7 @@ namespace TwinSovet.Helpers
             Enter = new RoutedUICommand(LocRes.ToDoAccept, nameof(Enter), typeof(ClientCommands));
             Cancel = new RoutedUICommand(LocRes.Cancellation, nameof(Cancel), typeof(ClientCommands));
 
+            CommandShowLargePhoto = new DelegateCommand<PhotoPanelDecorator>(ShowLargePhotoImpl);
             CommandShowNotes = new DelegateCommand<SubjectEntityViewModelBase>(ShowNotesImpl);
             CommandShowPhotos = new DelegateCommand<SubjectEntityViewModelBase>(ShowPhotosImpl);
             CommandShowFlatIndications = new DelegateCommand<FlatDecoratorViewModel>(ShowFlatIndicationsImpl);
@@ -89,6 +90,11 @@ namespace TwinSovet.Helpers
         /// </summary>
         public static DelegateCommand<AttachmentPanelDecoratorBase_NonGeneric> CommandCancelDetailingAttachment { get; }
 
+        /// <summary>
+        /// Возвращает команду показать фотографию в большом размере.
+        /// </summary>
+        public static DelegateCommand<PhotoPanelDecorator> CommandShowLargePhoto { get; }
+
 
         private static void ShowNotesImpl(SubjectEntityViewModelBase owner) 
         {
@@ -98,6 +104,12 @@ namespace TwinSovet.Helpers
         private static void ShowPhotosImpl(SubjectEntityViewModelBase owner) 
         {
             owner.Publish(new MessageShowPhotos<SubjectEntityViewModelBase>(owner));
+        }
+
+        private static void ShowLargePhotoImpl(PhotoPanelDecorator photoDecorator) 
+        {
+            var photoModel = (PhotoAttachmentModel)photoDecorator.ReadonlyAttachmentViewModel.GetModel();
+            var ttt = photoModel.FullDataModel;
         }
 
         private static void ShowFlatIndicationsImpl(FlatDecoratorViewModel flat) 

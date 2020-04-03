@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.Helpers;
 using DataVirtualization;
 using Microsoft.Practices.Unity;
 using TwinSovet.Data.DataBase.Interfaces;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Helpers;
+using TwinSovet.Interfaces;
 using TwinSovet.Providers;
 
 
@@ -22,7 +24,7 @@ namespace TwinSovet.ViewModels.Attachments
         
 
 
-        public PhotoAlbumAttachmentViewModel(PhotoAlbumAttachmentModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
+        public PhotoAlbumAttachmentViewModel(PhotoAlbumAttachmentModel albumModel, bool isReadonly) : base(albumModel, isReadonly) 
         {
             //todo поставить на превью первую фотку альбома
             //PreviewProvider.SetPreview(photoModel);
@@ -54,7 +56,7 @@ namespace TwinSovet.ViewModels.Attachments
             byte[] fileData = File.ReadAllBytes(filePath);
             var photoModel = new PhotoAttachmentModel
             {
-                //todo добавить сохранение исходного блоба!!!11
+                добавить сохранение фул блоба и сжатие превью
                 PreviewDataBlob = ImageScaler.ScaleToPreview(fileData),
                 TypeOfAttachment = AttachmentType.Photo,
                 RootSubjectType = subject?.TypeOfSubject ?? SubjectType.None,
@@ -96,6 +98,35 @@ namespace TwinSovet.ViewModels.Attachments
                         .ToList();
 
             return newPhotoDescriptors;
+        }
+
+        protected override void OnBeforeInitialCollectionLoad() 
+        {
+            base.OnBeforeInitialCollectionLoad();
+
+            var albumItemsProvider = (IAlbumItemsProvider<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor>)ItemDecorators.ItemsProvider;
+            IList<AttachmentPanelDecoratorBase_NonGeneric> firstItemRange = albumItemsProvider.FetchRange(0, 1, out int overAllCount);
+            if (overAllCount > 0)
+            {
+                SetupPreview((PhotoPanelDecorator)firstItemRange[0]);
+            }
+        }
+
+
+        private void SetupPreview(DataVirtualizeWrapper<AttachmentPanelDecoratorBase_NonGeneric> firstPhotoWrapper) 
+        {
+            var photoDecorator = (PhotoPanelDecorator) firstPhotoWrapper.Data;
+            //PreviewProvider.SetPreview();
+            SetupPreview(photoDecorator);
+        }
+
+        private void SetupPreview(PhotoPanelDecorator photoDecorator) 
+        {
+            DispatcherHelper.BeginInvokeOnDispatcher(() =>
+            {
+                //
+                Preview.SetPreviewSource(photoDecorator.ReadonlyAttachmentViewModel.Preview.PreviewImageSource);
+            });
         }
     }
 }

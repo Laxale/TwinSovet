@@ -11,4 +11,5 @@
     <Thickness x:Key="All4Margin">4</Thickness>
     
     <system:Double x:Key="InfoCardRowHeight">30</system:Double>
+    <system:Double x:Key="PreviewImageRadius">28</system:Double>
 </ResourceDictionary>

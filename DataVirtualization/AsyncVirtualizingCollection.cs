@@ -174,6 +174,8 @@ namespace DataVirtualization
             PopulatePage(pageIndex, dataItems);
 
             IsLoading = false;
+
+            EventFetchedData(dataItems);
         }
     }
 }

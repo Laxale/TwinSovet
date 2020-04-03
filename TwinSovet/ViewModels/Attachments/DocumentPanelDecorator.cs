@@ -9,7 +9,10 @@ namespace TwinSovet.ViewModels.Attachments
 {
     internal class DocumentPanelDecorator : AttachmentPanelDecoratorBase<DocumentAttachmentViewModel> 
     {
-        public DocumentPanelDecorator(DocumentAttachmentViewModel attachmentViewModel) : base(attachmentViewModel, true)
+        public DocumentPanelDecorator(DocumentAttachmentViewModel attachmentViewModel) : 
+            base(attachmentViewModel
+                //, true
+                )
         {
 
         }

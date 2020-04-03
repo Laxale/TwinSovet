@@ -26,6 +26,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="{StaticResource InfoCardRowHeight}"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -39,7 +41,7 @@
         <!-- Область, куда добавляется специфичный превью конкретного типа аттача -->
         <ContentControl Grid.Row="0" Grid.Column="1"
                         ContentTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AttachmentPanelView},
-                                                  Path=SpecificContentTemplate, Mode=OneWay}"/>
+                                                  Path=TopSpecificContentTemplate, Mode=OneWay}"/>
 
         <!-- Строка дат -->
         <WrapPanel Grid.Row="0" Grid.Column="1">
@@ -57,17 +59,27 @@
             </TextBlock>
         </WrapPanel>
 
-        <TextBox Grid.Row="1" Grid.Column="1" FontWeight="Medium" x:Name="TitleBox"
+        <!-- Поле названия -->
+        <TextBox Grid.Row="1" Grid.Column="1" FontWeight="Medium" x:Name="TitleBox" Margin="{StaticResource 4TopMargin}"
                  IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
                  Text="{Binding Path=EditableAttachmentViewModel.Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+        <!-- Поле описания -->
         <TextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Stretch" TextWrapping="Wrap"
                  ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="{StaticResource 4TopMargin}"
                  IsReadOnly="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource ReversedBooleanConverter}}"
                  Text="{Binding Path=EditableAttachmentViewModel.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
+        <GridSplitter Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="0, 4, 0, 4" Height="2" HorizontalAlignment="Stretch"
+                      ResizeBehavior="PreviousAndNext" Width="Auto" Background="{StaticResource SteelGrayBrush}"/>
+
+        <!-- Область, куда добавляется специфичный превью конкретного типа аттача -->
+        <ContentControl Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource 4TopMargin}"
+                        ContentTemplate="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:AttachmentPanelView},
+                                                  Path=BottomSpecificContentTemplate, Mode=OneWay}"/>
+
         <!-- Панелька кнопок -->
-        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource 4TopMargin}" HorizontalAlignment="Right"
+        <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Margin="{StaticResource 4TopMargin}" HorizontalAlignment="Right"
                    Visibility="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
             <!-- Кнопка сохранения -->
             <Button Style="{StaticResource SaveAttachmentButtonStyle}" 
@@ -79,7 +91,7 @@
         </DockPanel>
 
         <!-- Список вложенных аттачей -->
-        <Expander Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" IsExpanded="False" Header="Вложения" Margin="{StaticResource 4TopMargin}">
+        <Expander Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" IsExpanded="False" Header="Вложения" Margin="{StaticResource 4TopMargin}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

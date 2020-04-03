@@ -26,6 +26,7 @@
                 <ResourceDictionary Source="./XamlResources/BorderStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/ButtonStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TextBoxStyles.xaml"/>
+                <ResourceDictionary Source="./XamlResources/ListBoxStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/DataTemplates.xaml"/>
                 <ResourceDictionary Source="./XamlResources/TetxBlockStyles.xaml"/>
                 <ResourceDictionary Source="./XamlResources/GeometryResources.xaml"/>
@@ -140,35 +141,7 @@
                 </Style.Triggers>
             </Style>
 
-            <VirtualizingStackPanel x:Key="test" IsContainerVirtualizable="True" VirtualizationMode="Recycling" />
-            <Style x:Key="NonSelectableListBoxStyle" TargetType="ListBox">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                <Setter Property="Background" Value="{StaticResource AlmostTransparent}"/>
-                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Visible"/>
-                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-                <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True"/>
-                <Setter Property="VirtualizingStackPanel.ScrollUnit" Value="Pixel"/>
-                <Setter Property="VirtualizingStackPanel.IsVirtualizing" Value="True"/>
-                <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling"/>
-                <Setter Property="VirtualizingStackPanel.IsContainerVirtualizable" Value="True"/>
-
-                <Setter Property="ItemContainerStyle">
-                    <Setter.Value>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ListBoxItem">
-                                        <Border Style="{StaticResource BasicBorderStyle}">
-                                            <ContentPresenter/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

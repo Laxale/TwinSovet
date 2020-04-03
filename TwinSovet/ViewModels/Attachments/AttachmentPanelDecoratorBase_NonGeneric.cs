@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Prism.Commands;
 
 using TwinSovet.Helpers;
+using TwinSovet.ViewModels.Subjects;
 
 
 namespace TwinSovet.ViewModels.Attachments 
@@ -18,7 +19,10 @@ namespace TwinSovet.ViewModels.Attachments
     {
         private bool isEditing;
 
-        
+        private SubjectEntityViewModelBase subject;
+
+
+
         protected AttachmentPanelDecoratorBase_NonGeneric() 
         {
             CommandEdit = new DelegateCommand(EditImpl);
@@ -46,6 +50,16 @@ namespace TwinSovet.ViewModels.Attachments
 
                 OnPropertyChanged();
             }
+        }
+
+
+        /// <summary>
+        /// Задать субъекта-владельца данной вьюмодели. То есть ему принадлежит данный аттач.
+        /// </summary>
+        /// <param name="subject">Вьюмодель субъекта-владельца данного аттача.</param>
+        public virtual void SetOwnerSubject(SubjectEntityViewModelBase subject) 
+        {
+            this.subject = subject;
         }
 
 

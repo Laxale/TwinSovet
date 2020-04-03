@@ -64,5 +64,20 @@ namespace TwinSovet.Data.Models.Attachments
 
             AcceptModelProperties((AttachmentModelBase)other);
         }
+
+        public override void PrepareNavigationProps() 
+        {
+            ChildAttachmentDescriptors.ForEach(desc => desc.NavigationParent = null);
+            AlbumCollectionDescriptors.ForEach(desc => desc.NavigationParent = null);
+        }
+
+        /// <summary>
+        /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
+        /// </summary>
+        /// <returns>Список названий вложенных пропертей класса.</returns>
+        public override List<string> GetIncludedPropNames() 
+        {
+            return new List<string> { nameof(AlbumCollectionDescriptors), nameof(ChildAttachmentDescriptors) };
+        }
     }
 }

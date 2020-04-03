@@ -28,6 +28,11 @@ namespace TwinSovet.ViewModels.Attachments
                 return DocumentAttachmentViewModel.CreateReadonly(documentModel);
             }
 
+            if (attachmentModel is PhotoAlbumAttachmentModel photoAlbumModel)
+            {
+                return new PhotoAlbumAttachmentViewModel(photoAlbumModel, true);
+            }
+
             throw new NotImplementedException();
         }
     }

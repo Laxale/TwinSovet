@@ -29,20 +29,30 @@ namespace TwinSovet.Views
         }
 
 
-        public static readonly DependencyProperty SpecificContentTemplateProperty = 
-            DependencyProperty.Register(nameof(SpecificContentTemplate), typeof(DataTemplate), 
+        public static readonly DependencyProperty TopSpecificContentTemplateProperty = 
+            DependencyProperty.Register(nameof(TopSpecificContentTemplate), typeof(DataTemplate), 
+                typeof(AttachmentPanelView), new PropertyMetadata(default(DataTemplate)));
+
+        public static readonly DependencyProperty BottomSpecificContentTemplateProperty =
+            DependencyProperty.Register(nameof(BottomSpecificContentTemplate), typeof(DataTemplate),
                 typeof(AttachmentPanelView), new PropertyMetadata(default(DataTemplate)));
 
 
-        public DataTemplate SpecificContentTemplate
+        public DataTemplate TopSpecificContentTemplate
         {
-            get => (DataTemplate)GetValue(SpecificContentTemplateProperty);
-            set => SetValue(SpecificContentTemplateProperty, value);
+            get => (DataTemplate)GetValue(TopSpecificContentTemplateProperty);
+            set => SetValue(TopSpecificContentTemplateProperty, value);
+        }
+
+        public DataTemplate BottomSpecificContentTemplate 
+        {
+            get => (DataTemplate)GetValue(BottomSpecificContentTemplateProperty);
+            set => SetValue(BottomSpecificContentTemplateProperty, value);
         }
 
         public DateTime CreationTime { get; }
 
-        private NotePanelDecorator ViewModel => (NotePanelDecorator)DataContext;
+        private AttachmentPanelDecoratorBase_NonGeneric ViewModel => (AttachmentPanelDecoratorBase_NonGeneric)DataContext;
 
 
         public void FocusInnerBox() 

@@ -27,5 +27,10 @@ namespace TwinSovet.Data.Models.Attachments
         {
             throw new NotImplementedException();
         }
+
+        public override void PrepareNavigationProps() 
+        {
+            ChildAttachmentDescriptors.ForEach(desc => desc.NavigationParent = null);
+        }
     }
 }

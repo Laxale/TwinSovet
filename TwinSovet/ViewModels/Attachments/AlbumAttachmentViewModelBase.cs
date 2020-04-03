@@ -34,6 +34,7 @@ namespace TwinSovet.ViewModels.Attachments
     /// <typeparam name="TAlbumModel">Тип модели конкретного альбома.</typeparam>
     /// <typeparam name="TChildDescriptor">Тип модели дескриптора.</typeparam>
     /// <typeparam name="TAttachmentModel">Тип модели элементов альбома.</typeparam>
+    /// <typeparam name="TInnerDescriptor">Тип дескриптора, описывающего содержимые объекты альбома.</typeparam>
     internal abstract class AlbumAttachmentViewModelBase<TAlbumModel, TInnerDescriptor, TChildDescriptor, TAttachmentModel> : AttachmentViewModelBase 
         where TAlbumModel : AlbumAttachmentModelBase<TAlbumModel, TInnerDescriptor, TChildDescriptor>, new()
         where TInnerDescriptor : ChildAttachmentDescriptor<TAlbumModel>, new()
@@ -45,17 +46,24 @@ namespace TwinSovet.ViewModels.Attachments
 
         protected readonly ObservableCollection<AttachmentPanelDecoratorBase_NonGeneric> addedAlbumItems = new ObservableCollection<AttachmentPanelDecoratorBase_NonGeneric>();
 
-        private string titleReaodnly;
+        private string titleReadonly;
         private string descriptionReadonly;
         private IAlbumItemsProvider<TAlbumModel, TInnerDescriptor, TChildDescriptor> albumItemsProvider;
 
 
-        protected AlbumAttachmentViewModelBase(TAlbumModel attachmentModel, bool isReadonly) : base(attachmentModel, isReadonly) 
+        protected AlbumAttachmentViewModelBase(TAlbumModel albumModel, bool isReadonly) : base(albumModel, isReadonly) 
         {
             addedAlbumItems.CollectionChanged += AddedAlbumItemsOnCollectionChanged;
             AddedPhotosView = CollectionViewSource.GetDefaultView(addedAlbumItems);
 
-            this.Publish(new MessageInitializeModelRequest(this, $"Загружаем альбом '{ attachmentModel.Title }'"));
+            BeginAcceptingProps();
+            Title = albumModel.Title;
+            Description = albumModel.Description;
+            //_Title_Readonly = albumModel.Title;
+            //_Description_Readonly = albumModel.Description;
+            EndAcceptingProps();
+            
+            this.Publish(new MessageInitializeModelRequest(this, $"Загружаем альбом '{ albumModel.Title }'"));
         }
 
 
@@ -74,7 +82,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// <summary>
         /// Возвращает текущее readonly (сохранённое в базе) название альбома.
         /// </summary>
-        public string Description_Readonly 
+        public string _Description_Readonly 
         {
             get => descriptionReadonly;
 
@@ -91,15 +99,15 @@ namespace TwinSovet.ViewModels.Attachments
         /// <summary>
         /// Возвращает текущее readonly (сохранённое в базе) описание альбома.
         /// </summary>
-        public string Title_Reaodnly 
+        public string _Title_Readonly 
         {
-            get => titleReaodnly;
+            get => titleReadonly;
 
             private set
             {
-                if (titleReaodnly == value) return;
+                if (titleReadonly == value) return;
 
-                titleReaodnly = value;
+                titleReadonly = value;
 
                 OnPropertyChanged();
             }
@@ -149,8 +157,12 @@ namespace TwinSovet.ViewModels.Attachments
             OnPropertyChanged(nameof(ItemDecorators));
             OnPropertyChanged(nameof(HasSavedPhotos));
 
+            OnBeforeInitialCollectionLoad();
+
             RefreshCollection();
         }
+
+        protected virtual void OnBeforeInitialCollectionLoad() { }
 
         protected abstract AttachmentPanelDecoratorBase_NonGeneric DecoratorFactory(TAttachmentModel model);
 

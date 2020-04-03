@@ -71,7 +71,7 @@ namespace TwinSovet.Helpers.Attachments
                 var binding = new Binding
                 {
                     Mode = BindingMode.OneWay,
-                    Path = new PropertyPath(nameof(SubjectAttachmentsViewModelBase.NoteDecorators))
+                    Path = new PropertyPath(nameof(SubjectAttachmentsViewModelBase.AttachmentDecorators))
                 };
 
                 attachesListGetter().SetBinding(ItemsControl.ItemsSourceProperty, binding);
@@ -263,7 +263,14 @@ namespace TwinSovet.Helpers.Attachments
                 if (succeeded)
                 {
                     var view = FindAttachmentCreationView();
-                    RemoveCreationView(view);
+                    if (view == null)
+                    {
+                        CancelDetailing(true);
+                    }
+                    else
+                    {
+                        RemoveCreationView(view);
+                    }
                 }
             }
         }

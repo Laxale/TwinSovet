@@ -18,14 +18,32 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="60"/>
             <ColumnDefinition Width="6"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Image Grid.Row="0" Grid.Column="0" Source="{Binding Path=Data.EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Stretch="UniformToFill"
+               Source="{Binding Path=Data.EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"
+               Visibility="{Binding Path=Data.EditableAttachmentViewModel.Preview.HasPreview, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Image.Clip>
+                <!--  -->
+                <EllipseGeometry Center="30, 30" RadiusX="{StaticResource PreviewImageRadius}" RadiusY="{StaticResource PreviewImageRadius}"/>
+            </Image.Clip>
+        </Image>
 
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Path=Data.EditableAttachmentViewModel.Title_Reaodnly, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
-        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Description_Readonly, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+
+        <Path Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Style="{StaticResource PhotoIconPathStyle}"
+              Visibility="{Binding Path=Data.EditableAttachmentViewModel.Preview.HasPreview, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}">
+            <Path.LayoutTransform>
+                <ScaleTransform ScaleX="0.1" ScaleY="0.1"/>
+            </Path.LayoutTransform>
+        </Path>
+
+        <TextBlock Grid.Row="0" Grid.Column="2" TextTrimming="CharacterEllipsis"
+                   Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Title, Mode=OneWay}" />
+
+        <TextBlock Grid.Row="1" Grid.Column="2" TextTrimming="CharacterEllipsis"
+                   Text="{Binding Path=Data.ReadonlyAttachmentViewModel.Description, Mode=OneWay}" />
     </Grid>
 </UserControl>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using Common.Helpers;
 using TwinSovet.Data.Enums;
 using TwinSovet.Data.Models.Attachments;
 using TwinSovet.Providers;
@@ -20,8 +21,13 @@ namespace TwinSovet.ViewModels.Attachments
         {
             if (photoModel.PreviewDataBlob?.Any() ?? false)
             {
-                PreviewProvider.SetPreview(photoModel);
-                Preview.SetPreviewSource(PreviewProvider.GetPreview(photoModel.Id));
+                DispatcherHelper.InvokeOnDispatcher(() =>
+                //DispatcherHelper.BeginInvokeOnDispatcher(() =>
+                {
+                    PreviewProvider.SetPreview(photoModel);
+                    Preview.SetPreviewSource(PreviewProvider.GetPreview(photoModel.Id));
+                });
+                
             }
         }
 

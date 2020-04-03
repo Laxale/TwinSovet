@@ -18,6 +18,7 @@ namespace TwinSovet.Helpers
         private const string SpecificPhotoTemplate_Detailed = "PhotoSpecificContentTemplate_Detailed";
         private const string SpecificPhotoTemplate_CreateNew = "PhotoSpecificContentTemplate_CreateNew";
         private const string SpecificPhotoAlbumTemplate_CreateNew = "PhotoAlbumSpecificContentTemplate_CreateNew";
+        private const string PhotoAlbumSpecificContentTemplate_Detailed = "PhotoAlbumSpecificContentTemplate_Detailed";
         
 
 
@@ -33,7 +34,17 @@ namespace TwinSovet.Helpers
                 return new AttachmentPanelView
                 {
                     DataContext = attachmentDecorator,
-                    SpecificContentTemplate = (DataTemplate)Application.Current.Resources[SpecificPhotoTemplate_Detailed]
+                    TopSpecificContentTemplate = (DataTemplate)Application.Current.Resources[SpecificPhotoTemplate_Detailed]
+                };
+            }
+
+            if (attachmentDecorator is PhotoAlbumPanelDecorator photoAlbumDecorator)
+            {
+                return new AttachmentPanelView
+                {
+                    DataContext = attachmentDecorator,
+                    //DataContext = photoAlbumDecorator.EditableAttachmentViewModel,
+                    BottomSpecificContentTemplate = (DataTemplate)Application.Current.Resources[PhotoAlbumSpecificContentTemplate_Detailed]
                 };
             }
 

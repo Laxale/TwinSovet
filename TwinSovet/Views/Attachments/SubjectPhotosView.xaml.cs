@@ -27,14 +27,14 @@ namespace TwinSovet.Views.Attachments
     [HasViewModel(typeof(SubjectPhotosViewModel))]
     public partial class SubjectPhotosView : UserControl 
     {
-        private readonly CommonSubjectAttachmentsLogic<PhotoAlbumAttachmentModel, PhotoAttachmentViewModel> logicHolder;
+        private readonly CommonSubjectAttachmentsLogic<PhotoAlbumAttachmentModel, PhotoAlbumAttachmentViewModel> logicHolder;
 
 
         public SubjectPhotosView() 
         {
             InitializeComponent();
 
-            logicHolder = new CommonSubjectAttachmentsLogic<PhotoAlbumAttachmentModel, PhotoAttachmentViewModel>
+            logicHolder = new CommonSubjectAttachmentsLogic<PhotoAlbumAttachmentModel, PhotoAlbumAttachmentViewModel>
             (
                 this,
                 () => RootGrid,

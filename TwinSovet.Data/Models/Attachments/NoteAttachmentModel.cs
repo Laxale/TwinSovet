@@ -64,5 +64,10 @@ namespace TwinSovet.Data.Models.Attachments
             ChildAttachmentDescriptors.Clear();
             ChildAttachmentDescriptors.AddRange(noteOther.ChildAttachmentDescriptors);
         }
+
+        public override void PrepareNavigationProps() 
+        {
+            ChildAttachmentDescriptors.ForEach(desc => desc.NavigationParent = null);
+        }
     }
 }

@@ -17,7 +17,8 @@ namespace TwinSovet.Data.Models.Attachments
     /// </summary>
     [RelationalContext(typeof(PhotoAlbumsContext))]
     [Table(DbConst.TableNames.PhotoAlbumsTableName)]
-    public class PhotoAlbumAttachmentModel : AlbumAttachmentModelBase<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor> 
+    public class PhotoAlbumAttachmentModel : 
+        AlbumAttachmentModelBase<PhotoAlbumAttachmentModel, PhotoAlbumInnerItemDescriptor, OfPhotoAlbumAttachmentDescriptor> 
     {
         public PhotoAlbumAttachmentModel() 
         {

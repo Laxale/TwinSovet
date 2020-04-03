@@ -263,12 +263,17 @@ namespace TwinSovet.Helpers
 
         private void LoadSubjectAttachments() 
         {
-            var decorators =
+            var models =
                 endpoint.GetComplexObjects<TAttachmentModel>(config.Predicate)
                         .OrderByDescending(model => model.ModificationTime)
-                        .Select(config.DecoratorTransform);
+                        .ToList();
 
-            allAttachments.AddRange(decorators);
+            DispatcherHelper.InvokeOnDispatcher(() =>
+            {
+                var decorators = models.Select(config.DecoratorTransform);
+
+                allAttachments.AddRange(decorators);
+            });
         }
 
         private void LoadChildAttachments(ChildAttachmentsProviderConfig childConfig) 

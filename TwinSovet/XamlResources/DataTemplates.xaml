@@ -10,16 +10,23 @@
                     xmlns:subjects="clr-namespace:TwinSovet.ViewModels.Subjects"
                     xmlns:attachments="clr-namespace:TwinSovet.ViewModels.Attachments"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization">
+                    xmlns:loc="clr-namespace:TwinSovet.Localization;assembly=TwinSovet.Localization"
+                    xmlns:helpers="clr-namespace:TwinSovet.Helpers">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="./Brushes.xaml"/>
+        <ResourceDictionary Source="./ButtonStyles.xaml"/>
         <ResourceDictionary Source="./Margins.xaml"/>
+        <ResourceDictionary Source="./GeometryResources.xaml"/>
         <ResourceDictionary Source="./Converters.xaml"/>
+        <ResourceDictionary Source="./ListBoxStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <GridLength x:Key="PhotoInListGridLength">60</GridLength>
 
     <system:Double x:Key="IconScale">0.14</system:Double>
     <system:Double x:Key="PhotoPreviewHeight">80</system:Double>
+    <system:Double x:Key="PhotoInListHeight">60</system:Double>
     <system:String x:Key="ClearTag">DoNotClearBorderBrush</system:String>
     
     <DataTemplate x:Key="FlatInListTemplate" DataType="subjects:FlatViewModel">
@@ -126,7 +133,7 @@
                             <Border>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="{StaticResource PhotoInListGridLength}"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
@@ -139,6 +146,83 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PhotoAlbumSpecificContentTemplate_Detailed">
+        <d:DataTemplate.DataContext>
+            <x:Type Type="attachments:PhotoAlbumPanelDecorator"/>
+        </d:DataTemplate.DataContext>
+
+        <Border>
+            <d:Border.DataContext>
+                <x:Type Type="attachments:PhotoAlbumPanelDecorator"/>
+            </d:Border.DataContext>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Панель дропа новых файлов -->
+                <Border Grid.Row="0" Style="{StaticResource PhotosInAlbumBorderStyle}" x:Name="ContextedBorder"
+                        BorderBrush="{StaticResource LinkForegroundBrush}" ToolTip="{x:Static loc:Resources.DragImagesHere}"
+                        Visibility="{Binding Path=IsEditing, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Grid>
+                        <Path Style="{StaticResource PhotoIconPathStyle}" Margin="{StaticResource All4Margin}"
+                              Visibility="{Binding Path=EditableAttachmentViewModel.HasAddedPhotos, Mode=OneWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}"/>
+
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Auto"
+                                      Visibility="{Binding Path=EditableAttachmentViewModel.HasAddedPhotos, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <ItemsControl ItemsSource="{Binding Path=EditableAttachmentViewModel.AddedPhotosView, Mode=OneWay}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel ItemHeight="{StaticResource PhotoInListHeight}"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="attachments:PhotoPanelDecorator">
+                                        <Image Margin="{StaticResource All4Margin}" 
+                                               Source="{Binding Path=EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- Список сохранённых файлов -->
+                <ListBox Grid.Row="1" Margin="{StaticResource All4Margin}"  Style="{StaticResource NonSelectableListBoxStyle}"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         ItemsSource="{Binding Path=EditableAttachmentViewModel.ItemDecorators, Mode=OneWay}"
+                         DataContext="{Binding ElementName=ContextedBorder, Path=DataContext, Mode=OneWay}">
+                    <d:ItemsControl.DataContext>
+                        <x:Type Type="attachments:PhotoAlbumPanelDecorator"/>
+                    </d:ItemsControl.DataContext>
+
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel ItemHeight="{StaticResource PhotoPreviewHeight}"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="attachments:VirtualPhotoDecorator">
+                            <Grid>
+                                <Image Stretch="Uniform" Margin="{StaticResource All4Margin}"
+                                       Source="{Binding Path=Data.EditableAttachmentViewModel.Preview.PreviewImageSource, Mode=OneWay}"/>
+
+                                <Button VerticalAlignment="Top" HorizontalAlignment="Right" Style="{StaticResource ImageButtonStyle}" 
+                                        Command="{x:Static helpers:ClientCommands.CommandShowLargePhoto}" CommandParameter="{Binding Path=Data, Mode=OneWay}">
+                                    <Path Data="{StaticResource SearchIconGeometry}" Fill="{StaticResource SteelGrayBrush}"/>
+                                </Button>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ListBox>
             </Grid>
         </Border>
     </DataTemplate>

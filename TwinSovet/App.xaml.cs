@@ -117,7 +117,7 @@ namespace TwinSovet
             window.Content = notesView;
 
             var context = (SubjectNotesViewModel)notesView.DataContext;
-            context.SetNotesOwner(message.AttachablesOwner);
+            context.SetAttachmentsOwner(message.AttachablesOwner);
 
             window.Show();
         }
@@ -130,7 +130,7 @@ namespace TwinSovet
             window.Content = photosView;
 
             var context = (SubjectPhotosViewModel)photosView.DataContext;
-            context.SetNotesOwner(message.AttachablesOwner);
+            context.SetAttachmentsOwner(message.AttachablesOwner);
 
             window.Show();
         }

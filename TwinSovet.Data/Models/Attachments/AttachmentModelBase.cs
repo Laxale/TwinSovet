@@ -14,7 +14,7 @@ namespace TwinSovet.Data.Models.Attachments
     /// Базовый класс моделей аттачментов.
     /// Логически является абстрактным, но таковым не сделан для возможности хранения в одном списке всех типов дочерних аттачей.
     /// </summary>
-    public abstract class AttachmentModelBase : ComplexDbObject
+    public abstract class AttachmentModelBase : ComplexDbObject 
     {
         private const string DefaultTitle = "Название не указано";
 
@@ -100,7 +100,7 @@ namespace TwinSovet.Data.Models.Attachments
         /// Получить список названий вложенных пропертей класса (которые не простых типов данных).
         /// </summary>
         /// <returns>Список названий вложенных пропертей класса.</returns>
-        protected override List<string> GetIncludedPropNames() 
+        public override List<string> GetIncludedPropNames() 
         {
             return new List<string>();
         }

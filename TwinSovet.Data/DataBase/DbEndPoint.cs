@@ -93,15 +93,13 @@ namespace TwinSovet.Data.DataBase
             {
                 //var efLogs = new List<string>();
                 //RemoveCascade<TComplexObject>();
-
-                DbContextBase<TComplexObject> context = contextFactory.CreateContext<TComplexObject>();
-
-                using (context)
+                
+                using (var context = contextFactory.CreateContext<TComplexObject>())
                 {
                     //complexContext.Database.Log = efLogs.Add;
                     // для полного удаления сложного объекта нужно приложить к нему названия его дочерних пропертей (которым соответствуют отдельные таблицы)
                     TComplexObject firstObject = objectsToSave.First();
-                    DbQuery<TComplexObject> allObjectsQuery = IncludeProps(context, new[] { firstObject.IncludedPropertyNames });
+                    DbQuery<TComplexObject> allObjectsQuery = IncludeProps(context, firstObject.GetIncludedPropNames());
                     foreach (string childPropName in firstObject.IncludedChildPropNames)
                     {
                         allObjectsQuery.Include(childPropName);
@@ -114,7 +112,8 @@ namespace TwinSovet.Data.DataBase
                     {
                         SetTimestamps(complexObject as AttachmentModelBase);
 
-                        var existingObject = context.Objects.FirstOrDefault(obj => obj.Id == complexObject.Id);
+                        complexObject.PrepareNavigationProps();
+                        var existingObject = allObjectsQuery.FirstOrDefault(obj => obj.Id == complexObject.Id);
                         if (existingObject == null)
                         {
                             DbEntityEntry<TComplexObject> entry = context.Entry(complexObject);
@@ -122,9 +121,12 @@ namespace TwinSovet.Data.DataBase
                         }
                         else
                         {
-                            existingObject.AcceptProps(complexObject);
-                            DbEntityEntry<TComplexObject> entry = context.Entry(existingObject);
-                            entry.State = EntityState.Modified;
+                            context.Objects.Remove(existingObject);
+                            context.Objects.Add(complexObject);
+                            //existingObject.AcceptProps(complexObject);
+                            //DbEntityEntry<TComplexObject> entry = context.Entry(existingObject);
+                            //existingObject.PrepareNavigationProps();
+                            //entry.State = EntityState.Modified;
                         }
                     }
 
@@ -209,7 +211,7 @@ namespace TwinSovet.Data.DataBase
                     if (cachedProps == null)
                     {
                         var complexProxy = new TObject() as ComplexDbObject;
-                        var includedProps = new List<string> { complexProxy.IncludedPropertyNames };
+                        var includedProps = complexProxy.GetIncludedPropNames();
                         includedProps.AddRange(complexProxy.IncludedChildPropNames);
                         SaveCachedProps<TObject>(includedProps);
                     }

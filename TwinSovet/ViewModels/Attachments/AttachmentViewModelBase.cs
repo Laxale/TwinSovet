@@ -162,7 +162,7 @@ namespace TwinSovet.ViewModels.Attachments
         /// Задать субъекта-владельца данной вьюмодели. То есть ему принадлежит данный аттач.
         /// </summary>
         /// <param name="subject">Вьюмодель субъекта-владельца данного аттача.</param>
-        public void SetOwnerSubject(SubjectEntityViewModelBase subject) 
+        public virtual void SetOwnerSubject(SubjectEntityViewModelBase subject) 
         {
             this.subject = subject;
         }

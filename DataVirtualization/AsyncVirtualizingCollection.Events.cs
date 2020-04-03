@@ -1,4 +1,6 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 
 
@@ -15,6 +17,8 @@ namespace DataVirtualization
         /// Occurs when the collection changes.
         /// </summary>
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        public event Action<IList<T>> EventFetchedData = data => { };
 
         
         /// <summary>
